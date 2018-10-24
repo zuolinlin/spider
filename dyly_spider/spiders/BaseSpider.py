@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import scrapy
-from scrapy import Request
 
 from util.db import mysql
 

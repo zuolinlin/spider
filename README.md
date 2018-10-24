@@ -1,7 +1,7 @@
 # dyly_spider
 **项目结构** 
 ```
-cy-generator
+dyly_spider
 ├─dyly_spider 爬虫相关
 │  └─spiders 爬虫
 │  │    │─zdb 投资界

@@ -17,6 +17,7 @@ class ZdbSeleniumSpider(BaseSpider):
     def __init__(self, *a, **kw):
         super(ZdbSeleniumSpider, self).__init__(*a, **kw)
         chrome_options = webdriver.ChromeOptions()
+        # 不打开浏览器窗口
         chrome_options.add_argument('headless')
         chrome_options.add_argument('no-sandbox')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',

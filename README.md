@@ -3,10 +3,10 @@
 ```
 dyly_spider
 ├─dyly_spider 爬虫相关
-│  └─file 谷歌浏览器驱动文件（需浏览器渲染完才能抓取时使用）
-│  └─spiders 爬虫
+│  │─file 谷歌浏览器驱动文件（需浏览器渲染完才能抓取时使用）
+│  │─spiders 爬虫
 │  │    │─zdb 投资界
-│  │    │   └─ZdbSeleniumSpider.py 投资人物（浏览器渲染）
+│  │    │   │─ZdbSeleniumSpider.py 投资人物（浏览器渲染）
 │  │    │   └─ZdbSpider.py 投资人物
 │  │    └─BaseSpider.py  爬虫父类
 │  ├─items.py 指定保存文件的数据结构

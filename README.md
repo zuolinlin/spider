@@ -17,3 +17,14 @@ dyly_spider
 ├─scrapy.cfg scrapy配置 
 └─run.py 执行
 ```
+**依赖包**
+```
+scrapy、pymysql（windows系统需要单独安装pypiwin32）
+命令行安装
+pip install scrapy
+pip install pymysql
+pip install pypiwin32
+```
+**如windows安装scrapy失败手动下载安装twisted，后安装scrapy**
+- [下载twisted](https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted)
+- pip install Twisted-18.9.0-cp37-cp37m-win_amd64.whl

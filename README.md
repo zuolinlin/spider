@@ -6,6 +6,7 @@ dyly_spider
 │  └─file 谷歌浏览器驱动文件（需浏览器渲染完才能抓取时使用）
 │  └─spiders 爬虫
 │  │    │─zdb 投资界
+│  │    │   └─ZdbSeleniumSpider.py 投资人物（浏览器渲染）
 │  │    │   └─ZdbSpider.py 投资人物
 │  │    └─BaseSpider.py  爬虫父类
 │  ├─items.py 指定保存文件的数据结构
@@ -20,11 +21,12 @@ dyly_spider
 ```
 **依赖包**
 ```
-scrapy、pymysql（windows系统需要单独安装pypiwin32）
+scrapy、pymysql、selenium（windows系统需要单独安装pypiwin32）
 命令行安装
 pip install scrapy
 pip install pymysql
-pip install pypiwin32
+pip install selenium
+pip install pypiwin32（mac、linux 不需要安装）
 ```
 **如windows安装scrapy失败手动下载安装twisted，后安装scrapy**
 - [下载twisted](https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted)

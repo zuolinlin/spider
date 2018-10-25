@@ -10,22 +10,22 @@ import datetime
 
 
 # 自定义的日志输出
-def log(msg, level=logging.DEBUG):
+def log(msg, level=logging.INFO):
     logging.log(level, '%s msg: %s' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), msg))
-    if level == logging.WARNING or level == logging.ERROR:
+    if level == logging.WARNING:
         for line in traceback.format_stack():
-            print(line.strip())
-
+            logging.log(level, "警告信息===>" + line.strip())
+    elif level == logging.ERROR:
         for line in traceback.format_stack():
-            logging.log(level, line.strip())
+            logging.log(level, "错误信息===>" + line.strip())
 
 
 def error(msg):
-    log('%s msg: %s' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), msg), logging.ERROR)
+    log(msg, logging.ERROR)
 
 
 def debug(msg):
-    log('%s msg: %s' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), msg), logging.DEBUG)
+    log(msg, logging.DEBUG)
 
 
 # 服务器使用，清理端口占用

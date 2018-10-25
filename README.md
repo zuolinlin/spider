@@ -15,17 +15,19 @@ dyly_spider
 │  └─settings.py  设置文件，指定项目的一些配置
 ├─util 工具类
 │  ├─db 数据库
-│  └─cy_logger.py 日志
+│  ├─cy_logger.py 日志
+│  └─QiniuUtil.py 七牛文件管理工具类
 ├─scrapy.cfg scrapy配置 
+├─README.md 说明文件
 └─run.py 执行
 ```
 **依赖包**
 ```
-scrapy、pymysql、selenium（windows系统需要单独安装pypiwin32）
 命令行安装
 pip install scrapy
 pip install pymysql
 pip install selenium
+pip install qiniu
 pip install pypiwin32（mac、linux 不需要安装）
 ```
 **如windows安装scrapy失败手动下载安装twisted，后安装scrapy**

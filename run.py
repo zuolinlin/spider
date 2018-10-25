@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+import logging
 from scrapy.cmdline import execute
+
+# logging.basicConfig(level=logging.DEBUG)
 
 
 def crawl(spiders):

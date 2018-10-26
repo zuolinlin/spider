@@ -11,8 +11,8 @@ class ZdbSeleniumSpider(BaseSpider):
 
     name = "zdb_selenium"
     allowed_domains = ["pedaily.cn"]
-    # 抓取前10页数据
-    start_urls = ['https://zdb.pedaily.cn/people/p{page}/'.format(page=page) for page in range(1, 11)]
+    # 抓取第1页数据
+    start_urls = ['https://zdb.pedaily.cn/people/p{page}/'.format(page=page) for page in range(1, 2)]
 
     def __init__(self, *a, **kw):
         super(ZdbSeleniumSpider, self).__init__(*a, **kw)

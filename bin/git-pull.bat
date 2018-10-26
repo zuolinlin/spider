@@ -1,6 +1,6 @@
 @echo off
-echo press any key to start
-pause
+rem echo press any key to start
+rem pause
 echo running....
 cd ..
 git pull

@@ -2,7 +2,7 @@
 from scrapy import Request
 from selenium import webdriver
 from scrapy import signals
-from scrapy.xlib.pydispatch import dispatcher
+from pydispatch import dispatcher
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
 

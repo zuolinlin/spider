@@ -8,6 +8,7 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+import logging
 
 BOT_NAME = 'dyly_spider'
 
@@ -89,3 +90,9 @@ DOWNLOADER_MIDDLEWARES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# 日志相关
+# LOG_LEVEL = logging.DEBUG
+# LOG_STDOUT = False
+# LOG_FILE = "E:/logs/spider.log"
+# LOG_FORMAT = "%(asctime)s [%(name)s] %(levelname)s: %(message)s"

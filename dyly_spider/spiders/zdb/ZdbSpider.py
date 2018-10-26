@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from scrapy import Request
-
 from dyly_spider.items import ZdbItem
 from dyly_spider.spiders.BaseSpider import BaseSpider
 

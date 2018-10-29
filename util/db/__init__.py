@@ -21,7 +21,6 @@ class DBMysql:
             # cursor.execute(sql)
             # cursor.executemany("insert into tb7(user,pass,licnese)values(%s,%s,%s)",
             # [("u1","u1pass","11111"),("u2","u2pass","22222")])
-            pk = 0
             with connection.cursor() as cursor:
                 # 执行sql语句
                 if type(params) == list:
@@ -44,7 +43,7 @@ class DBMysql:
             # 关闭数据库连接
             connection.close()
 
-    def fetchall(self, sql: object) -> object:
+    def fetchall(self, sql):
         # 使用cursor()方法获取操作游标
         connection = self.getConnection()
         cursor = connection.cursor()
@@ -55,7 +54,23 @@ class DBMysql:
             # 获取所有记录列表
             return cursor.fetchall()
         except Exception as e:
-            print(e)
+            cy_logger.error(e)
+        finally:
+            # 关闭数据库连接
+            connection.close()
+
+    def fetchone(self, sql):
+        # 使用cursor()方法获取操作游标
+        connection = self.getConnection()
+        cursor = connection.cursor()
+
+        try:
+            # 执行SQL语句
+            cursor.execute(sql)
+            # 获取所有记录列表
+            return cursor.fetchone()
+        except Exception as e:
+            cy_logger.error(e)
         finally:
             # 关闭数据库连接
             connection.close()

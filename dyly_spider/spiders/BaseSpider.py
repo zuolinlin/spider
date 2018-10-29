@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import scrapy
-
+from scrapy.spiders import CrawlSpider
 from util.db import mysql
 
 
-class BaseSpider(scrapy.Spider):
+class BaseSpider(CrawlSpider):
 
     name = "base"
 

@@ -29,3 +29,6 @@ class ZdbSpiderPipeline(object):
         logger.log("*" * 100)
         logger.log("===> " + str(item))
         logger.log("*" * 100)
+        insert("INSERT INTO `xsbbiz`.`spider_test` (`name`, `company`) "
+               "VALUES (%s, %s)",
+               (item['name'], item['company']))

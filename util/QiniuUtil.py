@@ -72,6 +72,6 @@ class QiniuUtil:
 
 if __name__ == '__main__':
     # print(QiniuUtil.upload("https://p.ishowx.com/uploads/allimg/170526/648-1F5261GH5-50.jpg", "zly6", "image"))
-    QiniuUtil.delete("https://img1.dyly.com/image/20181025/zly6")
+    QiniuUtil.delete("https://img1.dyly.com/image/2018-10-25/zly3")
 
 

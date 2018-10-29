@@ -12,7 +12,11 @@ import logging
 
 BOT_NAME = 'dyly_spider'
 
-SPIDER_MODULES = ['dyly_spider.spiders', 'dyly_spider.spiders.zdb', 'dyly_spider.spiders.xiniu']
+SPIDER_MODULES = ['dyly_spider.spiders',
+                  'dyly_spider.spiders.zdb',
+                  'dyly_spider.spiders.xiniu',
+                  'dyly_spider.spiders.36kr'
+                  ]
 NEWSPIDER_MODULE = 'dyly_spider.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent

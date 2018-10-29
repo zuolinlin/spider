@@ -10,6 +10,6 @@ def crawl(spiders):
 if __name__ == '__main__':
     crawl([
         # 'zdb_selenium'  # 投资人物(需要谷歌浏览器渲染 版本>= 65.0.3325.0)
-        'zdb'  # 投资人物
+        'xiniu'  # 投资人物
     ])
 

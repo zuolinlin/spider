@@ -16,7 +16,7 @@ class BaseSpider(CrawlSpider):
         pass
 
     def insert(self, sql, params):
-        self.db.execute(sql, params)
+        return self.db.execute(sql, params)
 
     def exec_sql(self, sql, params):
         self.db.execute(sql, params)

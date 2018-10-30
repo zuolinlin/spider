@@ -33,3 +33,9 @@ pip install pypiwin32（mac、linux 不需要安装）
 **如windows安装scrapy失败手动下载安装twisted，后安装scrapy**
 - [下载twisted](https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted)
 - pip install Twisted-18.9.0-cp37-cp37m-win_amd64.whl
+
+**执行**
+```
+根目录执行
+scrapy crawl 爬虫名称
+```

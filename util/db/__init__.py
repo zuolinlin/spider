@@ -5,7 +5,7 @@ from util import cy_logger
 
 class DBMysql:
 
-    def getConnection(self):
+    def get_connection(self):
         # 打开数据库连接
         return pymysql.connect(host='rdsb3v4p9d76w56130cbo.mysql.rds.aliyuncs.com', port=3306,
                                user='admin_dyly',
@@ -13,7 +13,7 @@ class DBMysql:
 
     def execute(self, sql, params):
         # 使用cursor()方法获取操作游标
-        connection = self.getConnection()
+        connection = self.get_connection()
         # cursor = connection.cursor()
 
         try:
@@ -45,7 +45,7 @@ class DBMysql:
 
     def fetchall(self, sql):
         # 使用cursor()方法获取操作游标
-        connection = self.getConnection()
+        connection = self.get_connection()
         cursor = connection.cursor()
 
         try:
@@ -61,7 +61,7 @@ class DBMysql:
 
     def fetchone(self, sql):
         # 使用cursor()方法获取操作游标
-        connection = self.getConnection()
+        connection = self.get_connection()
         cursor = connection.cursor()
 
         try:

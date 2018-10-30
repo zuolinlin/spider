@@ -25,6 +25,7 @@ class ZdbSpiderPipeline(object):
     """
     投资界-投资人物
     """
+
     def process_item(self, item, spider):
         logger.log("*" * 100)
         logger.log("===> " + str(item))
@@ -32,3 +33,8 @@ class ZdbSpiderPipeline(object):
         insert("INSERT INTO `xsbbiz`.`spider_test` (`name`, `company`) "
                "VALUES (%s, %s)",
                (item['name'], item['company']))
+
+
+class ItjuziSpiderPipeline(object):
+    def process_item(self, item, spider):
+        logger.log("===> " + item["company_name"])

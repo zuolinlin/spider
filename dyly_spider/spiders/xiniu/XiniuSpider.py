@@ -1,3 +1,4 @@
+from dyly_spider.items import XiniuInstitutionItem, XiniuInvestmentEvents
 from dyly_spider.spiders.BaseSpider import BaseSpider
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
@@ -77,5 +78,63 @@ class XiniuSpider(BaseSpider):
             cookies = self.driver.get_cookies()
             file = open("dyly_spider/file/xiniudata")
             for line in file:
+                # 打开链接，加载数据
                 self.driver.get(line)
-                time.sleep(2)
+                # 等在3s  让页面加载完成
+                time.sleep(3)
+
+                # 机构信息
+                item = XiniuInstitutionItem()
+                # 获取页面上的各个节点的信息
+                # 机构logo
+                item['logo'] = self.driver.find_element_by_xpath('//*[@id="header"]/div[1]/img').get_attribute("src")
+                # 机构名称
+                item['name'] = self.driver.find_element_by_xpath('//*[@id="header"]/div[2]/div[1]/span[1]').text
+                # 机构的成立时间
+                item['establishmentTime'] = self.driver.find_element_by_xpath('//*[@id="header"]/div[2]/div/span[2]').text
+                # 机构描述
+                item['describe'] = self.driver.find_element_by_xpath('//*[@id="header"]/div[2]/div[3]/div/pre').text
+                # 插入机构主表 ，返回主键Id
+                institutionId = self.insert("INSERT INTO `oltp`.`xiniu_institution_data` (`logo`, `name`,`establishmentTime`,`describe`) "
+                       "VALUES (%s, %s,%s, %s)",
+                       (item['logo'], item['name'], item['establishmentTime'], item['describe']))
+
+
+                # 机构对应的投资信息
+                inv = XiniuInvestmentEvents()
+                # 获取页面上的各个节点的信息
+                # 获取投资事件的列表的最大页数
+                page_Last = self.driver.find_element_by_xpath(
+                    '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last() -1]').text
+                num = 1
+                while num < (int(page_Last)+1):
+                    # 点击下一页
+                    if num != 1:
+                        new_list = self.driver.find_element_by_xpath(
+                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
+                    num = num + 1
+                    # 获取当前页的投资事件的列表信息
+                    inv_list = self.driver.find_elements_by_xpath(
+                        '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
+                    for invs in  inv_list:
+                        inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
+                        # 公司名称
+                        inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
+                        # 公司logo
+                        inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute('src')
+                        # 公司描述
+                        inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
+                        # 行业领域
+                        inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
+                        # 地区
+                        inv['area'] = invs.find_element_by_xpath('div/div[4]').text
+                        # 投资轮次
+                        inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
+                        # 投资金额
+                        inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
+                        # 投资方
+                        inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
+                        inv['institutionId'] = institutionId
+                        print(inv)
+
+                        self.driver.find_element_by_xpath('')

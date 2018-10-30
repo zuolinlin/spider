@@ -14,6 +14,7 @@ BOT_NAME = 'dyly_spider'
 
 SPIDER_MODULES = ['dyly_spider.spiders',
                   'dyly_spider.spiders.zdb',
+                  'dyly_spider.spiders.xiniu',
                   'dyly_spider.spiders.36kr'
                   ]
 NEWSPIDER_MODULE = 'dyly_spider.spiders'
@@ -22,7 +23,7 @@ NEWSPIDER_MODULE = 'dyly_spider.spiders'
 # USER_AGENT = 'dyly_spider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = False
+ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32

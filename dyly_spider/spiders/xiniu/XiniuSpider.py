@@ -26,7 +26,7 @@ class XiniuSpider(BaseSpider):
     #  设置登陆，
     def __init__(self, *a, **kw):
         super(XiniuSpider, self).__init__(*a, **kw)
-        self.url = "https://vip.xiniudata.com"
+        # self.url = "https://vip.xiniudata.com"
         # self.chrome_options = Options()
         # #  设置浏览器是否隐藏
         # self.chrome_options.add_argument('--headless')
@@ -136,9 +136,14 @@ class XiniuSpider(BaseSpider):
                         while num < (int(page_Last)+1):
                             # 点击下一页
                             if num != 1:
-                                new_list = self.driver.find_element_by_xpath(
-                                    '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
-                                time.sleep(6)
+                                try:
+
+                                    new_list = self.driver.find_element_by_xpath(
+                                        '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
+                                    time.sleep(6)
+                                except:
+                                    self.log("====处理失败的URL"+line+"投资信息失败")
+                                    break
                             num = num + 1
                             # 获取当前页的投资事件的列表信息
                             inv_list = self.driver.find_elements_by_xpath(
@@ -241,9 +246,13 @@ class XiniuSpider(BaseSpider):
                         while num < (int(dyna_page_Last) + 1):
                             # 点击下一页
                             if num != 1:
-                                new_list = self.driver.find_element_by_xpath(
-                                    '//*[@id="investorMessage"]/div[2]/div[2]/div[3]/div/div/ul/li[last()]').click()
-                                time.sleep(6)
+                                try:
+                                    new_list = self.driver.find_element_by_xpath(
+                                        '//*[@id="investorMessage"]/div[2]/div[2]/div[3]/div/div/ul/li[last()]').click()
+                                    time.sleep(6)
+                                except:
+                                    self.log("====处理失败的URL" + line + "动态事件")
+                                    break
                             num = num + 1
                             # 获取列表页的数据
                             dyna_data = self.driver.find_elements_by_xpath(
@@ -354,9 +363,13 @@ class XiniuSpider(BaseSpider):
                         while num < (int(fun_page_Last) + 1):
                             # 点击下一页
                             if num != 1:
-                                new_list = self.driver.find_element_by_xpath(
-                                    '//html/body/div/div/div[3]/div/section[@id="investorFund"]/div[2]/div/div[3]/div/div/ul/li[last()]').click()
-                                time.sleep(6)
+                                try:
+                                    new_list = self.driver.find_element_by_xpath(
+                                        '//html/body/div/div/div[3]/div/section[@id="investorFund"]/div[2]/div/div[3]/div/div/ul/li[last()]').click()
+                                    time.sleep(6)
+                                except:
+                                    self.log("====处理失败的URL" + line + "基金信息失败")
+                                    break
                             params = []
                             num = num + 1
                             # 获取列表页的数据
@@ -455,9 +468,13 @@ class XiniuSpider(BaseSpider):
                         while num < (int(fun_page_Last) + 1):
                             # 点击下一页
                             if num != 1:
-                                new_list = self.driver.find_element_by_xpath(
-                                 '//html/body/div/div/div[3]/div/section[@id="investorFundManager"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
-                                time.sleep(6)
+                                try:
+                                    new_list = self.driver.find_element_by_xpath(
+                                     '//html/body/div/div/div[3]/div/section[@id="investorFundManager"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
+                                    time.sleep(6)
+                                except:
+                                    self.log("====处理失败的URL" + line + "基金管理人失败")
+                                    break
                             params = []
                             num = num + 1
                             # 获取列表页的数据
@@ -547,9 +564,13 @@ class XiniuSpider(BaseSpider):
                         while num < (int(fun_page_Last) + 1):
                             # 点击下一页
                             if num != 1:
-                                new_list = self.driver.find_element_by_xpath(
-                                 '//html/body/div/div/div[3]/div/section[@id="investorPartnerLP"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
-                                time.sleep(6)
+                                try:
+                                    new_list = self.driver.find_element_by_xpath(
+                                     '//html/body/div/div/div[3]/div/section[@id="investorPartnerLP"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
+                                    time.sleep(6)
+                                except:
+                                    self.log("====处理失败的URL" + line + "LP失败")
+                                    break
                             params = []
                             num = num + 1
                             # 获取列表页的数据

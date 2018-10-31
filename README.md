@@ -28,6 +28,7 @@ pip install scrapy
 pip install pymysql
 pip install selenium
 pip install qiniu
+pip install DBUtils
 pip install pypiwin32（mac、linux 不需要安装）
 ```
 **如windows安装scrapy失败手动下载安装twisted，后安装scrapy**

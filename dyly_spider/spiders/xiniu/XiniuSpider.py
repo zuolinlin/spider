@@ -32,6 +32,7 @@ class XiniuSpider(BaseSpider):
         # self.chrome_options.add_argument('--headless')
         # self.chrome_options.add_argument('--disable-gpu')
         # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+
         chrome_options = webdriver.ChromeOptions()
         # 不打开浏览器窗口
         chrome_options.add_argument('headless')

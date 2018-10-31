@@ -27,11 +27,11 @@ class XiniuSpider(BaseSpider):
     def __init__(self, *a, **kw):
         super(XiniuSpider, self).__init__(*a, **kw)
         self.url = "https://vip.xiniudata.com"
-        #  self.chrome_options = Options()
-        #  设置浏览器是否隐藏
-        #  self.chrome_options.add_argument('--headless')
-        #  self.chrome_options.add_argument('--disable-gpu')
-        #  self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+        # self.chrome_options = Options()
+        # #  设置浏览器是否隐藏
+        # self.chrome_options.add_argument('--headless')
+        # self.chrome_options.add_argument('--disable-gpu')
+        # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
         chrome_options = webdriver.ChromeOptions()
         # 不打开浏览器窗口
         chrome_options.add_argument('headless')
@@ -90,7 +90,6 @@ class XiniuSpider(BaseSpider):
                 #self.driver.get("https://vip.xiniudata.com/investor/01924fdebe4b58081eeff15293b1db52/overview")
                 # 等在3s  让页面加载完成
                 time.sleep(10)
-
                 # 机构信息
                 item = XiniuInstitutionItem()
                 # 获取页面上的各个节点的信息
@@ -106,99 +105,99 @@ class XiniuSpider(BaseSpider):
                 institutionId = self.insert("INSERT INTO `oltp`.`xiniu_institution_data` (`logo`, `name`,`establishmentTime`,`describe`) "
                        "VALUES (%s, %s,%s, %s)",
                        (item['logo'], item['name'], item['establishmentTime'], item['describe']))
-
-                # institutionId =int(id)
-                # 机构对应的投资信息
-                flag10 = True
-                try:
-                    self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorEvent"]')
-                    flag10 = flag10
-                except:
-                    flag10 = False
-                # 如果机构动态数据列表数据这个div 存在
-                if flag10:
-                    inv = XiniuInvestmentEvents()
-                    # 判断页面是否有下一页的按钮
-                    flag11 = True
-                    try:
-                        self.driver.find_element_by_xpath(
-                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]')
-                        flag11 = flag11
-                    except:
-                        flag11 = False
-                    # 如果有下一页的按钮
-                    if flag11:
-                        # 获取页面上的各个节点的信息
-                        # 获取投资事件的列表的最大页数
-                        page_Last = self.driver.find_element_by_xpath(
-                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last() -1]').text
-                        num = 1
-                        while num < (int(page_Last)+1):
-                            # 点击下一页
-                            if num != 1:
-                                new_list = self.driver.find_element_by_xpath(
-                                    '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
-                                time.sleep(6)
-                            num = num + 1
-                            # 获取当前页的投资事件的列表信息
-                            inv_list = self.driver.find_elements_by_xpath(
-                                '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
-                            for invs in  inv_list:
-                                inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
-                                # 公司名称
-                                inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
-                                # 公司logo
-                                inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute('src')
-                                # 公司描述
-                                inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
-                                # 行业领域
-                                inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
-                                # 地区
-                                inv['area'] = invs.find_element_by_xpath('div/div[4]').text
-                                # 投资轮次
-                                inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
-                                # 投资金额
-                                inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
-                                # 投资方
-                                inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
-                                inv['institutionId'] = institutionId
-                                # 插入sql
-                                invId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
-                                    "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
-                                    (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'], inv['industry'], inv['area'], inv['currentTurn'], inv['amount'],inv['investors'], inv['institutionId']))
-
-                    else:
-                        # 获取当前页的投资事件的列表信息
-                        inv_list = self.driver.find_elements_by_xpath(
-                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
-                        for invs in inv_list:
-                            inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
-                            # 公司名称
-                            inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
-                            # 公司logo
-                            inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute(
-                                'src')
-                            # 公司描述
-                            inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
-                            # 行业领域
-                            inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
-                            # 地区
-                            inv['area'] = invs.find_element_by_xpath('div/div[4]').text
-                            # 投资轮次
-                            inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
-                            # 投资金额
-                            inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
-                            # 投资方
-                            inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
-                            inv['institutionId'] = institutionId
-                            # 插入sql
-                            invId = self.insert(
-                                "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
-                                "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
-                                (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'],
-                                 inv['industry'], inv['area'], inv['currentTurn'], inv['amount'], inv['investors'],
-                                 inv['institutionId']))
+                #
+                # # institutionId =int(id)
+                # # 机构对应的投资信息
+                # flag10 = True
+                # try:
+                #     self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorEvent"]')
+                #     flag10 = flag10
+                # except:
+                #     flag10 = False
+                # # 如果机构动态数据列表数据这个div 存在
+                # if flag10:
+                #     inv = XiniuInvestmentEvents()
+                #     # 判断页面是否有下一页的按钮
+                #     flag11 = True
+                #     try:
+                #         self.driver.find_element_by_xpath(
+                #             '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]')
+                #         flag11 = flag11
+                #     except:
+                #         flag11 = False
+                #     # 如果有下一页的按钮
+                #     if flag11:
+                #         # 获取页面上的各个节点的信息
+                #         # 获取投资事件的列表的最大页数
+                #         page_Last = self.driver.find_element_by_xpath(
+                #             '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last() -1]').text
+                #         num = 1
+                #         while num < (int(page_Last)+1):
+                #             # 点击下一页
+                #             if num != 1:
+                #                 new_list = self.driver.find_element_by_xpath(
+                #                     '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
+                #                 time.sleep(6)
+                #             num = num + 1
+                #             # 获取当前页的投资事件的列表信息
+                #             inv_list = self.driver.find_elements_by_xpath(
+                #                 '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
+                #             for invs in  inv_list:
+                #                 inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
+                #                 # 公司名称
+                #                 inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
+                #                 # 公司logo
+                #                 inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute('src')
+                #                 # 公司描述
+                #                 inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
+                #                 # 行业领域
+                #                 inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
+                #                 # 地区
+                #                 inv['area'] = invs.find_element_by_xpath('div/div[4]').text
+                #                 # 投资轮次
+                #                 inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
+                #                 # 投资金额
+                #                 inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
+                #                 # 投资方
+                #                 inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
+                #                 inv['institutionId'] = institutionId
+                #                 # 插入sql
+                #                 invId = self.insert(
+                #                     "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
+                #                     "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
+                #                     (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'], inv['industry'], inv['area'], inv['currentTurn'], inv['amount'],inv['investors'], inv['institutionId']))
+                #
+                #     else:
+                #         # 获取当前页的投资事件的列表信息
+                #         inv_list = self.driver.find_elements_by_xpath(
+                #             '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
+                #         for invs in inv_list:
+                #             inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
+                #             # 公司名称
+                #             inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
+                #             # 公司logo
+                #             inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute(
+                #                 'src')
+                #             # 公司描述
+                #             inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
+                #             # 行业领域
+                #             inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
+                #             # 地区
+                #             inv['area'] = invs.find_element_by_xpath('div/div[4]').text
+                #             # 投资轮次
+                #             inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
+                #             # 投资金额
+                #             inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
+                #             # 投资方
+                #             inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
+                #             inv['institutionId'] = institutionId
+                #             # 插入sql
+                #             invId = self.insert(
+                #                 "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
+                #                 "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
+                #                 (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'],
+                #                  inv['industry'], inv['area'], inv['currentTurn'], inv['amount'], inv['investors'],
+                #                  inv['institutionId']))
 
                 #  判断这个机构动态数据列表div是否存在
                 flag1 = True

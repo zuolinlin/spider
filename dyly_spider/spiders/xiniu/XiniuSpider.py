@@ -37,7 +37,7 @@ class XiniuSpider(BaseSpider):
         chrome_options.add_argument('headless')
         chrome_options.add_argument('no-sandbox')
         self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-                                        chrome_options=chrome_options)
+                                       chrome_options=chrome_options)
         self.driver.get(self.url)
         time.sleep(3)  # 睡3毫秒，等待页面加载
         self.driver.save_screenshot("0.jpg")

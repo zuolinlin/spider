@@ -26,7 +26,7 @@ class XiniuSpider(BaseSpider):
     #  设置登陆，
     def __init__(self, *a, **kw):
         super(XiniuSpider, self).__init__(*a, **kw)
-        # self.url = "https://vip.xiniudata.com"
+        self.url = "https://vip.xiniudata.com"
         # self.chrome_options = Options()
         # #  设置浏览器是否隐藏
         # self.chrome_options.add_argument('--headless')

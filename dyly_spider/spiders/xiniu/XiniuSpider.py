@@ -27,17 +27,17 @@ class XiniuSpider(BaseSpider):
     def __init__(self, *a, **kw):
         super(XiniuSpider, self).__init__(*a, **kw)
         self.url = "https://vip.xiniudata.com"
-        self.chrome_options = Options()
-        #  设置浏览器是否隐藏
-        self.chrome_options.add_argument('--headless')
-        self.chrome_options.add_argument('--disable-gpu')
-        self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
-        # chrome_options = webdriver.ChromeOptions()
-        # # 不打开浏览器窗口
-        # chrome_options.add_argument('headless')
-        # chrome_options.add_argument('no-sandbox')
-        # self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-        #                                chrome_options=chrome_options)
+        # self.chrome_options = Options()
+        # #  设置浏览器是否隐藏
+        # self.chrome_options.add_argument('--headless')
+        # self.chrome_options.add_argument('--disable-gpu')
+        # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+        chrome_options = webdriver.ChromeOptions()
+        # 不打开浏览器窗口
+        chrome_options.add_argument('headless')
+        chrome_options.add_argument('no-sandbox')
+        self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+                                       chrome_options=chrome_options)
         self.driver.get(self.url)
         time.sleep(3)  # 睡3毫秒，等待页面加载
         self.driver.save_screenshot("0.jpg")

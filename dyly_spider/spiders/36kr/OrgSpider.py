@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 import json
 import time
-
 from scrapy import Request
-
 from dyly_spider.spiders.BaseSpider import BaseSpider
-
-"""投资人物"""
 from util import date_util
 
 
 class OrgSpider(BaseSpider):
-
+    """鲸准投资机构相关"""
     name = "36kr_org"
     allowed_domains = ["36kr.com"]
     list_url = 'https://rong.36kr.com/n/api/org/list?page={page}'

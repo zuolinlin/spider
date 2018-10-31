@@ -232,27 +232,34 @@ class OrgSpider(BaseSpider):
         basic = data.get("basic", None)
         if basic is not None:
             now = time.localtime()
+            invest_preference = data['investPreference']
             self.insert("""
                         INSERT INTO `jz_member` (
                           `uid`,
                           `org_id`,
+                          `org_name`,
                           `avatar`,
                           `name`,
                           `position`,
                           `city`,
-                          `focusIndustry`,
+                          `focus_industry`,
+                          `prefer_phase`,
+                          `singleInvest_amount`,
                           `intro`,
                           `modify_date`
                         ) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                 uid,
                 org_id,
+                basic.get("orgName", ""),
                 basic.get("avatar", ""),
                 basic.get("name", ""),
                 basic.get("position", ""),
                 ','.join(basic.get("city", [])),
-                ','.join(data['investPreference'].get("focusIndustry", [])),
+                ','.join(invest_preference.get("focusIndustry", [])),
+                self.get_prefer_phase(invest_preference.get("preferPhase", [])),
+                invest_preference.get("singleInvestAmount"),
                 basic.get("intro", ""),
                 now
             ))
@@ -299,3 +306,14 @@ class OrgSpider(BaseSpider):
         if key is None:
             return None
         return self.phase_enum.get(key, "")
+
+    def get_prefer_phase(self, prefer_phase):
+        phases = []
+        for phase in prefer_phase:
+            phases.append(phase.get("desc"))
+        if len(phases) > 0:
+            return ','.join(phases),
+        else:
+            return None
+
+

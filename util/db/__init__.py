@@ -1,17 +1,39 @@
 # -*- coding: utf-8 -*-
 import pymysql
+from DBUtils.PooledDB import PooledDB
 from util import cy_logger
+
+POOL = PooledDB(
+    creator=pymysql,  # 使用链接数据库的模块
+    maxconnections=6,  # 连接池允许的最大连接数，0和None表示没有限制
+    mincached=2,  # 初始化时，连接池至少创建的空闲的连接，0表示不创建
+    maxcached=5,  # 连接池空闲的最多连接数，0和None表示没有限制
+    maxshared=3,  # 连接池中最多共享的连接数量，0和None表示全部共享
+    blocking=True,  # 链接池中如果没有可用共享连接后，是否阻塞等待，True表示等待，False表示不等待然后报错
+    setsession=[],  # 开始会话前执行的命令列表
+    ping=0,  # ping Mysql 服务端，检查服务是否可用
+    host='rdsb3v4p9d76w56130cbo.mysql.rds.aliyuncs.com',
+    port=3306,
+    user='admin_dyly',
+    password='admin_dyly',
+    database='xsbbiz',
+    charset='utf8'
+)
 
 
 class DBMysql:
 
     def get_connection(self):
+        # 获取数据库连接
+        return POOL.connection()
         # 打开数据库连接
-        return pymysql.connect(host='rdsb3v4p9d76w56130cbo.mysql.rds.aliyuncs.com', port=3306,
-                               user='admin_dyly',
-                               passwd='admin_dyly', db='xsbbiz', charset='utf8')
+        # return pymysql.connect(host='rdsb3v4p9d76w56130cbo.mysql.rds.aliyuncs.com', port=3306,
+        #                        user='admin_dyly',
+        #                        passwd='admin_dyly', db='xsbbiz', charset='utf8')
 
     def execute(self, sql, params):
+        if type(params) == list and len(params) == 0:
+            return
         # 使用cursor()方法获取操作游标
         connection = self.get_connection()
         # cursor = connection.cursor()
@@ -28,7 +50,7 @@ class DBMysql:
                 else:
                     cursor.execute(sql, params)
                 # 获取自增id
-                pk = connection.insert_id()
+                pk = cursor.lastrowid
                 connection.commit()
             if pk:
                 cy_logger.log("执行成功！返回最后一条主键为==> " + str(pk))

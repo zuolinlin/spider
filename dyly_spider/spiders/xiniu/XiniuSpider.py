@@ -27,17 +27,17 @@ class XiniuSpider(BaseSpider):
     def __init__(self, *a, **kw):
         super(XiniuSpider, self).__init__(*a, **kw)
         self.url = "https://vip.xiniudata.com"
-        # self.chrome_options = Options()
-        # #  设置浏览器是否隐藏
-        # self.chrome_options.add_argument('--headless')
-        # self.chrome_options.add_argument('--disable-gpu')
-        # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
-        chrome_options = webdriver.ChromeOptions()
-        # 不打开浏览器窗口
-        chrome_options.add_argument('headless')
-        chrome_options.add_argument('no-sandbox')
-        self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-                                       chrome_options=chrome_options)
+        self.chrome_options = Options()
+        #  设置浏览器是否隐藏
+        self.chrome_options.add_argument('--headless')
+        self.chrome_options.add_argument('--disable-gpu')
+        self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+        # chrome_options = webdriver.ChromeOptions()
+        # # 不打开浏览器窗口
+        # chrome_options.add_argument('headless')
+        # chrome_options.add_argument('no-sandbox')
+        # self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+        #                                chrome_options=chrome_options)
         self.driver.get(self.url)
         time.sleep(3)  # 睡3毫秒，等待页面加载
         self.driver.save_screenshot("0.jpg")
@@ -105,99 +105,112 @@ class XiniuSpider(BaseSpider):
                 institutionId = self.insert("INSERT INTO `oltp`.`xiniu_institution_data` (`logo`, `name`,`establishmentTime`,`describe`) "
                        "VALUES (%s, %s,%s, %s)",
                        (item['logo'], item['name'], item['establishmentTime'], item['describe']))
-                #
-                # # institutionId =int(id)
-                # # 机构对应的投资信息
-                # flag10 = True
-                # try:
-                #     self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorEvent"]')
-                #     flag10 = flag10
-                # except:
-                #     flag10 = False
-                # # 如果机构动态数据列表数据这个div 存在
-                # if flag10:
-                #     inv = XiniuInvestmentEvents()
-                #     # 判断页面是否有下一页的按钮
-                #     flag11 = True
-                #     try:
-                #         self.driver.find_element_by_xpath(
-                #             '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]')
-                #         flag11 = flag11
-                #     except:
-                #         flag11 = False
-                #     # 如果有下一页的按钮
-                #     if flag11:
-                #         # 获取页面上的各个节点的信息
-                #         # 获取投资事件的列表的最大页数
-                #         page_Last = self.driver.find_element_by_xpath(
-                #             '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last() -1]').text
-                #         num = 1
-                #         while num < (int(page_Last)+1):
-                #             # 点击下一页
-                #             if num != 1:
-                #                 new_list = self.driver.find_element_by_xpath(
-                #                     '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
-                #                 time.sleep(6)
-                #             num = num + 1
-                #             # 获取当前页的投资事件的列表信息
-                #             inv_list = self.driver.find_elements_by_xpath(
-                #                 '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
-                #             for invs in  inv_list:
-                #                 inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
-                #                 # 公司名称
-                #                 inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
-                #                 # 公司logo
-                #                 inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute('src')
-                #                 # 公司描述
-                #                 inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
-                #                 # 行业领域
-                #                 inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
-                #                 # 地区
-                #                 inv['area'] = invs.find_element_by_xpath('div/div[4]').text
-                #                 # 投资轮次
-                #                 inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
-                #                 # 投资金额
-                #                 inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
-                #                 # 投资方
-                #                 inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
-                #                 inv['institutionId'] = institutionId
-                #                 # 插入sql
-                #                 invId = self.insert(
-                #                     "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
-                #                     "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
-                #                     (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'], inv['industry'], inv['area'], inv['currentTurn'], inv['amount'],inv['investors'], inv['institutionId']))
-                #
-                #     else:
-                #         # 获取当前页的投资事件的列表信息
-                #         inv_list = self.driver.find_elements_by_xpath(
-                #             '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
-                #         for invs in inv_list:
-                #             inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
-                #             # 公司名称
-                #             inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
-                #             # 公司logo
-                #             inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute(
-                #                 'src')
-                #             # 公司描述
-                #             inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
-                #             # 行业领域
-                #             inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
-                #             # 地区
-                #             inv['area'] = invs.find_element_by_xpath('div/div[4]').text
-                #             # 投资轮次
-                #             inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
-                #             # 投资金额
-                #             inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
-                #             # 投资方
-                #             inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
-                #             inv['institutionId'] = institutionId
-                #             # 插入sql
-                #             invId = self.insert(
-                #                 "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
-                #                 "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
-                #                 (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'],
-                #                  inv['industry'], inv['area'], inv['currentTurn'], inv['amount'], inv['investors'],
-                #                  inv['institutionId']))
+
+                # institutionId =int(id)
+                # 机构对应的投资信息
+                flag10 = True
+                try:
+                    self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorEvent"]')
+                    flag10 = flag10
+                except:
+                    flag10 = False
+                # 如果机构动态数据列表数据这个div 存在
+                if flag10:
+                    inv = XiniuInvestmentEvents()
+                    # 判断页面是否有下一页的按钮
+                    flag11 = True
+                    try:
+                        self.driver.find_element_by_xpath(
+                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]')
+                        flag11 = flag11
+                    except:
+                        flag11 = False
+                    # 如果有下一页的按钮
+                    if flag11:
+                        # 获取页面上的各个节点的信息
+                        # 获取投资事件的列表的最大页数
+                        page_Last = self.driver.find_element_by_xpath(
+                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last() -1]').text
+                        num = 1
+                        while num < (int(page_Last)+1):
+                            # 点击下一页
+                            if num != 1:
+                                new_list = self.driver.find_element_by_xpath(
+                                    '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
+                                time.sleep(6)
+                            num = num + 1
+                            # 获取当前页的投资事件的列表信息
+                            inv_list = self.driver.find_elements_by_xpath(
+                                '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
+                            params = []
+                            for invs in  inv_list:
+                                inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
+                                # 公司名称
+                                inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
+                                # 公司logo
+                                inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute('src')
+                                # 公司描述
+                                inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
+                                # 行业领域
+                                inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
+                                # 地区
+                                inv['area'] = invs.find_element_by_xpath('div/div[4]').text
+                                # 投资轮次
+                                inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
+                                # 投资金额
+                                inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
+                                # 投资方
+                                inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
+                                inv['institutionId'] = institutionId
+                                params.append((
+                                    inv['investmentTime'],
+                                    inv['companyName'],
+                                    inv['companyLogo'],
+                                    inv['companyDescribe'],
+                                    inv['industry'],
+                                    inv['area'],
+                                    inv['currentTurn'],
+                                    inv['amount'],
+                                    inv['investors'],
+                                    inv['institutionId']
+                                ))
+                            # 插入sql
+                            invId = self.insert("""
+                                                     INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) 
+                                                     VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
+                                                     """,
+                                                params)
+                    else:
+                        # 获取当前页的投资事件的列表信息
+                        inv_list = self.driver.find_elements_by_xpath(
+                            '//*[@id="investorEvent"]/div[3]/div/div[2]/div[3]/div/div/div[2]/div')
+                        for invs in inv_list:
+                            inv['investmentTime'] = invs.find_element_by_xpath('div/div[1]').text
+                            # 公司名称
+                            inv['companyName'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div/a').text
+                            # 公司logo
+                            inv['companyLogo'] = invs.find_element_by_xpath('div/div[2]/div/div/a/img').get_attribute(
+                                'src')
+                            # 公司描述
+                            inv['companyDescribe'] = invs.find_element_by_xpath('div/div[2]/div/div[2]/div[2]').text
+                            # 行业领域
+                            inv['industry'] = invs.find_element_by_xpath('div/div[3]').text
+                            # 地区
+                            inv['area'] = invs.find_element_by_xpath('div/div[4]').text
+                            # 投资轮次
+                            inv['currentTurn'] = invs.find_element_by_xpath('div/div[5]').text
+                            # 投资金额
+                            inv['amount'] = invs.find_element_by_xpath('div/div[6]').text
+                            # 投资方
+                            inv['investors'] = invs.find_element_by_xpath('div/div[7]/div').text
+                            inv['institutionId'] = institutionId
+                            # 插入sql
+                            invId = self.insert(
+                                "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
+                                "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
+                                (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'],
+                                 inv['industry'], inv['area'], inv['currentTurn'], inv['amount'], inv['investors'],
+                                 inv['institutionId']))
 
                 #  判断这个机构动态数据列表div是否存在
                 flag1 = True
@@ -234,7 +247,7 @@ class XiniuSpider(BaseSpider):
                             # 获取列表页的数据
                             dyna_data = self.driver.find_elements_by_xpath(
                                 '//*[@id="investorMessage"]/div[2]/div[2]/div[2]/div/div/div[2]/div')
-
+                            params = []
                             for dynas in dyna_data:
                                 # 动态时间
                                 dyna['dynamicTime'] = dynas.find_element_by_xpath('div/div').text
@@ -245,11 +258,18 @@ class XiniuSpider(BaseSpider):
                                 # # 关键字
                                 # dyna['keyWord'] = dynas.find_element_by_xpath('div/div[3]/a').text
                                 dyna['institutionId'] = institutionId
-                                # 插入sql
-                                dynaId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`) "
-                                    "VALUES (%s, %s,%s,%s)",
-                                    (dyna['dynamicTime'], dyna['dynamicType'], dyna['content'], dyna['institutionId']))
+                                params.append((
+                                    dyna['dynamicTime'],
+                                    dyna['dynamicType'],
+                                    dyna['content'],
+                                    dyna['institutionId']
+
+                                ))
+                            # 插入sql
+                            dynaId = self.insert(
+                                """INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`) 
+                                VALUES (%s, %s,%s,%s)""",
+                                params)
                          # 没有下一页的按钮 ，直接获取列表也数据
                         else:
                             # 获取列表页的数据
@@ -336,6 +356,7 @@ class XiniuSpider(BaseSpider):
                                 new_list = self.driver.find_element_by_xpath(
                                     '//html/body/div/div/div[3]/div/section[@id="investorFund"]/div[2]/div/div[3]/div/div/ul/li[last()]').click()
                                 time.sleep(6)
+                            params = []
                             num = num + 1
                             # 获取列表页的数据
                             fun_data = self.driver.find_elements_by_xpath(
@@ -347,7 +368,10 @@ class XiniuSpider(BaseSpider):
                                 # 基金名称
                                 fun['fundName'] = funs.find_element_by_xpath('div/div[2]/div').text
                                 # url
-                                fun['url'] = funs.find_element_by_xpath('div/div[2]/div/a').get_attribute('href')
+                                try:
+                                     fun['url'] = funs.find_element_by_xpath('div/div[2]/div/a').get_attribute('href')
+                                except:
+                                    fun['url'] =""
                                 # 注册资本
                                 fun['registeredCapita'] = funs.find_element_by_xpath('div/div[3]').text
                                 # 执行事务合伙人
@@ -357,12 +381,24 @@ class XiniuSpider(BaseSpider):
                                 # # 关键字
                                 # dyna['keyWord'] = dynas.find_element_by_xpath('div/div[3]/a').text
                                 fun['institutionId'] = institutionId
-                                # 插入sql
-                                funId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)"
-                                    "VALUES (%s, %s,%s, %s,%s, %s,%s)",
-                                    (fun['recordTime'], fun['fundName'], fun['url'], fun['registeredCapita'], fun['partner'],
-                                     fun['foundingTime'], fun['institutionId']))
+                                params.append((
+                                    fun['recordTime'],
+                                    fun['fundName'],
+                                    fun['url'],
+                                    fun['registeredCapita'],
+                                    fun['partner'],
+                                    fun['foundingTime'],
+                                    fun['institutionId']
+
+                                ))
+
+                            # 插入sql
+                            funId = self.insert(
+                                """
+                                INSERT INTO `oltp`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)
+                                VALUES (%s, %s,%s, %s,%s, %s,%s)
+                                """,
+                                params)
                     else:
                         # 获取列表页的数据
                         fun_data = self.driver.find_elements_by_xpath(
@@ -421,6 +457,7 @@ class XiniuSpider(BaseSpider):
                                 new_list = self.driver.find_element_by_xpath(
                                  '//html/body/div/div/div[3]/div/section[@id="investorFundManager"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
                                 time.sleep(6)
+                            params = []
                             num = num + 1
                             # 获取列表页的数据
                             fun_data = self.driver.find_elements_by_xpath(
@@ -440,12 +477,22 @@ class XiniuSpider(BaseSpider):
                                 # # 关键字
                                 # dyna['keyWord'] = dynas.find_element_by_xpath('div/div[3]/a').text
                                 fundmanager['institutionId'] = institutionId
-                                # 插入sql
-                                fundmanagerId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_fundmanager_data` (`foundingTime`, `name`,`legalRepresentative`,`managementFund`,`recordTime`,`institutionId` )"
-                                    "VALUES (%s, %s,%s, %s,%s, %s)",
-                                    (fundmanager['foundingTime'], fundmanager['name'], fundmanager['legalRepresentative'], fundmanager['managementFund'], fundmanager['recordTime'],
-                                     fundmanager['institutionId']))
+
+                                params.append((
+                                    fundmanager['foundingTime'],
+                                    fundmanager['name'],
+                                    fundmanager['legalRepresentative'],
+                                    fundmanager['managementFund'],
+                                    fundmanager['recordTime'],
+                                    fundmanager['institutionId']
+
+                                ))
+                            # 插入sql
+                            fundmanagerId = self.insert(
+                                """INSERT INTO `oltp`.`xiniu_fundmanager_data` (`foundingTime`, `name`,`legalRepresentative`,`managementFund`,`recordTime`,`institutionId` )
+                                VALUES (%s, %s,%s, %s,%s, %s)
+                                """,
+                                params)
                     else:
                         # 获取列表页的数据
                         fun_data = self.driver.find_elements_by_xpath(
@@ -502,6 +549,7 @@ class XiniuSpider(BaseSpider):
                                 new_list = self.driver.find_element_by_xpath(
                                  '//html/body/div/div/div[3]/div/section[@id="investorPartnerLP"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
                                 time.sleep(6)
+                            params = []
                             num = num + 1
                             # 获取列表页的数据
                             fun_data = self.driver.find_elements_by_xpath(
@@ -519,12 +567,21 @@ class XiniuSpider(BaseSpider):
                                 # # 关键字
                                 # dyna['keyWord'] = dynas.find_element_by_xpath('div/div[3]/a').text
                                 xiniuLP['institutionId'] = institutionId
-                                # 插入sql
-                                xiniuLPId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_lp_data` (`lpName`, `ownershipOrganization`,`fundsNum`,`cooperationAgency`,`institutionId` )"
-                                    "VALUES (%s, %s,%s, %s,%s)",
-                                    (xiniuLP['lpName'], xiniuLP['ownershipOrganization'], xiniuLP['fundsNum'],
-                                     xiniuLP['cooperationAgency'], xiniuLP['institutionId']))
+                                params.append((
+                                    xiniuLP['lpName'],
+                                    xiniuLP['ownershipOrganization'],
+                                    xiniuLP['fundsNum'],
+                                    xiniuLP['cooperationAgency'],
+                                    xiniuLP['institutionId']
+
+                                ))
+                            # 插入sql
+                            xiniuLPId = self.insert(
+                                """
+                                INSERT INTO `oltp`.`xiniu_lp_data` (`lpName`, `ownershipOrganization`,`fundsNum`,`cooperationAgency`,`institutionId` )
+                                VALUES (%s, %s,%s, %s,%s)
+                                """,
+                                params)
                     else:
                         # 获取列表页的数据
                         fun_data = self.driver.find_elements_by_xpath(

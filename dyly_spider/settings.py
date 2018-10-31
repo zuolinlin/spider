@@ -98,5 +98,5 @@ DOWNLOADER_MIDDLEWARES = {
 # 日志相关
 # LOG_LEVEL = logging.DEBUG
 # LOG_STDOUT = False
-LOG_FILE = "E:/logs/spider.log"
+LOG_FILE = "/logs/spider.log"
 LOG_FORMAT = "%(asctime)s [%(name)s] %(levelname)s: %(message)s"

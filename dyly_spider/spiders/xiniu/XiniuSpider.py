@@ -84,6 +84,7 @@ class XiniuSpider(BaseSpider):
         # 读取文件中的路径，加载url，进入详情页
         else:
             cookies = self.driver.get_cookies()
+            error_file = open('dyly_spider/file/xiniudataerror', 'a')
             file = open("dyly_spider/file/xiniudata")
             for line in file:
                 # 打开链接，加载数据
@@ -142,7 +143,8 @@ class XiniuSpider(BaseSpider):
                                         '//*[@id="investorEvent"]/div[3]/div/div[2]/div[4]/div/div/ul/li[last()]').click()
                                     time.sleep(6)
                                 except:
-                                    self.log("====处理失败的URL"+line+"投资信息失败")
+                                    # 用文件记录处理错误的URl
+                                    error_file.write('\n'+line + " 投资信息")
                                     break
                             num = num + 1
                             # 获取当前页的投资事件的列表信息
@@ -251,7 +253,7 @@ class XiniuSpider(BaseSpider):
                                         '//*[@id="investorMessage"]/div[2]/div[2]/div[3]/div/div/ul/li[last()]').click()
                                     time.sleep(6)
                                 except:
-                                    self.log("====处理失败的URL" + line + "动态事件")
+                                    error_file.write('\n' + line+" 动态事件")
                                     break
                             num = num + 1
                             # 获取列表页的数据
@@ -368,7 +370,7 @@ class XiniuSpider(BaseSpider):
                                         '//html/body/div/div/div[3]/div/section[@id="investorFund"]/div[2]/div/div[3]/div/div/ul/li[last()]').click()
                                     time.sleep(6)
                                 except:
-                                    self.log("====处理失败的URL" + line + "基金信息失败")
+                                    error_file.write('\n' + line + " 基金信息")
                                     break
                             params = []
                             num = num + 1
@@ -473,7 +475,7 @@ class XiniuSpider(BaseSpider):
                                      '//html/body/div/div/div[3]/div/section[@id="investorFundManager"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
                                     time.sleep(6)
                                 except:
-                                    self.log("====处理失败的URL" + line + "基金管理人失败")
+                                    error_file.write('\n' + line + " 基金管理人失败")
                                     break
                             params = []
                             num = num + 1
@@ -569,7 +571,7 @@ class XiniuSpider(BaseSpider):
                                      '//html/body/div/div/div[3]/div/section[@id="investorPartnerLP"]/div[2]/div/div/div[3]/div/div/ul/li[last()]').click()
                                     time.sleep(6)
                                 except:
-                                    self.log("====处理失败的URL" + line + "LP失败")
+                                    error_file.write('\n' + line + " LP失败")
                                     break
                             params = []
                             num = num + 1

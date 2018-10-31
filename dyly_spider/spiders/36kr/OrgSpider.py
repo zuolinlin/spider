@@ -6,15 +6,11 @@ from scrapy import Request
 
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
+"""投资人物"""
+from util import date_util
 
-# 投资人物
+
 class OrgSpider(BaseSpider):
-    # 自定义配置
-    custom_settings = {
-        # 'ITEM_PIPELINES': {
-        #     'dyly_spider.pipelines.ZdbSpiderPipeline': 1,
-        # }
-    }
 
     name = "36kr_org"
     allowed_domains = ["36kr.com"]
@@ -24,7 +20,11 @@ class OrgSpider(BaseSpider):
     member_url = 'https://rong.36kr.com/n/api/org/{org_id}/member'
     member_detail_url = 'https://rong.36kr.com/n/api/investor/{member_id}'
     member_investment_url = 'https://rong.36kr.com/n/api/investor/{member_id}/investment'
-    # 抓取第1页数据
+    phase_enum = {"UNKNOWN": "未知轮次", "INFORMAL": "战略投资", "NEEQ": "新三板", "NEW_FOUR_BOARD": "新四板", "NONE": "未融资",
+                  "SEED": "种子轮", "ANGEL": "天使轮", "PRE_A": "Pre-A轮", "A": "A轮", "A_PLUS": "A+轮", "PRE_B": "Pre-B轮",
+                  "B": "B轮", "B_PLUS": "B+轮", "C": "C轮", "C_PLUS": "C+轮", "D": "D轮", "E": "E轮及以后", "PRE_IPO": "Pre-IPO",
+                  "ACQUIRED": "并购", "IPO": "上市", "AFTER_IPO": "上市后"}
+    """抓取第1页数据"""
     start_urls = [list_url.format(page=1)]
 
     def __init__(self, *a, **kw):
@@ -45,28 +45,30 @@ class OrgSpider(BaseSpider):
         :return:
         """
         data = json.loads(response.body)["data"]["org"]
-        # page = data["page"]
-        # if page == 1:
-        #     total_pages = data["totalPages"]+1
-        #     for url in [self.list_url.format(page=page) for page in range(2, total_pages)]:
-        #         yield Request(url,
-        #                       headers=self.headers,
-        #                       dont_filter=True)
+        page = data["page"]
+        if page == 1:
+            total_pages = data["totalPages"] + 1
+            for url in [self.list_url.format(page=page) for page in range(2, total_pages)]:
+                yield Request(url,
+                              headers=self.headers,
+                              dont_filter=True)
         for item in data["data"]:
+            """机构详情"""
             yield Request(
                 self.detail_url.format(org_id=item['org']['id']),
                 headers=self.headers,
                 dont_filter=True,
                 callback=self.detail
             )
-            """ 投资案例 """
-            # yield Request(
-            #     self.investment_url.format(org_id=item['org']['id'], page=1),
-            #     headers=self.headers,
-            #     meta={'org_id': item['org']['id']},
-            #     dont_filter=True,
-            #     callback=self.investment
-            # )
+            """机构投资案例 """
+            yield Request(
+                self.investment_url.format(org_id=item['org']['id'], page=1),
+                headers=self.headers,
+                meta={'org_id': item['org']['id']},
+                dont_filter=True,
+                callback=self.investment
+            )
+            """成员列表"""
             yield Request(
                 self.member_url.format(org_id=item['org']['id']),
                 headers=self.headers,
@@ -92,20 +94,20 @@ class OrgSpider(BaseSpider):
             self.insert("""INSERT INTO `jz_org` (`org_id`,`name_abbr`,`name`,`logo`,`intro`,`enName`,`website`,`startDate`,
                             `city`,`address`,`phone`,`email`,`modify_date`
                             ) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (
-                            data.get('id', ''),
-                            data.get('nameAbbr', ''),
-                            data.get('name', ''),
-                            data.get('logo', ''),
-                            data.get('intro', ''),
-                            data.get('enName', ''),
-                            data.get('website', ''),
-                            time.localtime(data.get('startDate', 0)/1000),
-                            address.get('city', ''),
-                            address.get('address', ''),
-                            address.get('phone', ''),
-                            address.get('email', ''),
-                            now
-                        ))
+                data.get('id', ''),
+                data.get('nameAbbr', ''),
+                data.get('name', ''),
+                data.get('logo', ''),
+                data.get('intro', ''),
+                data.get('enName', ''),
+                data.get('website', ''),
+                date_util.get_date(data.get('startDate', None)),
+                address.get('city', ''),
+                address.get('address', ''),
+                address.get('phone', ''),
+                address.get('email', ''),
+                now
+            ))
         else:
             self.exec_sql("""
                             UPDATE 
@@ -131,7 +133,7 @@ class OrgSpider(BaseSpider):
                 data.get('intro', ''),
                 data.get('enName', ''),
                 data.get('website', ''),
-                time.localtime(data.get('startDate', 0)/1000),
+                date_util.get_date(data.get('startDate', None)),
                 address.get('city', ''),
                 address.get('address', ''),
                 address.get('phone', ''),
@@ -147,8 +149,8 @@ class OrgSpider(BaseSpider):
         :return:
         """
         org_id = response.meta['org_id']
-        data = json.loads(response.body)["data"]["investments"]
-        investments = data["data"]
+        data = json.loads(response.body)["data"].get("investments", {})
+        investments = data.get("data", [])
         params = []
         now = time.localtime()
         for investment in investments:
@@ -162,26 +164,26 @@ class OrgSpider(BaseSpider):
                     invest.get("phaseId", ""),
                     invest.get("phase", ""),
                     invest.get("fundsAmount", ""),
-                    time.localtime(invest.get('investAt', 0)/1000),
+                    date_util.get_date(invest.get('investAt', None)),
                     0,
                     now
                 ))
         self.insert("""
-                        INSERT INTO `jz_investment` (
-                                      `source_id`,
-                                      `cid`,
-                                      `company_name`,
-                                      `phase_id`,
-                                      `phase`,
-                                      `funds_amount`,
-                                      `invest_at`,
-                                      `type`,
-                                      `modify_date`
-                                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO `jz_investment` (
+                              `source_id`,
+                              `cid`,
+                              `company_name`,
+                              `phase_id`,
+                              `phase`,
+                              `funds_amount`,
+                              `invest_at`,
+                              `type`,
+                              `modify_date`
+                            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, params)
         page = data["page"]
         if page == 1:
-            total_pages = data["totalPages"]+1
+            total_pages = data["totalPages"] + 1
             for url in [self.investment_url.format(org_id=org_id, page=page) for page in range(2, total_pages)]:
                 yield Request(
                     url,
@@ -203,7 +205,10 @@ class OrgSpider(BaseSpider):
             yield Request(
                 self.member_detail_url.format(member_id=uid),
                 headers=self.headers,
-                meta={'org_id': response.meta['org_id']},
+                meta={
+                    'org_id': response.meta['org_id'],
+                    'uid': uid
+                },
                 dont_filter=True,
                 callback=self.member_detail
             )
@@ -221,11 +226,36 @@ class OrgSpider(BaseSpider):
         :param response:
         :return:
         """
-        response.meta['org_id']
-        basic = json.loads(response.body)['data']['basic']
-        industry = json.loads(response.body)['data']['investPreference']['focusIndustry']
-        self.log(basic)
-        self.log(industry)
+        uid = response.meta['uid']
+        org_id = response.meta['org_id']
+        data = json.loads(response.body)['data']
+        basic = data.get("basic", None)
+        if basic is not None:
+            now = time.localtime()
+            self.insert("""
+                        INSERT INTO `jz_member` (
+                          `uid`,
+                          `org_id`,
+                          `avatar`,
+                          `name`,
+                          `position`,
+                          `city`,
+                          `focusIndustry`,
+                          `intro`,
+                          `modify_date`
+                        ) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (
+                uid,
+                org_id,
+                basic.get("avatar", ""),
+                basic.get("name", ""),
+                basic.get("position", ""),
+                ','.join(basic.get("city", [])),
+                ','.join(data['investPreference'].get("focusIndustry", [])),
+                basic.get("intro", ""),
+                now
+            ))
 
     def member_investment(self, response):
         """
@@ -234,7 +264,7 @@ class OrgSpider(BaseSpider):
         :return:
         """
         uid = response.meta["uid"]
-        vo_list = json.loads(response.body)['data']['voList']
+        vo_list = json.loads(response.body)['data'].get("voList", [])
         now = time.localtime()
         params = []
         for vo in vo_list:
@@ -245,23 +275,27 @@ class OrgSpider(BaseSpider):
                     vo.get("cid", ""),
                     vo.get("companyName", ""),
                     None,
-                    entity.get("phase", ""),
+                    self.get_phase(entity.get("phase", None)),
                     None,
-                    time.localtime(entity.get('investDate', 0)/1000),
+                    date_util.get_date(entity.get('investDate', None)),
                     1,
                     now
                 ))
-        if len(params) > 0:
-            self.insert("""
-                            INSERT INTO `jz_investment` (
-                                          `source_id`,
-                                          `cid`,
-                                          `company_name`,
-                                          `phase_id`,
-                                          `phase`,
-                                          `funds_amount`,
-                                          `invest_at`,
-                                          `type`,
-                                          `modify_date`
-                                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    """, params)
+        self.insert("""
+                        INSERT INTO `jz_investment` (
+                                      `source_id`,
+                                      `cid`,
+                                      `company_name`,
+                                      `phase_id`,
+                                      `phase`,
+                                      `funds_amount`,
+                                      `invest_at`,
+                                      `type`,
+                                      `modify_date`
+                                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, params)
+
+    def get_phase(self, key):
+        if key is None:
+            return None
+        return self.phase_enum.get(key, "")

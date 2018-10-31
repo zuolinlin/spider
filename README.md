@@ -38,5 +38,5 @@ pip install pypiwin32（mac、linux 不需要安装）
 **执行**
 ```
 根目录执行
-scrapy crawl 爬虫名称
+scrapy crawl 爬虫名称 -s LOG_FILE=/logs/spider.log
 ```

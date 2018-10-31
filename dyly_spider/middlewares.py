@@ -120,7 +120,7 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         ua = random.choice(self.user_agent_list)
         if ua:
             # 记录当前使用的useragent
-            logger.debug('Current UserAgent: ' + ua)
+            # logger.debug('Current UserAgent: ' + ua)
             request.headers.setdefault('User-Agent', ua)
 
     # the default user_agent_list composes chrome,I E,firefox,Mozilla,opera,netscape

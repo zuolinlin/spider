@@ -200,7 +200,7 @@ class XiniuSpider(BaseSpider):
                                  inv['industry'], inv['area'], inv['currentTurn'], inv['amount'], inv['investors'],
                                  inv['institutionId']))
 
-                #  判断这个div是否存在
+                #  判断这个机构动态数据列表div是否存在
                 flag1 = True
                 try:
                     self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorMessage"]')
@@ -248,9 +248,9 @@ class XiniuSpider(BaseSpider):
                                 dyna['institutionId'] = institutionId
                                 # 插入sql
                                 dynaId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`) "
-                                    "VALUES (%s, %s,%s)",
-                                    (dyna['dynamicTime'], dyna['dynamicType'], dyna['content']))
+                                    "INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`) "
+                                    "VALUES (%s, %s,%s,%s)",
+                                    (dyna['dynamicTime'], dyna['dynamicType'], dyna['content'], dyna['institutionId']))
                          # 没有下一页的按钮 ，直接获取列表也数据
                         else:
                             # 获取列表页的数据
@@ -269,9 +269,9 @@ class XiniuSpider(BaseSpider):
                                 dyna['institutionId'] = institutionId
                                 # 插入sql
                                 dynaId = self.insert(
-                                    "INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`) "
-                                    "VALUES (%s, %s,%s)",
-                                    (dyna['dynamicTime'], dyna['dynamicType'], dyna['content']))
+                                    "INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`) "
+                                    "VALUES (%s, %s,%s,%s)",
+                                    (dyna['dynamicTime'], dyna['dynamicType'], dyna['content'], dyna['institutionId']))
 
                 #  判断这个新闻div是否存在
                 flag3 = True
@@ -303,8 +303,8 @@ class XiniuSpider(BaseSpider):
                         new['institutionId'] = institutionId
                         # 插入sql
                         newId = self.insert(
-                            "INSERT INTO `oltp`.`xiniu_news_data` (`newsTime`, `source1`,`source2`,`title`,`url`) "
-                            "VALUES (%s, %s,%s, %s,%s)",
+                            "INSERT INTO `oltp`.`xiniu_news_data` (`newsTime`, `source1`,`source2`,`title`,`url`,`institutionId`) "
+                            "VALUES (%s, %s,%s, %s,%s,%s)",
                             (new['newsTime'], new['source1'], new['source2'], new['title'], new['url'], new['institutionId']))
 
 
@@ -363,7 +363,7 @@ class XiniuSpider(BaseSpider):
                                     "INSERT INTO `oltp`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)"
                                     "VALUES (%s, %s,%s, %s,%s, %s,%s)",
                                     (fun['recordTime'], fun['fundName'], fun['url'], fun['registeredCapita'], fun['partner'],
-                                     fun['foundingTime'],fun['institutionId']))
+                                     fun['foundingTime'], fun['institutionId']))
                     else:
                         # 获取列表页的数据
                         fun_data = self.driver.find_elements_by_xpath(
@@ -393,7 +393,7 @@ class XiniuSpider(BaseSpider):
                                  fun['partner'],
                                  fun['foundingTime'], fun['institutionId']))
 
-                    #  判断这个div是否存在
+                    #  判断这个基金管理人列表div是否存在
                 flag6 = True
                 try:
                     self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorFundManager"]')
@@ -474,7 +474,7 @@ class XiniuSpider(BaseSpider):
                                  fundmanager['managementFund'], fundmanager['recordTime'],
                                  fundmanager['institutionId']))
 
-                #  判断这个div是否存在
+                #  判断这个LP 列表数据div是否存在
                 flag8 = True
                 try:
                     self.driver.find_element_by_xpath(

@@ -88,3 +88,61 @@ class ItjuziItem(scrapy.Item):
     product = scrapy.Field()
     # 公司标语
     company_slogan = scrapy.Field()
+
+class XiniuInstitudynamic(scrapy.Item):
+    """
+    烯牛抓去机构动态列表数据
+    """
+    dynamicTime = scrapy.Field()  # 动态时间
+    dynamicType = scrapy.Field()  # 动态类型
+    content = scrapy.Field()  # 内容
+    keyWord = scrapy.Field()  # 关键字
+    institutionId = scrapy.Field()  # 关联机构id
+
+
+class XiniuNews(scrapy.Item):
+    """
+    烯牛抓去机构新闻数据
+    """
+    newsTime = scrapy.Field()  # 新闻时间
+    source1 = scrapy.Field()  # 新闻来源1
+    source2 = scrapy.Field()  # 新闻来源2
+    title = scrapy.Field()  # 新闻标题
+    url = scrapy.Field()  # 地址
+    institutionId = scrapy.Field()  # 关联机构id
+
+
+class XiniuFun(scrapy.Item):
+    """
+    烯牛投资机构基金列表
+    """
+    recordTime = scrapy.Field()  # 备案时间
+    fundName = scrapy.Field()  # 基金名称
+    url = scrapy.Field()  # url
+    registeredCapita = scrapy.Field()  # 注册资本
+    partner = scrapy.Field()  # 执行事务合伙人
+    foundingTime = scrapy.Field()  # 工商成立时间
+    institutionId = scrapy.Field()  # 关联机构id
+
+
+class XiniuFundmanager(scrapy.Item):
+    """
+    烯牛基金管理人列表
+    """
+    foundingTime = scrapy.Field()  # 成立时间
+    name = scrapy.Field()  # 名称
+    legalRepresentative = scrapy.Field()  # 法人代表
+    managementFund = scrapy.Field()  # 管理基金
+    recordTime = scrapy.Field()  # 基金备案时间
+    institutionId = scrapy.Field()  # 关联机构id
+
+
+class XiniuLP(scrapy.Item):
+    """
+    烯牛LP数据
+    """
+    lpName = scrapy.Field()  # Lp名称
+    ownershipOrganization = scrapy.Field()  # 归属机构
+    fundsNum = scrapy.Field()  # 参与基金数
+    cooperationAgency = scrapy.Field()  # 其它合作机构
+    institutionId = scrapy.Field()  # 关联机构Id

@@ -30,6 +30,8 @@ pip install selenium
 pip install qiniu
 pip install DBUtils
 pip install pypiwin32（mac、linux 不需要安装）
+也可以使用下面命令批量安装
+pip install -r requirements.txt
 ```
 **如windows安装scrapy失败手动下载安装twisted，后安装scrapy**
 - [下载twisted](https://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted)

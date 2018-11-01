@@ -1,0 +1,5 @@
+# 查看所有爬虫
+scrapy list
+
+# 鲸准投资机构相关
+scrapy crawl 36kr_org -s LOG_FILE=/logs/36kr_org.log

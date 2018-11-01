@@ -2,6 +2,11 @@
 
 
 def string_to_dict(cookie):
+    """
+    字符串转cookies字典
+    :param cookie: 可以从浏览器 Request Headers - Cookie 获取
+    :return:
+    """
     cookie_dict = {}
     items = cookie.split(';')
     for item in items:

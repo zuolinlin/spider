@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 from scrapy.spiders import CrawlSpider
 from util.db import mysql
@@ -23,4 +24,10 @@ class BaseSpider(CrawlSpider):
 
     def fetchone(self, sql):
         return self.db.fetchone(sql)
+
+    def fetchall(self, sql):
+        return self.db.fetchall(sql)
+
+    def log_error(self, msg):
+        self.log(msg, logging.ERROR)
 

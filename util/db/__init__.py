@@ -53,7 +53,7 @@ class DBMysql:
                 pk = cursor.lastrowid
                 connection.commit()
             if pk:
-                cy_logger.log("executes successfully！last_row_id==> " + str(pk))
+                cy_logger.log("executes successfully! last_row_id==> " + str(pk))
             else:
                 cy_logger.log("executes successfully")
             return pk

@@ -5,10 +5,6 @@ import time
 from scrapy import Request
 from dyly_spider.spiders.BaseSpider import BaseSpider
 from util import CookieUtil, date_util
-from scrapy.http.cookies import CookieJar    # 该模块继承自内置的http.cookiejar,操作类似
-
-# 实例化一个cookiejar对象
-cookie_jar = CookieJar()
 
 
 class ProjectSpider(BaseSpider):
@@ -55,7 +51,6 @@ class ProjectSpider(BaseSpider):
             )
 
     def parse(self, response):
-        cookie_jar.extract_cookies(response, response.request)
         """
         机构列表
         :param response:

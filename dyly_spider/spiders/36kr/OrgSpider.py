@@ -8,18 +8,22 @@ from util import date_util
 
 class OrgSpider(BaseSpider):
     """鲸准投资机构相关"""
+
     name = "36kr_org"
     allowed_domains = ["36kr.com"]
+
     list_url = 'https://rong.36kr.com/n/api/org/list?page={page}'
     detail_url = 'https://rong.36kr.com/n/api/org/{org_id}/basic'
     investment_url = 'https://rong.36kr.com/n/api/org/{org_id}/investment?page={page}'
     member_url = 'https://rong.36kr.com/n/api/org/{org_id}/member'
     member_detail_url = 'https://rong.36kr.com/n/api/investor/{member_id}'
     member_investment_url = 'https://rong.36kr.com/n/api/investor/{member_id}/investment'
+
     phase_enum = {"UNKNOWN": "未知轮次", "INFORMAL": "战略投资", "NEEQ": "新三板", "NEW_FOUR_BOARD": "新四板", "NONE": "未融资",
                   "SEED": "种子轮", "ANGEL": "天使轮", "PRE_A": "Pre-A轮", "A": "A轮", "A_PLUS": "A+轮", "PRE_B": "Pre-B轮",
                   "B": "B轮", "B_PLUS": "B+轮", "C": "C轮", "C_PLUS": "C+轮", "D": "D轮", "E": "E轮及以后", "PRE_IPO": "Pre-IPO",
                   "ACQUIRED": "并购", "IPO": "上市", "AFTER_IPO": "上市后"}
+
     """抓取第1页数据"""
     start_urls = [list_url.format(page=1)]
 

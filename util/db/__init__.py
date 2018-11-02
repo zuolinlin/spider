@@ -53,9 +53,9 @@ class DBMysql:
                 pk = cursor.lastrowid
                 connection.commit()
             if pk:
-                cy_logger.log("执行成功！返回最后一条主键为==> " + str(pk))
+                cy_logger.log("executes successfully！last_row_id==> " + str(pk))
             else:
-                cy_logger.log("执行成功")
+                cy_logger.log("executes successfully")
             return pk
         except Exception as e:
             cy_logger.error(str(e))

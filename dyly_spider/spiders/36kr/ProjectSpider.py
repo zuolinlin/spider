@@ -248,4 +248,4 @@ class ProjectSpider(BaseSpider):
         if data["code"] == 0:
             return data["data"]
         else:
-            self.log_error("请求失败：" + repr(data))
+            self.log_error("request failed：" + repr(data))

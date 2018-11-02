@@ -59,16 +59,16 @@ class ProjectSpider(BaseSpider):
         data = self.get_data(response)
         if data is not None:
             page_data = data["pageData"]
-            # page = page_data["page"]
-            # if page == 1:
-            #     total_pages = page_data["totalPages"] + 1
-            #     for url in [self.list_url.format(page=page) for page in range(2, total_pages)]:
-            #         yield Request(
-            #             url,
-            #             headers=self.headers,
-            #             cookies=self.cookies,
-            #             dont_filter=True
-            #         )
+            page = page_data["page"]
+            if page == 1:
+                total_pages = page_data["totalPages"] + 1
+                for url in [self.list_url.format(page=page) for page in range(2, total_pages)]:
+                    yield Request(
+                        url,
+                        headers=self.headers,
+                        cookies=self.cookies,
+                        dont_filter=True
+                    )
             for item in page_data["data"]:
                 project_id = item.get("id")
                 """项目详情"""

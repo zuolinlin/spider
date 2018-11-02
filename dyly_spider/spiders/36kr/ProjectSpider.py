@@ -14,7 +14,7 @@ class ProjectSpider(BaseSpider):
         "COOKIES_ENABLED": True,
         # "COOKIES_DEBUG": True,
         "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 3
+        "DOWNLOAD_DELAY": 6
     }
 
     name = "36kr_project"
@@ -39,7 +39,7 @@ class ProjectSpider(BaseSpider):
         super(ProjectSpider, self).__init__(*a, **kw)
         self.headers = {
         }
-        self.cookies = CookieUtil.string_to_dict("acw_tc=276aede715411218167032555e42bb04683ab8263e296f23808e0f5afc6766; kr_stat_uuid=F2hKJ25685365; Hm_lvt_e8ec47088ed7458ec32cde3617b23ee3=1541121823; Hm_lpvt_e8ec47088ed7458ec32cde3617b23ee3=1541121923; download_animation=1; _kr_p_se=7c0d02f2-0fc5-49c4-a423-0c0689d794ba; krid_user_id=2035685628; krid_user_version=2; kr_plus_id=2035685628; kr_plus_token=nCPsSrUhILROq3yldz1aU9z7dtUy2r23_195____; kr_plus_utype=0; Z-XSRF-TOKEN=eyJpdiI6IjlYWVwvZUtPSVwvcUtnVTZGMlVTbE9xQT09IiwidmFsdWUiOiJKbVRMeVhaUVc3NmhBd3pTTFp6dDJxek9iSHVnaDlqd2RyRUJ1dkliK0VqU1BlMm8wNVg0Y1NIZzZMZElOWFprdFg2Tmx6cm5WSTNNeTRmbVZwanBBUT09IiwibWFjIjoiMjE0ZWRiMTE0MGRmZmJmZDEwNmJiY2NiM2JhMjY2M2Q2NmQ1NDY2YWQ3ZmY5MTZkN2Y4ZDk5NDgyN2JiYjE1YSJ9; krchoasss=eyJpdiI6IkdmSXpvc25YamM0Y0RLUHBvWjhJZlE9PSIsInZhbHVlIjoiWnJQUEZtMG81WUNnZHJJTUZQZmV5c1JUVU5Vbm1uT0pPd1pOd2VcL2NrMjJcL3d6UzVLUVE5d0h6bURVeXVnN3B6UVlPQjdIdFwvc0JSMWtFUDFCV0VJZUE9PSIsIm1hYyI6ImJjY2NhNjhkNjRmODY3ZWJlYTg3MzlhNzkyMzZmOWFiMDYwOGI0OWE4NDFiYWUxNTcwMzZlYjYyNmZmODY3OWMifQ%3D%3D")
+        self.cookies = CookieUtil.string_to_dict("acw_tc=276aede715411218167032555e42bb04683ab8263e296f23808e0f5afc6766; kr_stat_uuid=HTXiE25685651; Hm_lvt_e8ec47088ed7458ec32cde3617b23ee3=1541121823,1541139087; download_animation=1; _kr_p_se=d5f0529c-4322-4185-84cc-04bbb54c641e; krid_user_id=1989972187; krid_user_version=2; kr_plus_id=1989972187; kr_plus_token=BQj2Sn1I25rRAMwOjZyifBA26_kuMB2rO824____; _ga=GA1.2.1857322836.1541139094; _gid=GA1.2.1221364596.1541139094; gr_user_id=72208021-04ff-4040-9517-7090ac7f10b4; gr_session_id_76d36bd044527820a1787b198651e2f1=fdbb55a4-952f-4bcb-ab9f-6954cf194ad6; Hm_lpvt_e8ec47088ed7458ec32cde3617b23ee3=1541139094; gr_session_id_76d36bd044527820a1787b198651e2f1_fdbb55a4-952f-4bcb-ab9f-6954cf194ad6=true; kr_plus_utype=0; device-uid=26338060-de66-11e8-a77f-2b77b5dd2aba; krnewsfrontss=5d9cf236babad320756d50fc7426b6ff; M-XSRF-TOKEN=3085ba65843dec7b5c2aa850f12d5b144318c5c457559fbecf0a574c62c9ad35; Z-XSRF-TOKEN=eyJpdiI6IldNVXZvcU9YakNjbElLMXhRaDBUS3c9PSIsInZhbHVlIjoiSkl6ZVZpOU1aTTVmXC9QalJSV2cxOFwvNlVROEhJajViSFJWWlpuNXNcL2hreml1M1BucVJIOHdkSnYyc2F6ZEtNMno5a2pnOFwvdnQzVHowenNzZlhcL1R1Zz09IiwibWFjIjoiOGYyOTE0MjlmY2I4Njk2YWFiMDQ3NjQ5YThlZGJkZWQwM2I4ZWIwNWE0ZjMxZWRkZDNkMGIwNTY4ZmQzOTU3YiJ9; krchoasss=eyJpdiI6ImNmeXVyTlZyQ3VYcDJxK2hMMW1xdkE9PSIsInZhbHVlIjoiZXZla3RQYXNkeGNEd3QwMkZHSE1SWkFJY1FmRWwwYlwvTHJNNEZvWUxYUmtuYVNJeDJjNmRcL1wvSnljOWxYWHB0cmkwcklHMzUrQTc4cmdpZEdcL2xIMTJBPT0iLCJtYWMiOiJjNzA3N2NjZjUyZDBlNDA5MDlkODEyZjFiZDBkOTljMmQ4MDkwNzBmNzdiN2NmNTdkY2UzYjRjOGE1NzkyYzlmIn0%3D")
 
     def start_requests(self):
         for url in self.start_urls:
@@ -59,16 +59,16 @@ class ProjectSpider(BaseSpider):
         data = self.get_data(response)
         if data is not None:
             page_data = data["pageData"]
-            page = page_data["page"]
-            if page == 1:
-                total_pages = page_data["totalPages"] + 1
-                for url in [self.list_url.format(page=page) for page in range(2, total_pages)]:
-                    yield Request(
-                        url,
-                        headers=self.headers,
-                        cookies=self.cookies,
-                        dont_filter=True
-                    )
+            # page = page_data["page"]
+            # if page == 1:
+            #     total_pages = page_data["totalPages"] + 1
+            #     for url in [self.list_url.format(page=page) for page in range(2, total_pages)]:
+            #         yield Request(
+            #             url,
+            #             headers=self.headers,
+            #             cookies=self.cookies,
+            #             dont_filter=True
+            #         )
             for item in page_data["data"]:
                 project_id = item.get("id")
                 """项目详情"""

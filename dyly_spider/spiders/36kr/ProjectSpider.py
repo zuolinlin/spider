@@ -74,7 +74,7 @@ class ProjectSpider(BaseSpider):
             """, params)
             page = page_data["page"]
             if page == 1:
-                times = 15
+                times = 50
                 cookies_count = len(self.cookies_list)
                 max_pages = cookies_count * times
                 total_pages = page_data["totalPages"] + 1

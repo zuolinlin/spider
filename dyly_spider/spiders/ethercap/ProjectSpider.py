@@ -13,8 +13,8 @@ class ProjectSpider(BaseSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
         # "COOKIES_DEBUG": True,
-        # "AUTOTHROTTLE_ENABLED": True,
-        # "DOWNLOAD_DELAY": 2
+        "AUTOTHROTTLE_ENABLED": True,
+        "DOWNLOAD_DELAY": 2
     }
 
     name = "ethercap_project"

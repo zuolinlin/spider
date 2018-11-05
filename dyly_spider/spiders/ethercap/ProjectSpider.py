@@ -38,7 +38,6 @@ class ProjectSpider(BaseSpider):
             body=json.dumps(self.body),
             method="POST",
             dont_filter=True,
-            callback=self.parse,
             errback=self.error_response
         )
 
@@ -71,7 +70,7 @@ class ProjectSpider(BaseSpider):
             if self.body.get("page") == 0:
                 count = int(data["count"])
                 pages = count / 20 if count % 20 == 0 else int(count / 20) + 1
-                pages = 2
+                # pages = 2
                 page = 1
                 while page < pages:
                     self.body.update({"page": page})
@@ -82,7 +81,6 @@ class ProjectSpider(BaseSpider):
                         body=json.dumps(self.body),
                         method="POST",
                         dont_filter=True,
-                        callback=self.parse,
                         errback=self.error_response
                     )
 

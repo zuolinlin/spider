@@ -38,6 +38,7 @@ class ProjectSpider(BaseSpider):
             body=json.dumps(self.body),
             method="POST",
             dont_filter=True,
+            callback=self.parse,
             errback=self.error_response
         )
 
@@ -81,6 +82,7 @@ class ProjectSpider(BaseSpider):
                         body=json.dumps(self.body),
                         method="POST",
                         dont_filter=True,
+                        callback=self.parse,
                         errback=self.error_response
                     )
 

@@ -10,3 +10,9 @@ def get_date(millisecond):
     if millisecond is None or millisecond < 0:
         return None
     return time.localtime(millisecond/1000)
+
+
+def strptime(string, format):
+    if string is None:
+        return None
+    return time.strptime(string, format)

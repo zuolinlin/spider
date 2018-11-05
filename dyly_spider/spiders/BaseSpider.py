@@ -28,6 +28,9 @@ class BaseSpider(CrawlSpider):
     def fetchall(self, sql):
         return self.db.fetchall(sql)
 
+    def select_rows_paper(self, sql, param=None, page_no=1, page_size=20):
+        return self.db.select_rows_paper(sql, param, page_no, page_size)
+
     def log_error(self, msg):
         self.log(msg, logging.ERROR)
 

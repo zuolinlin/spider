@@ -14,8 +14,8 @@ class YXProjectDetailSpider(BaseSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
         # "COOKIES_DEBUG": True,
-        "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 1
+        # "AUTOTHROTTLE_ENABLED": True,
+        # "DOWNLOAD_DELAY": 1
     }
 
     name = "ethercap_project_detail"
@@ -42,6 +42,7 @@ class YXProjectDetailSpider(BaseSpider):
         # pages = 1
         while current_page <= pages:
             result = self.query_list_page(current_page)
+            time.sleep(3)
             for row in result.get("rows"):
                 out_id = row[0]
                 yield Request(
@@ -89,7 +90,7 @@ class YXProjectDetailSpider(BaseSpider):
 
     def detail(self, response):
         data = self.get_data(response)
-        if len(data) > 0:
+        if data is not None:
             self.insert("""
                     UPDATE 
                       `yx_project` 
@@ -116,6 +117,8 @@ class YXProjectDetailSpider(BaseSpider):
                 time.localtime(),
                 response.meta["out_id"]
             ))
+        else:
+            self.log_error("empty data ===> " + response.url)
 
     def basic_info(self, response):
         """
@@ -123,7 +126,7 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        if len(data) > 0:
+        if data is not None:
             self.insert("""
                     UPDATE 
                       `yx_project` 
@@ -138,6 +141,8 @@ class YXProjectDetailSpider(BaseSpider):
                 time.localtime(),
                 response.meta["out_id"]
             ))
+        else:
+            self.log_error("empty data ===> " + response.url)
 
     def member(self, response):
         """
@@ -145,7 +150,7 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        if len(data) > 0:
+        if data is not None:
             params = []
             now = time.localtime()
             for item in data:
@@ -174,7 +179,7 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        if len(data) > 0:
+        if data is not None:
             params = []
             now = time.localtime()
             for item in data:
@@ -204,7 +209,7 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        if len(data) > 0:
+        if data is not None:
             params = []
             now = time.localtime()
             for item in data:
@@ -232,7 +237,11 @@ class YXProjectDetailSpider(BaseSpider):
     def get_data(self, req):
         data = json.loads(req.body)
         if data["code"] == 0:
-            return data["data"]
+            data = data["data"]
+            if len(data) > 0:
+                return data
+            else:
+                self.log("empty data ===> " + req.url)
         else:
             self.log_error("request failed：" + repr(data))
 
@@ -240,5 +249,5 @@ class YXProjectDetailSpider(BaseSpider):
         return self.select_rows_paper(
             sql="SELECT out_id, `name` FROM `yx_project`",
             page_no=page_no,
-            page_size=20
+            page_size=1
         )

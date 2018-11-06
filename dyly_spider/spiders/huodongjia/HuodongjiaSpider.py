@@ -44,7 +44,7 @@ class HuodongjiaSpider(BaseSpider):
                        try:
                          title = data.find_element_by_xpath('./div/h3/a').text  # 标题
                        except:
-                         title = None
+                         continue
                        try:
                         times = data.find_element_by_xpath('./div/p[3]/span').text  # 时间
                        except:

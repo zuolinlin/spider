@@ -8,7 +8,7 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 from util import date_util
 
 
-class ProjectDetailSpider(BaseSpider):
+class YXProjectDetailSpider(BaseSpider):
     """鲸准创业项目详情相关"""
 
     custom_settings = {
@@ -28,7 +28,7 @@ class ProjectDetailSpider(BaseSpider):
     similar_url = "https://source.ethercap.com/api/friendup/competitor?utm_campaign=source&utm_content=jo3mi7gw73ixb94qly7&utm_media=web&utm_source=&utm_medium=&utm_activity=&outId={out_id}&limit=11"
 
     def __init__(self, *a, **kw):
-        super(ProjectDetailSpider, self).__init__(*a, **kw)
+        super(YXProjectDetailSpider, self).__init__(*a, **kw)
         self.headers = {
             "token": "q5GYLY5NtZNxwSJ1qRpu+jk1MTU3NzZlMjE0ZTM0Y2E4Y2QyYmY3ODgzNzI3NWNkZmE2YTBmYzNhOGI4MzQxYWQ1YzUxZWQ5OGJmZDRlZmVWh5Jn0mUF6ojY+tGjNBiCAPJAfoVlgUPdy8SqU1gC9xM1cPob7GScN8Tu0mPAzeo=",
             "Content-Type": "application/json; charset=UTF-8"

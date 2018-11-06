@@ -7,7 +7,7 @@ from scrapy import Request
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
 
-class ProjectSpider(BaseSpider):
+class YXProjectSpider(BaseSpider):
     """鲸准创业项目列表"""
 
     custom_settings = {
@@ -24,7 +24,7 @@ class ProjectSpider(BaseSpider):
                 '&utm_media=web&utm_source=&utm_medium=&utm_activity='
 
     def __init__(self, *a, **kw):
-        super(ProjectSpider, self).__init__(*a, **kw)
+        super(YXProjectSpider, self).__init__(*a, **kw)
         self.headers = {
             "token": "q5GYLY5NtZNxwSJ1qRpu+jk1MTU3NzZlMjE0ZTM0Y2E4Y2QyYmY3ODgzNzI3NWNkZmE2YTBmYzNhOGI4MzQxYWQ1YzUxZWQ5OGJmZDRlZmVWh5Jn0mUF6ojY+tGjNBiCAPJAfoVlgUPdy8SqU1gC9xM1cPob7GScN8Tu0mPAzeo=",
             "Content-Type": "application/json; charset=UTF-8"

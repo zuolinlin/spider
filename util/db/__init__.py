@@ -97,5 +97,33 @@ class DBMysql:
             # 关闭数据库连接
             connection.close()
 
+    def select_rows_paper(self, sql, param=None, page_no=1, page_size=20):
+        """
+        分页查询
+        """
+        # total = self.select_row_count(sql, param)  # 总记录数
+        offset = (page_no - 1) * page_size  # 偏移量
+        connection = self.get_connection()
+        try:
+            with connection.cursor() as cursor:
+                if param:
+                    sql = sql + '%s' % param
+
+                cursor.execute("SELECT COUNT(1) FROM (%s) tmp" % sql)
+                total = cursor.fetchall()[0][0]
+
+                sql = sql + ' LIMIT %s, %s' % (offset, page_size)
+                cy_logger.log(sql)
+                cursor.execute(sql)
+                rows = cursor.fetchall()
+
+                # 总页数
+                pages = int(total / page_size) if total % page_size == 0 else int(total / page_size) + 1
+                return {'total': total, 'page_no': page_no, 'pages': pages, 'rows': rows}
+        except Exception as e:
+            cy_logger.error(e)
+        finally:
+            connection.close()
+
 
 mysql = DBMysql()

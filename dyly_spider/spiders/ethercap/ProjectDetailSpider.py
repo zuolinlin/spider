@@ -237,5 +237,5 @@ class ProjectDetailSpider(BaseSpider):
         return self.select_rows_paper(
             sql="SELECT out_id, `name` FROM `yx_project`",
             page_no=page_no,
-            page_size=1
+            page_size=20
         )

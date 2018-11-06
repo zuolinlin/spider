@@ -32,17 +32,14 @@ class HuodongxingSpider(BaseSpider):
             # 设置来源
             source = "活动行"
 
-            if name !="推荐":
-               # 点击
-               item.click()
-                # 点击全部
-               allClick = self.driver.find_element_by_xpath('//*[@id="filterByCity"]/a[1]')
-               allClick.click()
+            if name =="教育":
+               self.driver.get("http://www.huodongxing.com/events?orderby=o&channel=行业&tag="+name
+                                   +"&city=全部&isChannel=true")
                # 等待3s
                time.sleep(3)
                # 获取总页数
                page_Last = self.driver.find_element_by_xpath('//a[@class="layui-laypage-last"]').text
-               num = 1
+               num =1
                while num < (int(page_Last) + 1):
                    # 设置请求，从第一页循环加载
                    self.driver.get("http://www.huodongxing.com/events?orderby=o&channel=行业&tag="+name

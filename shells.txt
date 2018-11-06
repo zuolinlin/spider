@@ -5,3 +5,6 @@ scrapy list
 scrapy crawl 36kr_org -s LOG_FILE=/logs/36kr_org.log
 # 鲸准创业项目
 scrapy crawl 36kr_project -s LOG_FILE=/logs/36kr_project.log
+# 易项创业项目
+scrapy crawl ethercap_project -s LOG_FILE=/logs/ethercap_project.log
+scrapy crawl ethercap_project_detail -s LOG_FILE=/logs/ethercap_project_detail.log

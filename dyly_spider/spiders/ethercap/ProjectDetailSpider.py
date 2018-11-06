@@ -9,13 +9,13 @@ from util import date_util
 
 
 class ProjectDetailSpider(BaseSpider):
-    """鲸准创业项目列表"""
+    """鲸准创业项目详情相关"""
 
     custom_settings = {
         "COOKIES_ENABLED": True,
         # "COOKIES_DEBUG": True,
         "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 2
+        "DOWNLOAD_DELAY": 1
     }
 
     name = "ethercap_project_detail"
@@ -43,7 +43,7 @@ class ProjectDetailSpider(BaseSpider):
         while current_page <= pages:
             result = self.query_list_page(current_page)
             for row in result.get("rows"):
-                self.log(row[0] + '---' + row[1])
+                # self.log(row[0] + '---' + row[1])
                 out_id = row[0]
                 yield Request(
                     self.detail_url.format(out_id=out_id),

@@ -123,20 +123,21 @@ class ProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        self.insert("""
-                UPDATE 
-                  `yx_project` 
-                SET
-                  `industry_tag` = %s,
-                  `full_name` = %s,
-                  `modify_date` = %s 
-                WHERE `out_id` = %s
-        """, (
-            ','.join(data.get("labelArr", [])),
-            data.get("companyName", None),
-            time.localtime(),
-            response.meta["out_id"]
-        ))
+        if len(data) > 0:
+            self.insert("""
+                    UPDATE 
+                      `yx_project` 
+                    SET
+                      `industry_tag` = %s,
+                      `full_name` = %s,
+                      `modify_date` = %s 
+                    WHERE `out_id` = %s
+            """, (
+                ','.join(data.get("labelArr", [])),
+                data.get("companyName", None),
+                time.localtime(),
+                response.meta["out_id"]
+            ))
 
     def member(self, response):
         """

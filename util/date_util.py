@@ -13,6 +13,6 @@ def get_date(millisecond):
 
 
 def strptime(string, format):
-    if string is None:
+    if string is None or len(string) == 0:
         return None
     return time.strptime(string, format)

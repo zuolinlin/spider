@@ -33,62 +33,59 @@ class ProjectDetailSpider(BaseSpider):
             "token": "q5GYLY5NtZNxwSJ1qRpu+jk1MTU3NzZlMjE0ZTM0Y2E4Y2QyYmY3ODgzNzI3NWNkZmE2YTBmYzNhOGI4MzQxYWQ1YzUxZWQ5OGJmZDRlZmVWh5Jn0mUF6ojY+tGjNBiCAPJAfoVlgUPdy8SqU1gC9xM1cPob7GScN8Tu0mPAzeo=",
             "Content-Type": "application/json; charset=UTF-8"
         }
-        self.body = {"page": 0, "limit": 20, "tag": [], "stage": [], "city": [], "country": [], "intersection": 1}
 
     def start_requests(self):
-        out_id = "aa95a04a8bbef45ccfa3f71498548307"
-        yield Request(
-            self.detail_url.format(out_id=out_id),
-            headers=self.headers,
-            meta={"out_id": out_id},
-            dont_filter=True,
-            callback=self.detail,
-            errback=self.error_response
-        )
-        yield Request(
-            self.basic_info_url.format(out_id=out_id),
-            headers=self.headers,
-            meta={"out_id": out_id},
-            dont_filter=True,
-            callback=self.basic_info,
-            errback=self.error_response
-        )
-        yield Request(
-            self.member_url.format(out_id=out_id),
-            headers=self.headers,
-            meta={"out_id": out_id},
-            dont_filter=True,
-            callback=self.member,
-            errback=self.error_response
-        )
-        yield Request(
-            self.news_url.format(out_id=out_id),
-            headers=self.headers,
-            meta={"out_id": out_id},
-            dont_filter=True,
-            callback=self.news,
-            errback=self.error_response
-        )
-        yield Request(
-            self.similar_url.format(out_id=out_id),
-            headers=self.headers,
-            meta={"out_id": out_id},
-            dont_filter=True,
-            callback=self.similar,
-            errback=self.error_response
-        )
-
-        # current_page = 1
-        # result = self.query_list_page(current_page)
-        # pages = result.get("pages")
-        # # pages = 1
-        # while current_page <= pages:
-        #     result = self.query_list_page(current_page)
-        #     for row in result.get("rows"):
-        #         # out_id = row[0]
-        #
-        #     current_page = current_page + 1
-        #     # time.sleep(40)
+        # out_id = "aa95a04a8bbef45ccfa3f71498548307"
+        current_page = 1
+        result = self.query_list_page(current_page)
+        pages = result.get("pages")
+        # pages = 1
+        while current_page <= pages:
+            result = self.query_list_page(current_page)
+            for row in result.get("rows"):
+                out_id = row[0]
+                yield Request(
+                    self.detail_url.format(out_id=out_id),
+                    headers=self.headers,
+                    meta={"out_id": out_id},
+                    dont_filter=True,
+                    callback=self.detail,
+                    errback=self.error_response
+                )
+                yield Request(
+                    self.basic_info_url.format(out_id=out_id),
+                    headers=self.headers,
+                    meta={"out_id": out_id},
+                    dont_filter=True,
+                    callback=self.basic_info,
+                    errback=self.error_response
+                )
+                yield Request(
+                    self.member_url.format(out_id=out_id),
+                    headers=self.headers,
+                    meta={"out_id": out_id},
+                    dont_filter=True,
+                    callback=self.member,
+                    errback=self.error_response
+                )
+                yield Request(
+                    self.news_url.format(out_id=out_id),
+                    headers=self.headers,
+                    meta={"out_id": out_id},
+                    dont_filter=True,
+                    callback=self.news,
+                    errback=self.error_response
+                )
+                yield Request(
+                    self.similar_url.format(out_id=out_id),
+                    headers=self.headers,
+                    meta={"out_id": out_id},
+                    dont_filter=True,
+                    callback=self.similar,
+                    errback=self.error_response
+                )
+            current_page = current_page + 1
+            # time.sleep(40)
 
     def detail(self, response):
         data = self.get_data(response)

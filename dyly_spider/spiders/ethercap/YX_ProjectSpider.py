@@ -26,7 +26,7 @@ class YXProjectSpider(BaseSpider):
     def __init__(self, *a, **kw):
         super(YXProjectSpider, self).__init__(*a, **kw)
         self.headers = {
-            "token": "q5GYLY5NtZNxwSJ1qRpu+jk1MTU3NzZlMjE0ZTM0Y2E4Y2QyYmY3ODgzNzI3NWNkZmE2YTBmYzNhOGI4MzQxYWQ1YzUxZWQ5OGJmZDRlZmVWh5Jn0mUF6ojY+tGjNBiCAPJAfoVlgUPdy8SqU1gC9xM1cPob7GScN8Tu0mPAzeo=",
+            "token": "e1EDKYxT+BzMy2fTmPjZljU4ZjZkMjQ0MzhhY2M3MTc2YTRiNTE5MDNiZWYyZTA0NGU3YjVjNTRlOTY0ZjY0MTVmODdkYWJmNzUwNGEyZTPJ4hByS1MIIti99et2YEBAMplWPI7XLXDZve9DtnCRMSgouwP5SBaUnLIJmmSHWnk=",
             "Content-Type": "application/json; charset=UTF-8"
         }
         self.body = {"page": 0, "limit": 20, "tag": [], "stage": [], "city": [], "country": [], "intersection": 1}

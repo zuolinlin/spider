@@ -15,6 +15,7 @@ BOT_NAME = 'dyly_spider'
 SPIDER_MODULES = ['dyly_spider.spiders',
                   'dyly_spider.spiders.zdb',
                   'dyly_spider.spiders.xiniu',
+                  'dyly_spider.spiders.huodongxing',
                   'dyly_spider.spiders.36kr'
                   ]
 NEWSPIDER_MODULE = 'dyly_spider.spiders'

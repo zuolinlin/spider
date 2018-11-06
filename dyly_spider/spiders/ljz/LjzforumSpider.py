@@ -2,9 +2,10 @@
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 import time
-from dyly_spider.spiders.BaseSpider import BaseSpider
+
 
 # 陆想汇活动爬取
+from dyly_spider.spiders.BaseSpider import BaseSpider
 
 
 class LjzforumSpider(BaseSpider):

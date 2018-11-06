@@ -14,8 +14,8 @@ class YXProjectDetailSpider(BaseSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
         # "COOKIES_DEBUG": True,
-        "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 2
+        # "AUTOTHROTTLE_ENABLED": True,
+        # "DOWNLOAD_DELAY": 2
     }
 
     name = "ethercap_project_detail"
@@ -89,32 +89,33 @@ class YXProjectDetailSpider(BaseSpider):
 
     def detail(self, response):
         data = self.get_data(response)
-        self.insert("""
-                UPDATE 
-                  `yx_project` 
-                SET
-                  `logo` = %s,
-                  `name` = %s,
-                  `industry` = %s,
-                  `website` = %s,
-                  `startDate` = %s,
-                  `brief` = %s,
-                  `intro` = %s,
-                  `address1Desc` = %s,
-                  `modify_date` = %s 
-                WHERE `out_id` = %s
-        """, (
-            data.get("logoLink", None),
-            data.get("projectName", None),
-            data.get("upCatgyParentName", None),
-            data.get("homepage", None),
-            date_util.strptime(data.get("foundDate", None), "%Y-%m"),
-            data.get("shortAbstract", None),
-            data.get("abstract", None),
-            data.get("cityName", None),
-            time.localtime(),
-            response.meta["out_id"]
-        ))
+        if len(data) > 0:
+            self.insert("""
+                    UPDATE 
+                      `yx_project` 
+                    SET
+                      `logo` = %s,
+                      `name` = %s,
+                      `industry` = %s,
+                      `website` = %s,
+                      `startDate` = %s,
+                      `brief` = %s,
+                      `intro` = %s,
+                      `address1Desc` = %s,
+                      `modify_date` = %s 
+                    WHERE `out_id` = %s
+            """, (
+                data.get("logoLink", None),
+                data.get("projectName", None),
+                data.get("upCatgyParentName", None),
+                data.get("homepage", None),
+                date_util.strptime(data.get("foundDate", None), "%Y-%m"),
+                data.get("shortAbstract", None),
+                data.get("abstract", None),
+                data.get("cityName", None),
+                time.localtime(),
+                response.meta["out_id"]
+            ))
 
     def basic_info(self, response):
         """
@@ -144,27 +145,28 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        params = []
-        now = time.localtime()
-        for item in data:
-            if item.get("friendMemberType") == 0:
-                params.append((
-                    response.meta["out_id"],
-                    item.get("name"),
-                    item.get("position"),
-                    item.get("abstract"),
-                    now
-                ))
-        self.insert("""
-                INSERT INTO `yx_project_member` (
-                  `out_id`,
-                  `name`,
-                  `position`,
-                  `intro`,
-                  `modify_date`
-                ) 
-                VALUES (%s, %s, %s, %s, %s)
-        """, params)
+        if len(data) > 0:
+            params = []
+            now = time.localtime()
+            for item in data:
+                if item.get("friendMemberType") == 0:
+                    params.append((
+                        response.meta["out_id"],
+                        item.get("name"),
+                        item.get("position"),
+                        item.get("abstract"),
+                        now
+                    ))
+            self.insert("""
+                    INSERT INTO `yx_project_member` (
+                      `out_id`,
+                      `name`,
+                      `position`,
+                      `intro`,
+                      `modify_date`
+                    ) 
+                    VALUES (%s, %s, %s, %s, %s)
+            """, params)
 
     def news(self, response):
         """
@@ -172,28 +174,29 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        params = []
-        now = time.localtime()
-        for item in data:
-            params.append((
-                response.meta["out_id"],
-                item.get("title"),
-                item.get("source"),
-                date_util.strptime(item.get("publishTime", None), "%Y-%m-%d"),
-                item.get("link"),
-                now
-            ))
-        self.insert("""
-                INSERT INTO `yx_project_news` (
-                  `out_id`,
-                  `title`,
-                  `source`,
-                  `publish_date`,
-                  `news_url`,
-                  `modify_date`
-                ) 
-                VALUES (%s, %s, %s, %s, %s, %s)
-        """, params)
+        if len(data) > 0:
+            params = []
+            now = time.localtime()
+            for item in data:
+                params.append((
+                    response.meta["out_id"],
+                    item.get("title"),
+                    item.get("source"),
+                    date_util.strptime(item.get("publishTime", None), "%Y-%m-%d"),
+                    item.get("link"),
+                    now
+                ))
+            self.insert("""
+                    INSERT INTO `yx_project_news` (
+                      `out_id`,
+                      `title`,
+                      `source`,
+                      `publish_date`,
+                      `news_url`,
+                      `modify_date`
+                    ) 
+                    VALUES (%s, %s, %s, %s, %s, %s)
+            """, params)
 
     def similar(self, response):
         """
@@ -201,26 +204,27 @@ class YXProjectDetailSpider(BaseSpider):
         :return:
         """
         data = self.get_data(response)
-        params = []
-        now = time.localtime()
-        for item in data:
-            params.append((
-                response.meta["out_id"],
-                item.get("outId"),
-                item.get("projectName"),
-                item.get("upCatgyParentName"),
-                now
-            ))
-        self.insert("""
-                INSERT INTO `yx_project_similar` (
-                  `out_id`,
-                  `similar_out_id`,
-                  `similar_project_name`,
-                  `similar_project_similar_info`,
-                  `modify_date`
-                ) 
-                VALUES (%s, %s, %s, %s, %s)
-        """, params)
+        if len(data) > 0:
+            params = []
+            now = time.localtime()
+            for item in data:
+                params.append((
+                    response.meta["out_id"],
+                    item.get("outId"),
+                    item.get("projectName"),
+                    item.get("upCatgyParentName"),
+                    now
+                ))
+            self.insert("""
+                    INSERT INTO `yx_project_similar` (
+                      `out_id`,
+                      `similar_out_id`,
+                      `similar_project_name`,
+                      `similar_project_similar_info`,
+                      `modify_date`
+                    ) 
+                    VALUES (%s, %s, %s, %s, %s)
+            """, params)
 
     def error_response(self, response):
         self.log_error(response.value.response.text)

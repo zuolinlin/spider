@@ -42,7 +42,7 @@ class YXProjectDetailSpider(BaseSpider):
         # pages = 1
         while current_page <= pages:
             result = self.query_list_page(current_page)
-            time.sleep(6)
+            # time.sleep(6)
             for row in result.get("rows"):
                 out_id = row[0]
                 yield Request(
@@ -249,5 +249,5 @@ class YXProjectDetailSpider(BaseSpider):
         return self.select_rows_paper(
             sql="SELECT out_id, `name` FROM `yx_project`",
             page_no=page_no,
-            page_size=1
+            page_size=20
         )

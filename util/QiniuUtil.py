@@ -26,7 +26,7 @@ class QiniuUtil:
         :param url: 网络文件地址
         :param filename: 文件名
         :param gen_folde: 目录类别 image、media、authent、voice、file
-        :return: 上传七牛返回的地址
+        :return: 上传七牛返回的地址、文件大小
         """
         try:
             if "image".__eq__(gen_folde):
@@ -41,15 +41,14 @@ class QiniuUtil:
                 gen_folde = "file"
             # 生成上传 Token
             token = q.upload_token(bucket)
+            data = http.request("GET", url).data
             ret, info = put_data(
                 token,
                 gen_folde + "/" + time.strftime("%Y%m%d", time.localtime()) + "/" + filename,
-                http.request("GET", url).data,
+                data,
                 mime_type=None
             )
-            logger.log(info)
-            logger.log(ret)
-            return qiniu_url + ret['key']
+            return qiniu_url + ret['key'], round(len(data)/1024, 2)
         except Exception as e:
             logger.error("exception===> " + str(e))
 
@@ -64,8 +63,8 @@ class QiniuUtil:
             if url is not None:
                 url = url.replace(qiniu_url, "")
                 ret, info = bm.delete(bucket, url)
-                logger.log(info)
-                logger.log(ret)
+                print(info)
+                print(ret)
         except Exception as e:
             logger.error("exception===> " + str(e))
 

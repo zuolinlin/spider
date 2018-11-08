@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-import traceback
 
 
 # 自定义的日志输出

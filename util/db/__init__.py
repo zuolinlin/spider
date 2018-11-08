@@ -109,17 +109,19 @@ class DBMysql:
 
                 cursor.execute("SELECT COUNT(1) FROM (%s) tmp" % sql)
                 total = cursor.fetchall()[0][0]
+                pages = 0
+                rows = []
+                if total > 0:
+                    # 总页数
+                    pages = int(total / page_size) if total % page_size == 0 else int(total / page_size) + 1
 
-                # 总页数
-                pages = int(total / page_size) if total % page_size == 0 else int(total / page_size) + 1
-
-                if page_no > pages:
-                    page_no = pages
-                offset = (page_no - 1) * page_size  # 偏移量
-                sql = sql + ' LIMIT %s, %s' % (offset, page_size)
-                cy_logger.log(sql)
-                cursor.execute(sql)
-                rows = cursor.fetchall()
+                    if page_no > pages:
+                        page_no = pages
+                    offset = (page_no - 1) * page_size  # 偏移量
+                    sql = sql + ' LIMIT %s, %s' % (offset, page_size)
+                    cy_logger.log(sql)
+                    cursor.execute(sql)
+                    rows = cursor.fetchall()
 
                 return {'total': total, 'page_no': page_no, 'pages': pages, 'rows': rows}
         except Exception as e:

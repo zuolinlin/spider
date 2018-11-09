@@ -146,3 +146,24 @@ class XiniuLP(scrapy.Item):
     fundsNum = scrapy.Field()  # 参与基金数
     cooperationAgency = scrapy.Field()  # 其它合作机构
     institutionId = scrapy.Field()  # 关联机构Id
+
+
+class XiniuCompany(scrapy.Item):
+    """
+     烯牛公司数据
+    """
+    id = scrapy.Field()  # 公司Id
+    logoUrl = scrapy.Field()  # 公司logo
+    companyFullName = scrapy.Field()  # 公司全称
+    companyAbbreviation = scrapy.Field()  # 公司简称
+    telephone = scrapy.Field()  # 联系电话
+    email = scrapy.Field()  # email 邮箱
+    website = scrapy.Field()  # 网站
+    foundingTime = scrapy.Field()  # 成立时间
+    city = scrapy.Field()  # 城市
+    inaword = scrapy.Field()  # 一句话介绍
+    advantage = scrapy.Field()  # 公司优势
+    industryClassification = scrapy.Field()  # 行业分类
+    legalRepresentative = scrapy.Field()  # 法人代表
+    description = scrapy.Field()  # 描述
+    url = scrapy.Field()  # 进入烯牛详情页的url(为抓取详情页的数据临时存放)

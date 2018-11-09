@@ -15,11 +15,9 @@ class RoboReportSpider(BaseSpider):
     name = "robo_report"
     allowed_domains = ["datayes.com"]
 
-    # industries = ["交通运输", "公用事业", "传媒", "电子", "计算机", "通信", "休闲服务", "医药生物", "商业贸易",
-    #               "家用电器", "汽车", "纺织服装", "食品饮料", "房地产", "银行", "非银金融", "农林牧渔", "化工", "国防军工",
-    #               "建筑材料", "建筑装饰", "有色金属", "机械设备", "电气设备", "轻工制造", "采掘", "钢铁", "综合"]
-    pub_time_start = (datetime.datetime.now()+datetime.timedelta(days=-1)).strftime("%Y%m%d")
+    # pub_time_start = (datetime.datetime.now()+datetime.timedelta(days=-1)).strftime("%Y%m%d")
     pub_time_end = datetime.datetime.now().strftime("%Y%m%d")
+    pub_time_start = pub_time_end
 
     identity = "https://gw.datayes.com/usermaster/identity/nrrp.json"
 

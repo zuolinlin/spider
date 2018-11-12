@@ -2,7 +2,7 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 import time
-
+import uuid
 """
 烯牛公司详情页数据 
 """
@@ -56,6 +56,9 @@ class XiniuCompanyDetailSpider(BaseSpider):
         pojo = self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_company_data` limit 0,1000 ")
         len(pojo)
         for po in pojo:
+
+            # 烯牛公司的主表信息  xiniu_company_data
+
             params = []
             companyId = po[0]
             detial = po[15]
@@ -152,6 +155,67 @@ class XiniuCompanyDetailSpider(BaseSpider):
                             """, (
                 params
             ))
+            # 公司成员信息
+            member_params = []
 
+            members = self.driver.find_elements_by_xpath(
+                '//html/body/div/div/div[3]/div/section[@id="memberInfo"]/div[3]/div')  # 团队成员
+            for member in members:
+                ptotoUrl = member.find_element_by_xpath('./div/div/img').get_attribute("src")  # 姓名
+                name = member.find_element_by_xpath('./div/div/strong').text  # 姓名
+                position = member.find_element_by_xpath('./div/div/span[1]').text  # 职位
+                university = member.find_element_by_xpath('./div/div/span[2]').text  # 毕业院校
+                introduction = member.find_element_by_xpath('./div/pre').text  # 简介
+                id = ''.join(str(uuid.uuid1()).split('-'))  # 主键
+                member_params.append((
+                    id,
+                    ptotoUrl,
+                    name,
+                    position,
+                    university,
+                    introduction,
+                    companyId
+
+                ))
+
+            # 插入sql
+            self.insert("""
+                         INSERT INTO `xsbbiz`.`xiniu_company_member_data` (`id`, `ptotoUrl`, `name` , `position`, `university`,`introduction` , `companyId`)
+                         VALUES (%s, %s,%s,%s, %s,%s,%s)
+                         """, member_params)
+
+            # 公司招聘信息
+            job_params = []
+            jobs = self.driver.find_elements_by_xpath(
+                '//html/body/div/div/div[3]/div/section[@id="jobInfo"]/div[2]/div/div/div/div/div[2]/div')  # 团队成员
+
+            for job in jobs:
+                updateTime = job.find_element_by_xpath("./div/div[1]").text  # 招聘时间
+                positionName = job.find_element_by_xpath("./div/div[2]").text  # 职位
+                city = job.find_element_by_xpath("./div/div[3]").text  # 地点
+                workAreas = job.find_element_by_xpath("./div/div[4]").text  # 工作领域
+                educationalLevel = job.find_element_by_xpath("./div/div[5]").text  # 教育要求
+                id = ''.join(str(uuid.uuid1()).split('-'))  # 主键
+                job_params.append((
+                    id,
+                    updateTime,
+                    positionName,
+                    city,
+                    workAreas,
+                    educationalLevel,
+                    companyId
+                ))
+
+            # 插入sql
+            self.insert("""
+                         INSERT INTO `xsbbiz`.`xiniu_company_recruit_data` (`id`, `updateTime`, `positionName` , `city`, `workAreas`,`educationalLevel` , `companyId`)
+                         VALUES (%s, %s,%s,%s, %s,%s,%s)
+                         """, job_params)
+
+
+            # 相关新闻
+            news_params = []
+            jobs = self.driver.find_elements_by_xpath(
+                '//html/body/div/div/div[3]/div/div[@id="newsInfo"]/select[id ="news"]/')  # 团队成员
 
     pass

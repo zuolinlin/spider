@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 import time
 import datetime
+from util import CookieUtil, date_util, QiniuUtil
 import uuid
 
 class XiniuNewsSpider(BaseSpider):
@@ -142,6 +143,16 @@ class XiniuNewsSpider(BaseSpider):
                 linkUrl = self.driver.find_element_by_xpath(
                                     '//html/body/div/div/div/div[2]/div/div/div[1]/div[@class="news-detail"]/div[@class= "news-info"]/span[3]/a').get_attribute('href')  # 来源URl
 
-                html = self.driver.find_element_by_xpath('//Html/body/div/div/div/div[2]/div/div/div[1]/div/div[@class= "news-content"]').get_attribute("outerHTML")
-                img = self.driver.find_elements_by_xpath('//Html/body/div/div/div/div[2]/div/div/div[1]/div/div[@class= "news-content"]//img')
-                print(img)
+                html = self.driver.find_element_by_xpath(
+                    '//Html/body/div/div/div/div[2]/div/div/div[1]/div/div[@class= "news-content"]')
+
+                # 判断新闻的内容有没有引用图片
+
+                imgs = self.driver.find_elements_by_xpath('//Html/body/div/div/div/div[2]/div/div/div[1]/div/div[@class= "news-content"]//img')
+                for img in imgs:
+                    src = img.get_attribute("src")
+                    imgId = src[30:]
+                    dylyImg =QiniuUtil.upload(src,imgId,"png")
+
+
+

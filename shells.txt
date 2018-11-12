@@ -10,3 +10,5 @@ scrapy crawl ethercap_project -s LOG_FILE=/logs/ethercap_project.log
 scrapy crawl ethercap_project_detail -s LOG_FILE=/logs/ethercap_project_detail.log
 # 萝卜投研-研究-处理文件大小
 scrapy crawl robo_report -s LOG_FILE=/logs/robo_report.log
+# Boss直聘-招聘信息
+scrapy crawl boss_zhipin -s LOG_FILE=/logs/boss_zhipin.log

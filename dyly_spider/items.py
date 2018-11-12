@@ -48,8 +48,10 @@ class XiniuInvestmentEvents(scrapy.Item):
     institutionId = scrapy.Field()  # 机构id
 
 
-class ItjuziItem(scrapy.Item):
-    # define the fields for your item here like:
+class ItjuziCompanyItem(scrapy.Item):
+    """
+    IT桔子-公司数据
+    """
     # 公司名字
     company_name = scrapy.Field()
     # logo地址
@@ -88,6 +90,7 @@ class ItjuziItem(scrapy.Item):
     product = scrapy.Field()
     # 公司标语
     company_slogan = scrapy.Field()
+
 
 class XiniuInstitudynamic(scrapy.Item):
     """
@@ -167,3 +170,18 @@ class XiniuCompany(scrapy.Item):
     legalRepresentative = scrapy.Field()  # 法人代表
     description = scrapy.Field()  # 描述
     url = scrapy.Field()  # 进入烯牛详情页的url(为抓取详情页的数据临时存放)
+
+
+class ZhipinItem(scrapy.Item):
+    """
+    Boss直聘职位数据
+    """
+    company_name = scrapy.Field()  # 公司
+    job_name = scrapy.Field()  # 职位
+    location = scrapy.Field()  # 地区
+    education = scrapy.Field()  # 学历
+    years = scrapy.Field()  # 年限
+    salary = scrapy.Field()  # 薪资
+    field = scrapy.Field()  # 领域
+    release_time = scrapy.Field()  # 发布时间
+    platform = scrapy.Field()  # 发布平台

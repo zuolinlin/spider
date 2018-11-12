@@ -36,5 +36,27 @@ class ZdbSpiderPipeline(object):
 
 
 class ItjuziSpiderPipeline(object):
+    """
+        IT桔子-公司数据
+    """
+
     def process_item(self, item, spider):
-        logger.log("===> " + item["company_name"])
+        logger.log("===> " + str(item))
+        # insert("INSERT INTO `xsbbiz`.`itjuzi_company` (`company_name`, `company_logo`) "
+        #        "VALUES (%s, %s)",
+        #        (item['company_name'], item['company_logo']))
+
+
+class ZhiPinSpiderPipeline(object):
+    """
+    Boss直聘-招聘数据
+    """
+
+    def process_item(self, item, spider):
+        logger.log("===> " + str(item))
+
+        insert(
+            "INSERT INTO `xsbbiz`.`zhipin_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`,  `platform`) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (item['company_name'], item['job_name'], item['location'], item['education'], item['years'], item['salary'],
+             item['platform']))

@@ -33,7 +33,7 @@ class RoboReportPdfSpider(BaseSpider):
     def parse(self, response):
         report_id = response.meta["report_id"]
         size = round(len(response.body)/1024, 2)
-        self.insert("""
+        self.execute("""
                 UPDATE 
                   `robo_report` 
                 SET

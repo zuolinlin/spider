@@ -89,7 +89,7 @@ class DBMysql:
         try:
             # 执行SQL语句
             cursor.execute(sql)
-            # 获取所有记录列表
+            # 获取单条数据
             return cursor.fetchone()
         except Exception as e:
             cy_logger.error(e)

@@ -21,6 +21,7 @@ SPIDER_MODULES = ['dyly_spider.spiders',
                   'dyly_spider.spiders.ethercap',
                   'dyly_spider.spiders.report',
                   'dyly_spider.spiders.zhipin',
+                  'dyly_spider.spiders.zhilian',
                   ]
 NEWSPIDER_MODULE = 'dyly_spider.spiders'
 

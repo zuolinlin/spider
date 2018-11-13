@@ -185,3 +185,19 @@ class ZhipinItem(scrapy.Item):
     field = scrapy.Field()  # 领域
     release_time = scrapy.Field()  # 发布时间
     platform = scrapy.Field()  # 发布平台
+
+
+class ZhiLianItem(scrapy.Item):
+    """
+    智联招聘-职位数据
+    """
+    link = scrapy.Field()  # 链接
+    company_name = scrapy.Field()  # 公司
+    job_name = scrapy.Field()  # 职位
+    location = scrapy.Field()  # 地区
+    education = scrapy.Field()  # 学历
+    years = scrapy.Field()  # 年限
+    salary = scrapy.Field()  # 薪资
+    field = scrapy.Field()  # 领域
+    release_time = scrapy.Field()  # 发布时间
+    platform = scrapy.Field()  # 发布平台

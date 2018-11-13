@@ -28,7 +28,7 @@ class ZhiPinSpider(BaseSpider):
         current_page = 1
         result = self.query_company_page(current_page)
         pages = result.get("pages")
-        logger.log("公司总页数：", pages)
+        logger.log("公司总页数：" + str(pages))
         while current_page <= pages:
             result = self.query_company_page(current_page)
             for row in result.get("rows"):

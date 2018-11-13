@@ -2,6 +2,8 @@
 import datetime
 import json
 import time
+import uuid
+
 from scrapy import Request
 from dyly_spider.spiders.BaseSpider import BaseSpider
 from util import CookieUtil, date_util, QiniuUtil
@@ -64,7 +66,7 @@ class RoboReportSpider(BaseSpider):
                 report_id = item.get("id")
                 pojo = self.fetchone("SELECT `report_id` FROM `robo_report` WHERE `report_id`=%d AND `source`=0" % report_id)
                 if pojo is None:
-                    url, size = QiniuUtil.upload(item.get("s3Url", None), "robo-"+str(report_id), "pdf")
+                    url, size = QiniuUtil.upload(item.get("s3Url", None), "robo-"+str(uuid.uuid4()).replace("-", "")+".pdf", "pdf")
                     params.append((
                         report_id,
                         0,

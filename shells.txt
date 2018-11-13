@@ -12,3 +12,7 @@ scrapy crawl ethercap_project_detail -s LOG_FILE=/logs/ethercap_project_detail.l
 scrapy crawl robo_report -s LOG_FILE=/logs/robo_report.log
 # Boss直聘-招聘信息
 scrapy crawl boss_zhipin -s LOG_FILE=/logs/boss_zhipin.log
+# 智联招聘-招聘信息
+scrapy crawl zhi_lian -s LOG_FILE=/logs/zhi_lian.log
+# 百度招聘-招聘信息
+scrapy crawl baidu_zhaopin -s LOG_FILE=/logs/baidu_zhaopin.log

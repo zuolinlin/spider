@@ -73,3 +73,17 @@ class ZhiLianSpiderPipeline(object):
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             (item['company_name'], item['job_name'], item['location'], item['education'], item['years'], item['salary'],
              item['release_time'], item['platform'], item['link']))
+
+
+class BaiduZhaopinSpiderPipeline(object):
+    """
+    百度招聘-招聘数据
+    """
+
+    def process_item(self, item, spider):
+        logger.log("===> " + str(item))
+        insert(
+            "INSERT INTO `xsbbiz`.`baidu_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (item['company_name'], item['job_name'], item['location'], item['education'], item['years'], item['salary'],
+             item['release_time'], item['platform']))

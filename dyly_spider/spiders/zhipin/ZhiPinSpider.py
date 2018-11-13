@@ -59,7 +59,7 @@ class ZhiPinSpider(BaseSpider):
                 item["location"] = job.xpath("./a//div[@class='msg']/em[1]/text()").extract_first()
                 item["years"] = job.xpath("./a//div[@class='msg']/em[2]/text()").extract_first()
                 item["education"] = job.xpath("./a//div[@class='msg']/em[3]/text()").extract_first()
-                item["platform"] = 'boss_zhipin'  # 发布平台
+                item["platform"] = 'BOSS直聘'  # 发布平台
                 yield item
             # 请求下一页
             current_page += 1

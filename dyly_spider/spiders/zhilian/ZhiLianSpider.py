@@ -49,7 +49,7 @@ class ZhiLianSpider(BaseSpider):
             item["location"] = job.xpath("./a//span[@class='ads']/text()").extract_first()
             item["salary"] = job.xpath("./a//div[@class='job-sal fr']/div[@class='fl']/text()").extract_first()
             item["release_time"] = job.xpath("./a//div[@class='time fr']/text()").extract_first()
-            item["platform"] = 'zhi_lian'  # 发布平台
+            item["platform"] = '智联招聘'  # 发布平台
             if item["link"] is not None:
                 #   加载详细页
                 item["link"] = urllib.parse.urljoin(response.url, item["link"])

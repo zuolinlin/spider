@@ -3,8 +3,9 @@ import json
 
 import jsonpath
 from scrapy import FormRequest, Request
+from util import cy_logger as logger
 
-from dyly_spider.items import ItjuziItem
+from dyly_spider.items import ItjuziCompanyItem
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
 
@@ -13,7 +14,8 @@ class ItjuziSpider(BaseSpider):
     name = 'itjuzi'
     allowed_domains = ['itjuzi.com']
 
-    start_urls = ['http://radar.itjuzi.com/company/infonew?page={page}'.format(page=page) for page in range(1, 10)]
+    list_url = 'http://radar.itjuzi.com/company/infonew?page={}'
+    start_urls = [list_url.format(1)]
 
     # 自定义设置
     custom_settings = {
@@ -59,19 +61,24 @@ class ItjuziSpider(BaseSpider):
     def parse_page(self, response):
         # 把json数据转换成Python对象
         company_list = json.loads(response.body.decode('utf-8'))
-        print("列表地址===>" + response.url)
+        logger.log("列表地址===>" + response.url)
         # 总共有多少页：
         page_count = jsonpath.jsonpath(company_list, '$..data')[0]['page_total']
-        print(page_count)
+        logger.log(page_count)
 
         # 当前第几页：
         now_page = jsonpath.jsonpath(company_list, '$..data')[0]['page_num']
-        print(now_page)
+        logger.log(now_page)
+
+        if now_page == 1:
+            for url in [self.list_url.format(page) for page in range(2, page_count + 1)]:
+                yield Request(url, cookies=self.cookies, callback=self.parse_page, headers=self.headers,
+                              dont_filter=True)
 
         companys = jsonpath.jsonpath(company_list, '$..data')[0]['rows']
 
         for company in companys:
-            item = ItjuziItem()
+            item = ItjuziCompanyItem()
 
             # 解析想要的字段：
             item["company_name"] = company["com_name"]
@@ -134,6 +141,4 @@ class ItjuziSpider(BaseSpider):
         item["product"] = response.xpath(
             '//div[@class="sec panel-for-scroll"]//div[@class="product-list empty-list empty-with-link"]/div/text()').extract()[
             0]
-        print(item)
-
         yield item

@@ -94,18 +94,18 @@ class OrgSpider(BaseSpider):
             self.insert("""INSERT INTO `jz_org` (`org_id`,`name_abbr`,`name`,`logo`,`intro`,`enName`,`website`,`startDate`,
                             `city`,`address`,`phone`,`email`,`modify_date`
                             ) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (
-                data.get('id', ''),
-                data.get('nameAbbr', ''),
-                data.get('name', ''),
-                data.get('logo', ''),
-                data.get('intro', ''),
-                data.get('enName', ''),
-                data.get('website', ''),
-                date_util.get_date(data.get('startDate', None)),
-                address.get('city', ''),
-                address.get('address', ''),
-                address.get('phone', ''),
-                address.get('email', ''),
+                data.get('id'),
+                data.get('nameAbbr'),
+                data.get('name'),
+                data.get('logo'),
+                data.get('intro'),
+                data.get('enName'),
+                data.get('website'),
+                date_util.get_date(data.get('startDate')),
+                address.get('city'),
+                address.get('address'),
+                address.get('phone'),
+                address.get('email'),
                 now
             ))
         else:
@@ -127,17 +127,17 @@ class OrgSpider(BaseSpider):
                               `modify_date` = %s 
                             WHERE `org_id` = %s 
             """, (
-                data.get('nameAbbr', ''),
-                data.get('name', ''),
-                data.get('logo', ''),
-                data.get('intro', ''),
-                data.get('enName', ''),
-                data.get('website', ''),
-                date_util.get_date(data.get('startDate', None)),
-                address.get('city', ''),
-                address.get('address', ''),
-                address.get('phone', ''),
-                address.get('email', ''),
+                data.get('nameAbbr'),
+                data.get('name'),
+                data.get('logo'),
+                data.get('intro'),
+                data.get('enName'),
+                data.get('website'),
+                date_util.get_date(data.get('startDate')),
+                address.get('city'),
+                address.get('address'),
+                address.get('phone'),
+                address.get('email'),
                 now,
                 data.get('id')
             ))
@@ -159,12 +159,12 @@ class OrgSpider(BaseSpider):
             for invest in investments:
                 params.append((
                     org_id,
-                    project.get("cid", ""),
-                    project.get("companyName", ""),
-                    invest.get("phaseId", ""),
-                    invest.get("phase", ""),
-                    invest.get("fundsAmount", ""),
-                    date_util.get_date(invest.get('investAt', None)),
+                    project.get("cid"),
+                    project.get("companyName"),
+                    invest.get("phaseId"),
+                    invest.get("phase"),
+                    invest.get("fundsAmount"),
+                    date_util.get_date(invest.get('investAt')),
                     0,
                     now
                 ))
@@ -252,15 +252,15 @@ class OrgSpider(BaseSpider):
                 """, (
                 uid,
                 org_id,
-                basic.get("orgName", ""),
-                basic.get("avatar", ""),
-                basic.get("name", ""),
-                basic.get("position", ""),
+                basic.get("orgName"),
+                basic.get("avatar"),
+                basic.get("name"),
+                basic.get("position"),
                 ','.join(basic.get("city", [])),
                 ','.join(invest_preference.get("focusIndustry", [])),
                 self.get_prefer_phase(invest_preference.get("preferPhase", [])),
                 invest_preference.get("singleInvestAmount"),
-                basic.get("intro", ""),
+                basic.get("intro"),
                 now
             ))
 
@@ -279,12 +279,12 @@ class OrgSpider(BaseSpider):
             for entity in entity_vo:
                 params.append((
                     uid,
-                    vo.get("cid", ""),
-                    vo.get("companyName", ""),
+                    vo.get("cid"),
+                    vo.get("companyName"),
                     None,
-                    self.get_phase(entity.get("phase", None)),
+                    self.get_phase(entity.get("phase")),
                     None,
-                    date_util.get_date(entity.get('investDate', None)),
+                    date_util.get_date(entity.get('investDate')),
                     1,
                     now
                 ))

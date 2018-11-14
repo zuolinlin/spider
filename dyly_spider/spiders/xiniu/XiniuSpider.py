@@ -540,7 +540,7 @@ class XiniuSpider(BaseSpider):
                                 ))
                             # 插入sql
                             invId = self.insert("""
-                                                     INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`)
+                                                     INSERT INTO `xsbbiz`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`)
                                                      VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)
                                                      """,
                                                 params)
@@ -584,7 +584,7 @@ class XiniuSpider(BaseSpider):
                             inv['institutionId'] = institutionId
                             # 插入sql
                             invId = self.insert(
-                                "INSERT INTO `oltp`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
+                                "INSERT INTO `xsbbiz`.`xiniu_investmentevents_data` (`investmentTime`, `companyName`,`companyLogo`,`companyDescribe`,`industry`,`area`,`currentTurn`,`amount`,`investors`,`institutionId`) "
                                 "VALUES (%s, %s,%s, %s,%s, %s,%s, %s,%s, %s)",
                                 (inv['investmentTime'], inv['companyName'], inv['companyLogo'], inv['companyDescribe'],
                                  inv['industry'], inv['area'], inv['currentTurn'], inv['amount'], inv['investors'],
@@ -676,7 +676,7 @@ class XiniuSpider(BaseSpider):
                                 ))
                             # 插入sql
                             dynaId = self.insert(
-                                """INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`)
+                                """INSERT INTO `xsbbiz`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`)
                                 VALUES (%s, %s,%s,%s)""",
 
                                 params)
@@ -711,7 +711,7 @@ class XiniuSpider(BaseSpider):
                             dyna['institutionId'] = institutionId
                             # 插入sql
                             dynaId = self.insert(
-                                "INSERT INTO `oltp`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`) "
+                                "INSERT INTO `xsbbiz`.`xiniu_institudynamic_data` (`dynamicTime`, `dynamicType`,`content`,`institutionId`) "
                                 "VALUES (%s, %s,%s,%s)",
                                 (dyna['dynamicTime'], dyna['dynamicType'], dyna['content'], dyna['institutionId']))
                      except:
@@ -765,7 +765,7 @@ class XiniuSpider(BaseSpider):
                         new['institutionId'] = institutionId
                         # 插入sql
                         newId = self.insert(
-                            "INSERT INTO `oltp`.`xiniu_news_data` (`newsTime`, `source1`,`source2`,`title`,`url`,`institutionId`) "
+                            "INSERT INTO `xsbbiz`.`xiniu_news_data` (`newsTime`, `source1`,`source2`,`title`,`url`,`institutionId`) "
                             "VALUES (%s, %s,%s, %s,%s,%s)",
                             (new['newsTime'], new['source1'], new['source2'], new['title'], new['url'], new['institutionId']))
                 except:
@@ -869,7 +869,7 @@ class XiniuSpider(BaseSpider):
                             # 插入sql
                             funId = self.insert(
                                 """
-                                INSERT INTO `oltp`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)
+                                INSERT INTO `xsbbiz`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)
                                 VALUES (%s, %s,%s, %s,%s, %s,%s)
                                 """,
                                 params)
@@ -912,7 +912,7 @@ class XiniuSpider(BaseSpider):
                             fun['institutionId'] = institutionId
                             # 插入sql
                             funId = self.insert(
-                                "INSERT INTO `oltp`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)"
+                                "INSERT INTO `xsbbiz`.`xiniu_fund_data` (`recordTime`, `fundName`,`url`,`registeredCapita`,`partner`,`foundingTime` ,`institutionId`)"
                                 "VALUES (%s, %s,%s, %s,%s, %s,%s)",
                                 (fun['recordTime'], fun['fundName'], fun['url'], fun['registeredCapita'],
                                  fun['partner'],
@@ -1012,7 +1012,7 @@ class XiniuSpider(BaseSpider):
                                 ))
                             # 插入sql
                             fundmanagerId = self.insert(
-                                """INSERT INTO `oltp`.`xiniu_fundmanager_data` (`foundingTime`, `name`,`legalRepresentative`,`managementFund`,`recordTime`,`institutionId` )
+                                """INSERT INTO `xsbbiz`.`xiniu_fundmanager_data` (`foundingTime`, `name`,`legalRepresentative`,`managementFund`,`recordTime`,`institutionId` )
                                 VALUES (%s, %s,%s, %s,%s, %s)
                                 """,
                                 params)
@@ -1050,7 +1050,7 @@ class XiniuSpider(BaseSpider):
                             fundmanager['institutionId'] = institutionId
                             # 插入sql
                             fundmanagerId = self.insert(
-                                "INSERT INTO `oltp`.`xiniu_fundmanager_data` (`foundingTime`, `name`,`legalRepresentative`,`managementFund`,`recordTime`,`institutionId` )"
+                                "INSERT INTO `xsbbiz`.`xiniu_fundmanager_data` (`foundingTime`, `name`,`legalRepresentative`,`managementFund`,`recordTime`,`institutionId` )"
                                 "VALUES (%s, %s,%s, %s,%s, %s)",
                                 (fundmanager['foundingTime'], fundmanager['name'], fundmanager['legalRepresentative'],
                                  fundmanager['managementFund'], fundmanager['recordTime'],
@@ -1145,7 +1145,7 @@ class XiniuSpider(BaseSpider):
                             # 插入sql
                             xiniuLPId = self.insert(
                                 """
-                                INSERT INTO `oltp`.`xiniu_lp_data` (`lpName`, `ownershipOrganization`,`fundsNum`,`cooperationAgency`,`institutionId` )
+                                INSERT INTO `xsbbiz`.`xiniu_lp_data` (`lpName`, `ownershipOrganization`,`fundsNum`,`cooperationAgency`,`institutionId` )
                                 VALUES (%s, %s,%s, %s,%s)
                                 """,
                                 params)
@@ -1180,7 +1180,7 @@ class XiniuSpider(BaseSpider):
                             xiniuLP['institutionId'] = institutionId
                             # 插入sql
                             xiniuLPId = self.insert(
-                                "INSERT INTO `oltp`.`xiniu_lp_data` (`lpName`, `ownershipOrganization`,`fundsNum`,`cooperationAgency`,`institutionId` )"
+                                "INSERT INTO `xsbbiz`.`xiniu_lp_data` (`lpName`, `ownershipOrganization`,`fundsNum`,`cooperationAgency`,`institutionId` )"
                                 "VALUES (%s, %s,%s, %s,%s)",
                                 (xiniuLP['lpName'], xiniuLP['ownershipOrganization'], xiniuLP['fundsNum'],
                                  xiniuLP['cooperationAgency'], xiniuLP['institutionId']))

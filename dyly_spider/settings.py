@@ -66,6 +66,7 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     # 'dyly_spider.middlewares.DylySpiderDownloaderMiddleware': 543,
+    'dyly_spider.middlewares.SeleniumMiddleware': 1,
     'dyly_spider.middlewares.RotateUserAgentMiddleware': 400,
 }
 

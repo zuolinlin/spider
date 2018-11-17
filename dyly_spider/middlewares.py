@@ -8,6 +8,8 @@
 from scrapy import signals
 import random
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
+from scrapy.http import HtmlResponse
+
 from util import cy_logger as logger
 
 
@@ -161,3 +163,12 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
         "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
         "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
     ]
+
+
+class SeleniumMiddleware(object):
+    def process_request(self, request, spider):
+        if spider.browser is not None and request.meta.get("selenium"):
+            spider.browser.get(request.url)
+            spider.log("访问：{0}".format(request.url))
+            return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source,
+                                encoding="utf-8", request=request)

@@ -27,7 +27,8 @@ class XiniuSpider(BaseSpider):
     #  设置登陆，
     def __init__(self, *a, **kw):
         super(XiniuSpider, self).__init__(*a, **kw)
-        self.url = "https://vip.xiniudata.com"
+        # self.url = "https://vip.xiniudata.com"
+        self.url = "http://www.xiniudata.com"
         self.chrome_options = Options()
         #  设置浏览器是否隐藏
         # self.chrome_options.add_argument('--headless')
@@ -42,19 +43,21 @@ class XiniuSpider(BaseSpider):
         #                                chrome_options=chrome_options)
         self.driver.get(self.url)
         time.sleep(3)  # 睡3毫秒，等待页面加载
-        self.driver.save_screenshot("0.jpg")
-        # 输入账号
-        self.driver.find_element_by_xpath('//*[@id="account"]').send_keys("18565679500")
-        # 输入密码
-        self.driver.find_element_by_xpath('//*[@id="password"]').send_keys("wzy123")
-        # 点击登陆
-        self.driver.find_element_by_xpath(
-            '//*[@id="__next"]/div/div[2]/div/div[2]/div/div/div/div/div/div/div[3]/div/div[3]/div/a').click()
-        time.sleep(10)
+        # self.driver.save_screenshot("0.jpg")
+        # # 输入账号
+        # self.driver.find_element_by_xpath('//*[@id="account"]').send_keys("18565679500")
+        # # 输入密码
+        # self.driver.find_element_by_xpath('//*[@id="password"]').send_keys("wzy123")
+        # # 点击登陆
+        # self.driver.find_element_by_xpath(
+        #     '//*[@id="__next"]/div/div[2]/div/div[2]/div/div/div/div/div/div/div[3]/div/div[3]/div/a').click()
+        # time.sleep(10)
         # 输出登陆之后的cookies
         print(self.driver.get_cookies())
-        self.driver.get("https://vip.xiniudata.com/org/investor/")
+        self.driver.get("http://www.xiniudata.com/org/investor/")
+        # self.driver.get("https://vip.xiniudata.com/org/investor/")
         time.sleep(2)
+        XiniuSpider.get_xinniu_investment_events(self)
 
     # 获取烯牛机构的列表页数据
     def get_list_data(self):
@@ -97,7 +100,7 @@ class XiniuSpider(BaseSpider):
                             params)
 
     # 获取投资机构信息
-    def get_xiniu_institution_event(self):
+    def get_xiniu_institution_info(self):
         pojo =self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_institution_data`  ")
         # cookies = self.driver.get_cookies()
         for po in pojo:
@@ -169,10 +172,14 @@ class XiniuSpider(BaseSpider):
 
     # # 机构对应的投资信息
     def get_vipXiniu_investmentEvents(self):
-        pojo = self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_institution_data`  ")
+        pojo = self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_institution_data` limit 163 ,837 ")
         for po in pojo:
             # 机构ID
             institutionId = po[0]
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
+            time.sleep(3)
             #  判断这个投资div是否存在
             flag10 = False
             try:
@@ -277,6 +284,10 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
+            time.sleep(3)
             #  判断这个新闻div是否存在
             flag3 = False
             try:
@@ -365,7 +376,9 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
-
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
            #  判断这个基金div是否存在
             flag4 = False
             try:
@@ -452,12 +465,16 @@ class XiniuSpider(BaseSpider):
                     ))
 
     # 烯牛机构对应的投资信息
-    def get_xinniu_investmentEvents(self):
-        pojo = self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_institution_data`  ")
+    def get_xinniu_investment_events(self):
+        pojo = self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_institution_data` limit 163 , 837  ")
         for po in pojo:
             # 机构ID
             institutionId = po[0]
-
+            line = po[9]
+            line = str(line).replace("https://vip.xiniudata.com", "http://www.xiniudata.com")
+            # 打开链接，加载数据
+            self.driver.get(line)
+            time.sleep(3)
             flag10 = True
             try:
                 self.driver.find_element_by_xpath('//html/body/div/div/div[3]/div/section[@id="investorEvent"]')
@@ -607,6 +624,9 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
             #  判断这个机构动态数据列表div是否存在
             flag1 = True
             try:
@@ -733,7 +753,9 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
-
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
             #  判断这个新闻div是否存在
             flag3 = True
             try:
@@ -785,7 +807,9 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
-
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
             #  判断这个基金div是否存在
             flag4 = True
             try:
@@ -935,7 +959,9 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
-
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
                 #  判断这个基金管理人列表div是否存在
             flag6 = True
             try:
@@ -1072,7 +1098,9 @@ class XiniuSpider(BaseSpider):
         for po in pojo:
             # 机构ID
             institutionId = po[0]
-
+            line = po[9]
+            # 打开链接，加载数据
+            self.driver.get(line)
             #  判断这个LP 列表数据div是否存在
             flag8 = True
             try:

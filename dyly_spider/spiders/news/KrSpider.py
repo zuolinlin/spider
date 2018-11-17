@@ -10,8 +10,10 @@ from util import date_util
 
 
 class KrSpider(NewsSpider):
+
     custom_settings = {
-        "COOKIES_ENABLED": True,
+        "AUTOTHROTTLE_ENABLED": True,
+        "DOWNLOAD_DELAY": 6
     }
 
     name = "36kr_news"
@@ -38,7 +40,6 @@ class KrSpider(NewsSpider):
         chrome_options.add_argument('no-sandbox')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
                                         chrome_options=chrome_options)
-        self.browser.set_page_load_timeout(30)
         # 传递信息,也就是当爬虫关闭时scrapy会发出一个spider_closed的信息,当这个信号发出时就调用closeSpider函数关闭这个浏览器.
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 

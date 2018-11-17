@@ -3,7 +3,7 @@ import json
 
 from scrapy import Request
 
-from dyly_spider.spiders.news import NewsSpider
+from dyly_spider.spiders.news.NewsSpider import NewsSpider
 
 
 class KrSpider(NewsSpider):
@@ -28,11 +28,6 @@ class KrSpider(NewsSpider):
             )
 
     def parse(self, response):
-        """
-        机构列表
-        :param response:
-        :return:
-        """
         data = self.get_data(response)
         if data is not None:
             page_data = data["pageData"]

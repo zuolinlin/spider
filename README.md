@@ -2,11 +2,17 @@
 **项目结构** 
 ```
 dyly_spider
+├─bin 执行脚本
+│  ├─git-pull.bat 更新代码（windows）
+│  ├─git-pull.sh 更新代码（mac、linux）
+│  ├─robo_report.bat 萝卜-研报 执行脚本（windows）
+│  ├─run.bat 执行（windows）
+│  └─run.sh  执行（mac、linux）
 ├─dyly_spider 爬虫相关
 │  │─file 谷歌浏览器驱动文件（需浏览器渲染完才能抓取时使用）
 │  │─spiders 爬虫
-│  │    │─zdb 投资界
-│  │    │   │─ZdbSeleniumSpider.py 投资人物（浏览器渲染）
+│  │    ├─zdb 投资界
+│  │    │   ├─ZdbSeleniumSpider.py 投资人物（浏览器渲染）
 │  │    │   └─ZdbSpider.py 投资人物
 │  │    └─BaseSpider.py  爬虫父类
 │  ├─items.py 指定保存文件的数据结构
@@ -15,10 +21,15 @@ dyly_spider
 │  └─settings.py  设置文件，指定项目的一些配置
 ├─util 工具类
 │  ├─db 数据库
+│  ├─CookieUtil.py cookie
 │  ├─cy_logger.py 日志
-│  └─QiniuUtil.py 七牛文件管理工具类
+│  ├─date_util.py 日期
+│  ├─QiniuUtil.py 七牛文件管理工具类
+│  └─XPathUtil.py xpath相关
 ├─scrapy.cfg scrapy配置 
 ├─README.md 说明文件
+├─requirements.txt 依赖包
+├─shells.txt  爬虫解析相关
 └─run.py 执行
 ```
 **依赖包**

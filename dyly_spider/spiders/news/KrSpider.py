@@ -3,10 +3,10 @@ import json
 
 from scrapy import Request
 
-from dyly_spider.spiders.BaseSpider import BaseSpider
+from dyly_spider.spiders.news import NewsSpider
 
 
-class KrSpider(BaseSpider):
+class KrSpider(NewsSpider):
 
     custom_settings = {
         "COOKIES_ENABLED": True,
@@ -36,6 +36,7 @@ class KrSpider(BaseSpider):
         data = self.get_data(response)
         if data is not None:
             page_data = data["pageData"]
+            self.insert_new(None, None, None, None, None, 2)
 
     def get_data(self, req):
         data = json.loads(req.body)

@@ -169,6 +169,6 @@ class SeleniumMiddleware(object):
     def process_request(self, request, spider):
         if spider.browser is not None and request.meta.get("selenium"):
             spider.browser.get(request.url)
-            spider.log("访问：{0}".format(request.url))
+            spider.log("selenium 渲染url======> {0}".format(request.url))
             return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source,
                                 encoding="utf-8", request=request)

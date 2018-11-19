@@ -37,18 +37,19 @@ class TechnodeSpider(NewsSpider):
         for data in data_list:
             #  新闻详情页URl
             url = data.xpath('.//div[@class="item-details"]/h3/a/@href').get().strip()
+            # 摘要
+            content = data.xpath('.//div[@class="item-details"]/p/text()').get().strip()
             yield Request(
                 url,
-                meta=response.meta,
+                meta={"content": content},
                 callback=self.detail
             )
-
         # 请求下一页
-        next_url =response.xpath('/div[@class="page-nav"]/a[last()]/@href').get()
+        next_url =response.xpath('//div[@class="page-nav"]/a[last()]/@href').get()
         if not next_url:
             return
         else:
-            yield Request(next_url, callable=self.parse)
+            yield Request(next_url, callback=self.parse)
 
     #
     def detail(self, response):
@@ -65,7 +66,7 @@ class TechnodeSpider(NewsSpider):
         # 来源
         source = "动点科技"
         #  摘要
-        digest = response.xpath('//blockquote/p/strong/text()').get().strip()
+        digest = response.meta['content']
         # 内容
         content = response.xpath('//article//p//text()').getall()
         content = "".join(content).strip()

@@ -49,7 +49,7 @@ class TouTiaoSpider(NewsSpider):
         time.sleep(3)
         while True:
             self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-            time.sleep(20)
+            time.sleep(30)
             items = XPathUtil.str_to_selector(self.browser.page_source).xpath("/html/body/div/div[4]/div[2]/div["
                                                                               "2]/div/div/div/ul/li["
                                                                               "@ga_event='article_item_click']")

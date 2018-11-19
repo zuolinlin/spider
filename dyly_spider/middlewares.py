@@ -179,6 +179,7 @@ class SeleniumExtMiddleware(object):
         browser = request.meta.get("browser")
         if browser is not None:
             browser.get(request.url)
+            time.sleep(3)
             spider.log("selenium 渲染url======> {0}".format(request.url))
             return HtmlResponse(url=browser.current_url, body=browser.page_source,
                                 encoding="utf-8", request=request)

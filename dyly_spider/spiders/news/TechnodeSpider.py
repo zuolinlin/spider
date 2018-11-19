@@ -21,9 +21,9 @@ class TechnodeSpider(NewsSpider):
         # {"code": 5, "name": "科技快讯"},
     ]
 
-    start_urls = ["https://cn.technode.com/post/category/startups/"       # 初创公司报道
+    start_urls = [#"https://cn.technode.com/post/category/startups/"       # 初创公司报道
                  # "https://cn.technode.com/post/category/technode-talks/",  # 观点
-                 # "https://cn.technode.com/post/category/blockchain/",      # 区块链
+                  "https://cn.technode.com/post/category/blockchain/",      # 区块链
                  #  "https://cn.technode.com/nodebang/",                      # nodebang
                  #  "https://cn.technode.com/newsnow/"                       # 科技快讯
                   ]
@@ -62,7 +62,7 @@ class TechnodeSpider(NewsSpider):
         # 时间
         push_time = response.xpath('//time[@itemprop="dateCreated"]/text()').get().strip()
         # 新闻类型
-        new_type = "初创公司报道"
+        new_type = "区块链"
         # 来源
         source = "动点科技"
         #  摘要

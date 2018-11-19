@@ -12,7 +12,7 @@ class MorningWhistleSpider(NewsSpider):
         "CONCURRENT_REQUESTS": 1
     }
 
-    name = "morning_whistle"
+    name = "morning_whistle_news"
     allowed_domains = ["morningwhistle.com"]
 
     start_url = "http://www.morningwhistle.com/website/content/list?sort=zx&siteId=8&channelFlag=info&isParent=false" \

@@ -19,4 +19,4 @@ scrapy crawl baidu_zhaopin -s LOG_FILE=/logs/baidu_zhaopin.log
 # 36kr-新闻相关
 scrapy crawl 36kr_news -s LOG_FILE=/logs/36kr_news.log
 # 晨哨君-新闻相关
-scrapy crawl morning_whistle -s LOG_FILE=/logs/morning_whistle.log
+scrapy crawl morning_whistle_news -s LOG_FILE=/logs/morning_whistle_news.log

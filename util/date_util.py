@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
+from util.cy_logger import log
 
 
 def get_date(millisecond):
@@ -14,6 +15,9 @@ def get_date(millisecond):
 
 
 def strptime(string, format):
-    if string is None or len(string) == 0:
-        return None
-    return time.strptime(string, format)
+    try:
+        if string is None or len(string) == 0:
+            return None
+        return time.strptime(string, format)
+    except Exception as e:
+        log("时间转换失败===> params: {},{}".format(string, format) + str(e))

@@ -53,7 +53,7 @@ class ZhiPinSpiderPipeline(object):
     """
 
     def process_item(self, item, spider):
-        logger.log("===> " + str(item))
+        # logger.log("===> " + str(item))
         insert(
             "INSERT INTO `xsbbiz`.`zhipin_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`,  `platform`) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -67,7 +67,7 @@ class ZhiLianSpiderPipeline(object):
     """
 
     def process_item(self, item, spider):
-        logger.log("===> " + str(item))
+        # logger.log("===> " + str(item))
         insert(
             "INSERT INTO `xsbbiz`.`zhilian_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `link`) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
@@ -81,7 +81,7 @@ class BaiduZhaopinSpiderPipeline(object):
     """
 
     def process_item(self, item, spider):
-        logger.log("===> " + str(item))
+        # logger.log("===> " + str(item))
         insert(
             "INSERT INTO `xsbbiz`.`baidu_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",

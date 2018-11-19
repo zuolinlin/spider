@@ -8,6 +8,7 @@ from util import cy_logger as logger
 from util.XPathUtil import str_to_selector
 
 
+# Boss直聘
 class ZhiPinSpider(BaseSpider):
     name = "boss_zhipin"
     allowed_domains = ["zhipin.com"]

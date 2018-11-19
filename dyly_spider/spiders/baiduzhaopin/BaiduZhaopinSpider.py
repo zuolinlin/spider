@@ -7,6 +7,7 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 from util import cy_logger as logger
 
 
+# 百度招聘
 class BaiduZhaopinSpider(BaseSpider):
     name = "baidu_zhaopin"
     allowed_domains = ["baidu.com"]

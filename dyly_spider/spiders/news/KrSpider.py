@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 
 from pydispatch import dispatcher
 from scrapy import Request, signals
@@ -11,10 +12,10 @@ from util import date_util
 
 class KrSpider(NewsSpider):
 
-    custom_settings = {
-        "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 6
-    }
+    # custom_settings = {
+    #     "AUTOTHROTTLE_ENABLED": True,
+    #     "DOWNLOAD_DELAY": 6
+    # }
 
     name = "36kr_news"
     allowed_domains = ["36kr.com"]
@@ -71,6 +72,7 @@ class KrSpider(NewsSpider):
                         dont_filter=True,
                         callback=self.parse
                     )
+            time.sleep(30)
             for item in data.get("items", []):
                 out_id = item.get("id")
                 push_date = date_util.strptime(item.get("published_at"), '%Y-%m-%dT%H:%M:%S+08:00')

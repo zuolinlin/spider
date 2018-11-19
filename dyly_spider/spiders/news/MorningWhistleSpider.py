@@ -8,14 +8,15 @@ from util import XPathUtil, date_util
 class MorningWhistleSpider(NewsSpider):
     custom_settings = {
         "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 3
+        "DOWNLOAD_DELAY": 10,
+        "CONCURRENT_REQUESTS": 1
     }
 
     name = "morning_whistle"
     allowed_domains = ["morningwhistle.com"]
 
     start_url = "http://www.morningwhistle.com/website/content/list?sort=zx&siteId=8&channelFlag=info&isParent=false" \
-                "&lastIndex={}&pageSize={} "
+                "&lastIndex={}&pageSize={}"
     page = 1
     page_size = 26
 
@@ -49,20 +50,22 @@ class MorningWhistleSpider(NewsSpider):
                     "".join(content.xpath('normalize-space(string(.))').extract()),
                     4
                 )
-            if self.page == 1:
-                page_total = data.get("pageTotal")
-                while self.page < page_total:
-                    self.page = self.page + 1
-                    yield Request(
-                        self.start_url.format((self.page - 1) * self.page_size - 1, self.page_size),
-                        meta=response.meta,
-                        dont_filter=True,
-                        callback=self.parse
-                    )
+            page_total = data.get("pageTotal")
+            if self.page < page_total:
+                self.page = self.page + 1
+                yield Request(
+                    self.start_url.format((self.page - 1) * self.page_size - 1, self.page_size),
+                    dont_filter=True,
+                    callback=self.parse
+                )
 
     def get_data(self, req):
-        data = json.loads(req.body)
-        if data["code"] == 1:
-            return data["data"]
+        body = json.loads(req.body)
+        if body["code"] == 1:
+            data = body["data"]
+            if len(data.get("rows", [])) > 0:
+                return data
+            else:
+                self.log_error("request failed：" + repr(body))
         else:
-            self.log_error("request failed：" + repr(data))
+            self.log_error("request failed：" + repr(body))

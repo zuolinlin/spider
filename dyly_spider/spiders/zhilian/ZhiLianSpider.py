@@ -6,6 +6,7 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 from util import cy_logger as logger
 
 
+# 智联招聘
 class ZhiLianSpider(BaseSpider):
     name = "zhi_lian"
     allowed_domains = ["zhaopin.com"]

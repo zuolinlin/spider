@@ -56,10 +56,10 @@ class TechnodeKjkxSpider(NewsSpider):
                     #  新闻详情页URl
                     url = new.xpath('.//div[@class="td_mod5 td_mod_wrap "]/div/a/@href').get().strip()
                     # 摘要
-                    content = new.xpath('.//div[@class="td_mod5 td_mod_wrap "]').get().strip()
+                    # content = new.xpath('.//div[@class="td_mod5 td_mod_wrap "]').get().strip()
                     yield Request(
                         url,
-                        meta={"content": content},
+                        # meta={"content": content},
                         callback=self.detail
                     )
                 self.current_page += 1
@@ -67,14 +67,15 @@ class TechnodeKjkxSpider(NewsSpider):
                     url="https://cn.technode.com/wp-admin/admin-ajax.php",
                     formdata={"action": "td_ajax_block",
                               "td_atts":
-                                  '{"limit":"9","ajax_pagination":"load_more","installed_post_types":"nodebang","custom_title":"NodeBang"}',
-                              "td_block_id": "td_uid_1_5bf2586ae2f9d",
+                                  '{"limit":"9","ajax_pagination":"load_more","installed_post_types":"newsnow","custom_title":"科技快讯"}',
+                              "td_block_id":"td_uid_1_5bf280d9209d1",
                               "td_column_number": "3",
                               "td_current_page": str(self.current_page),
-                              "block_type": "6"},
+                              "block_type": "8"},
 
                     callback=self.parse
                 )
+
     #
     def detail(self, response):
         # 外部编号
@@ -90,10 +91,11 @@ class TechnodeKjkxSpider(NewsSpider):
         # 来源
         source = "动点科技"
         #  摘要
-        digest = response.meta['content']
+        #digest = response.meta['content']
         # 内容
         content = response.xpath('//article//p//text()').getall()
         content = "".join(content).strip()
+        digest = content.split('。')[0][7:]
         # 爬取来源
         spider_source = 3
         self.insert_new(

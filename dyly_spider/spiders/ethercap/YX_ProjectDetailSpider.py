@@ -110,7 +110,7 @@ class YXProjectDetailSpider(BaseSpider):
                 data.get("projectName", None),
                 data.get("upCatgyParentName", None),
                 data.get("homepage", None),
-                date_util.strptime(data.get("foundDate", None), "%Y-%m"),
+                date_util.strptime(data.get("foundDate"), "%Y-%m"),
                 data.get("shortAbstract", None),
                 data.get("abstract", None),
                 data.get("cityName", None),

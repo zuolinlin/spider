@@ -25,6 +25,14 @@ class ZdbSeleniumSpider(BaseSpider):
         # 传递信息,也就是当爬虫关闭时scrapy会发出一个spider_closed的信息,当这个信号发出时就调用closeSpider函数关闭这个浏览器.
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
+    def start_requests(self):
+        for start_url in self.start_urls:
+            yield Request(
+                start_url,
+                meta={"selenium": True},
+                dont_filter=True
+            )
+
     def parse(self, response):
         self.log("*" * 100)
         self.log("列表地址：" + response.url)
@@ -35,6 +43,7 @@ class ZdbSeleniumSpider(BaseSpider):
                 item.xpath('div[1]/a/@href').extract_first(),
                 dont_filter=True,
                 headers={},
+                meta={"selenium": True},
                 callback=self.detail
                 )
 

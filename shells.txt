@@ -16,3 +16,5 @@ scrapy crawl boss_zhipin -s LOG_FILE=/logs/boss_zhipin.log
 scrapy crawl zhi_lian -s LOG_FILE=/logs/zhi_lian.log
 # 百度招聘-招聘信息
 scrapy crawl baidu_zhaopin -s LOG_FILE=/logs/baidu_zhaopin.log
+# 36kr 新闻
+scrapy crawl 36kr_news -s LOG_FILE=/logs/36kr_news.log

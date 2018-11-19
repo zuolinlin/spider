@@ -5,12 +5,11 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
 import random
+
+from scrapy import signals
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 from scrapy.http import HtmlResponse
-
-from util import cy_logger as logger
 
 
 class DylySpiderSpiderMiddleware(object):
@@ -167,8 +166,8 @@ class RotateUserAgentMiddleware(UserAgentMiddleware):
 
 class SeleniumMiddleware(object):
     def process_request(self, request, spider):
-        if spider.browser is not None and request.meta.get("selenium"):
+        if hasattr(spider, 'browser') and request.meta.get("selenium"):
             spider.browser.get(request.url)
-            spider.log("访问：{0}".format(request.url))
+            spider.log("selenium 渲染url======> {0}".format(request.url))
             return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source,
                                 encoding="utf-8", request=request)

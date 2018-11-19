@@ -20,3 +20,5 @@ scrapy crawl baidu_zhaopin -s LOG_FILE=/logs/baidu_zhaopin.log
 scrapy crawl 36kr_news -s LOG_FILE=/logs/36kr_news.log
 # 晨哨君-新闻相关
 scrapy crawl morning_whistle_news -s LOG_FILE=/logs/morning_whistle_news.log
+# 今日头条-新闻相关
+scrapy crawl toutiao_news -s LOG_FILE=/logs/toutiao_news.log

@@ -32,8 +32,8 @@ class TouTiaoSpider(NewsSpider):
         super(TouTiaoSpider, self).__init__(*a, **kw)
         chrome_options = webdriver.ChromeOptions()
         # 不打开浏览器窗口
-        # chrome_options.add_argument('headless')
-        # chrome_options.add_argument('no-sandbox')
+        chrome_options.add_argument('headless')
+        chrome_options.add_argument('no-sandbox')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
                                         chrome_options=chrome_options)
         self.browser_detail = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',

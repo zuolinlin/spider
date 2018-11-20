@@ -10,6 +10,14 @@ import random
 from scrapy import signals
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 from scrapy.http import HtmlResponse
+from selenium import webdriver
+
+chrome_options = webdriver.ChromeOptions()
+# 不打开浏览器窗口
+chrome_options.add_argument('headless')
+chrome_options.add_argument('no-sandbox')
+browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+                           chrome_options=chrome_options)
 
 
 class DylySpiderSpiderMiddleware(object):
@@ -175,8 +183,7 @@ class SeleniumMiddleware(object):
 
 class SeleniumExtMiddleware(object):
     def process_request(self, request, spider):
-        browser = request.meta.get("browser")
-        if browser is not None:
+        if request.meta.get("selenium"):
             browser.get(request.url)
             spider.log("selenium 渲染url======> {0}".format(request.url))
             return HtmlResponse(url=browser.current_url, body=browser.page_source,

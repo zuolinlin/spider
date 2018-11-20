@@ -47,7 +47,7 @@ class HexunSpider(NewsSpider):
                 next_url = "http://open.tool.hexun.com/MongodbNewsService/newsListPageByJson.jsp?id=100018982&s=30&cp=" + str(
                 self.current_page) + "&priority=0&callback=hx_json31542624833618"
                 yield Request(next_url, dont_filter=True, callback=self.parse)
-            time.sleep(10)
+            time.sleep(3)
             jsonData = str(html)[22:-4]
             datas = json.loads(jsonData)
             result = datas['result']

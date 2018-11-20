@@ -12,8 +12,6 @@ from util import XPathUtil
 
 class TouTiaoSpider(NewsSpider):
     custom_settings = {
-        "REDIRECT_ENABLED": False,
-        "CONCURRENT_REQUESTS": 1,
         "DOWNLOADER_MIDDLEWARES": {
             'dyly_spider.middlewares.SeleniumExtMiddleware': 600
         }
@@ -25,6 +23,8 @@ class TouTiaoSpider(NewsSpider):
     start_url = "https://www.toutiao.com/ch/news_finance/"
 
     detail_url = "https://www.toutiao.com"
+
+    detail_url2 = "https://www.toutiao.com/a{}/"
 
     start_index = 0
 
@@ -49,7 +49,7 @@ class TouTiaoSpider(NewsSpider):
         time.sleep(3)
         while True:
             self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-            time.sleep(30)
+            time.sleep(10)
             items = XPathUtil.str_to_selector(self.browser.page_source).xpath("/html/body/div/div[4]/div[2]/div["
                                                                               "2]/div/div/div/ul/li["
                                                                               "@ga_event='article_item_click']")
@@ -57,11 +57,12 @@ class TouTiaoSpider(NewsSpider):
                 break
             for item in items[self.start_index:]:
                 nav = item.xpath("div/div[1]/div/div[1]/a/@href").extract_first()
+                our_id = re.findall(r"/(\d+?)/", nav)[0]
                 yield Request(
-                    self.detail_url + nav,
+                    self.detail_url2.format(our_id),
                     meta={
                         "browser": self.browser_detail,
-                        "out_id": re.findall(r"/(\d+?)/", nav)[0],
+                        "out_id": our_id,
                         "title": item.xpath("normalize-space(div/div[1]/div/div[1]/a/text())").extract_first(),
                         "source": item.xpath(
                             "normalize-space(div/div[1]/div/div[2]/div[1]/div/a[2]/text())").extract_first().replace(

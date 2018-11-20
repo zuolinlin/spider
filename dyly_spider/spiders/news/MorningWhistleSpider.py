@@ -6,6 +6,9 @@ from util import XPathUtil, date_util
 
 
 class MorningWhistleSpider(NewsSpider):
+    """
+    晨哨君
+    """
     custom_settings = {
         "AUTOTHROTTLE_ENABLED": True,
         "DOWNLOAD_DELAY": 10,

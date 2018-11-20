@@ -11,6 +11,9 @@ from util import date_util
 
 
 class KrSpider(NewsSpider):
+    """
+    36氪
+    """
 
     # custom_settings = {
     #     "AUTOTHROTTLE_ENABLED": True,

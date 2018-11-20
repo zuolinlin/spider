@@ -16,7 +16,7 @@ class ZhiPinSpider(BaseSpider):
 
     # 自定义设置
     custom_settings = {
-        # "DOWNLOAD_DELAY": 2,
+        "DOWNLOAD_DELAY": 2,
         'ITEM_PIPELINES': {
             'dyly_spider.pipelines.ZhiPinSpiderPipeline': 100,
         },

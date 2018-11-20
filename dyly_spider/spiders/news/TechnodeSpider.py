@@ -5,7 +5,9 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 from scrapy import Request
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
 
-
+"""
+初创公司  观点  区块链
+"""
 class TechnodeSpider(NewsSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
@@ -82,4 +84,3 @@ class TechnodeSpider(NewsSpider):
             content,
             spider_source
         )
-        pass

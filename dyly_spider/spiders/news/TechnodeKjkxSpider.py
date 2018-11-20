@@ -15,7 +15,9 @@ class TechnodeKjkxSpider(NewsSpider):
 
     name = "technode_kjkx"
     allowed_domains = ["cn.technode.com"]
-    start_urls = ["https://cn.technode.com/newsnow/"                       # 科技快讯
+    # 科技快讯
+    start_urls = ["http://news.hexun.com/financial/"
+
     ]
 
     def __init__(self, *a, **kw):

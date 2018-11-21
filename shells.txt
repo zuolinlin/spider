@@ -24,3 +24,5 @@ scrapy crawl morning_whistle_news -s LOG_FILE=/logs/morning_whistle_news.log
 scrapy crawl toutiao_news -s LOG_FILE=/logs/toutiao_news.log
 # 中证网-公司新闻
 scrapy crawl cs_news -s LOG_FILE=/logs/cs_news.log
+# 零壹财经
+scrapy crawl caijing_news -s LOG_FILE=/logs/caijing_news.log

@@ -31,7 +31,6 @@ class CsSpider(NewsSpider):
     ]
 
     list_url = "https://www.01caijing.com/articles_loading.json?pageIndex={page}&pageSize=10&categoryId={news_type}"
-    detail_url = "http://www.01caijing.com/article/{id}.htm"
 
     def __init__(self, *a, **kw):
         super(CsSpider, self).__init__(*a, **kw)

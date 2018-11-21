@@ -1,14 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
-import re
-import time
 
-from pydispatch import dispatcher
-from scrapy import Request, signals
-from selenium import webdriver
+from scrapy import Request
 
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
-from util import date_util, RegExUtil
+from util import RegExUtil
 
 
 class CsSpider(NewsSpider):
@@ -48,7 +43,7 @@ class CsSpider(NewsSpider):
     def parse(self, response):
         items = response.xpath("/html/body/div[@class='single-article']")
         # 下一页
-        if len(items) == 10:
+        if len(items) > 0:
             page = response.meta.get("page")+1
             response.meta.update({"page": page})
             yield Request(

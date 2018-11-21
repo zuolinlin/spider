@@ -78,7 +78,7 @@ class CsSpider(NewsSpider):
             response.meta.get("name"),
             response.meta.get("source"),
             response.meta.get("digest"),
-            "".join(detail.xpath("div[4]").xpath('normalize-space(string(.))').extract()).replace('　', ''),
+            "".join(detail.xpath("div[@class='article-txt']").xpath('normalize-space(string(.))').extract()).replace('　', ''),
             10
         )
 

@@ -25,25 +25,20 @@ class CtsbwSpider(NewsSpider):
         self.browser = None
 
     def parse(self, response):
-        data_list =response.xpath('//ul[@class="content news-photo picbig"]//article[@class="col-xs-12 list-single-article"]')
+        data_list = response.xpath('//ul[@class="content news-photo picbig"]/article')
         if data_list is not None and len(data_list):
             for data in data_list:
                 #  url
-                url = data.xpath('//div[@class="col-xs-12 every-day-article-title"]/div/div/div/h4/a/@href').get().strip()
+                url = data.xpath('./div/div/div/div/div/h4/a/@href').get()\
+                    .strip()
                 out_id = url[29:-5]
-                yield Request(
-                    url,
-                    meta={
-                        "out_id": out_id
-                    },
-                    callback=self.detail
-                )
+                yield Request(url, meta={"out_id": out_id},callback=self.detail)
             # 只能请求到190 页的数据，后面的分页数据不对
             pages = 190
             while self.current_page < pages:
-                self.current_page += 1
-                next_url = "http://www.ctsbw.com/cn/" + str(self.current_page)+".html"
-                yield Request(next_url, callback=self.parse)
+                  self.current_page += 1
+                  next_url = "http://www.ctsbw.com/cn/" + str(self.current_page)+".html"
+                  yield Request(next_url, callback=self.parse)
 
     def detail(self, response):
         out_id = response.meta['out_id']

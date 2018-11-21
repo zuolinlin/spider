@@ -17,7 +17,7 @@ class LuxeSpider(NewsSpider):
     name = "luxe"
     allowed_domains = ["luxe.co"]
     # 金融与科技
-    start_urls = ["http://luxe.co/category/finance"
+    start_urls = ["http://luxe.co/category/tech"
                   ]
 
     def __init__(self, *a, **kw):
@@ -58,7 +58,7 @@ class LuxeSpider(NewsSpider):
         digest = response.meta['digest']
         content = response.xpath('//div[@class="post-body content"]//p//text()').getall()
         content = "".join(content).strip()
-        new_type = "金融"
+        new_type = "科技"
         source = "华丽志"
         spider_source = 9
 

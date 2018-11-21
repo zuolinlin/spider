@@ -26,11 +26,49 @@ class LuxeSpider(NewsSpider):
         self.browser = None
 
     def parse(self, response):
-        data_list =response.xpath('/html/body/div[2]/div/div/div[3]/div[@class="col-md-9 page-left"]//div')
+        data_list = response.xpath('//div[@class="col-md-9 page-left"]//div//div[@class="col-md-7 col-6 right"]')
         if data_list is not None:
-           for data in data_list:
-               title = data.xpath('./a/@title').get().strip()  # 标题
-               data.xpath('')
+            for data in data_list:
+                title = data.xpath('./h2/a/@title').get().strip()  # 标题
+                digest = data.xpath('./p/text()').get().strip()  # 摘要
+                push_date = data.xpath('./div/text()').get().strip()  # 日期
+                url = data.xpath('./h2/a/@href').get().strip()  # URL
+                out_id = url[20:]
+                yield Request(
+                    url,
+                    meta={"title": title,
+                          "digest": digest,
+                          "push_date": push_date,
+                          "out_id": out_id},
+                    callback=self.detail
+                )
+            # 获取下一页的数据
+            pages = 47
+            while self.current_page < pages:
+                self.current_page += 1
+                next_url ="http://luxe.co/category/finance/page/"+ str(self.current_page)
+                yield Request(next_url, callback=self.parse)
+        else:
+            return
 
     def detail(self, response):
-        pass
+        out_id = response.meta['out_id']
+        push_time = response.meta['push_date']
+        title = response.meta['title']
+        digest = response.meta['digest']
+        content = response.xpath('//div[@class="post-body content"]//p//text()').getall()
+        content = "".join(content).strip()
+        new_type = "金融"
+        source = "华丽志"
+        spider_source = 9
+
+        self.insert_new(
+            out_id,
+            push_time,
+            title,
+            new_type,
+            source,
+            digest,
+            content,
+            spider_source
+        )

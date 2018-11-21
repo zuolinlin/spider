@@ -96,6 +96,15 @@ class HexunSpider(NewsSpider):
             source = "和讯网"
             content = response.xpath('//div[@id="artibody"]//p//text()').getall()
             content = "".join(content).strip()
+        # 详情页的第四套模版
+        navetc = response.xpath('//div[@id="navetc"]')
+        if navetc is not None and len(navetc) != 0:
+            push_data = response.xpath(
+                '//div[@id="mainbox"]/div[2]/div[1]/font/text()').get().strip()
+            push_data = str(push_data).replace(r'年', '-').replace(r'月', '-').replace(r'日', ' ')
+            source = "和讯网"
+            content = response.xpath('//div[@class="detail_cnt"]//p//text()').getall()
+            content = "".join(content).strip()
         self.insert_new(
             out_id,
             push_data,

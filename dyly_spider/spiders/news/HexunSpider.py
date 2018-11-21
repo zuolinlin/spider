@@ -13,6 +13,7 @@ class HexunSpider(NewsSpider):
 
     custom_settings = {
         "COOKIES_ENABLED": True,
+        "DOWNLOAD_DELAY": 4
     }
 
     name = "hexun"

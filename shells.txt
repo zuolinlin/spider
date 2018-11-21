@@ -26,3 +26,5 @@ scrapy crawl toutiao_news -s LOG_FILE=/logs/toutiao_news.log
 scrapy crawl cs_news -s LOG_FILE=/logs/cs_news.log
 # 零壹财经
 scrapy crawl caijing_news -s LOG_FILE=/logs/caijing_news.log
+# 多知网
+scrapy crawl duozhi_news -s LOG_FILE=/logs/duozhi_news.log

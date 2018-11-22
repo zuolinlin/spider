@@ -28,7 +28,7 @@ class HuoXingSpider(NewsSpider):
     ]
 
     start_url = "https://www.huoxing24.com/info/news/shownews?currentPage={page}&pageSize=20&channelId={" \
-                "news_type}&refreshTime={refresh_time} "
+                "news_type}&refreshTime={refresh_time}"
     detail_url = "https://www.huoxing24.com/newsdetail/{out_id}.html"
 
     def __init__(self, *a, **kw):

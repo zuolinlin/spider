@@ -30,3 +30,5 @@ scrapy crawl caijing_news -s LOG_FILE=/logs/caijing_news.log
 scrapy crawl duozhi_news -s LOG_FILE=/logs/duozhi_news.log
 # 火星财经
 scrapy crawl huoxing24_news -s LOG_FILE=/logs/huoxing24_news.log
+# 鲸媒体
+scrapy crawl jingmeiti_news -s LOG_FILE=/logs/jingmeiti_news.log

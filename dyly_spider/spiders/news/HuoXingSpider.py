@@ -82,7 +82,8 @@ class HuoXingSpider(NewsSpider):
             response.meta.get("new_type"),
             response.meta.get("source"),
             response.meta.get("digest"),
-            "".join(response.xpath('//*[@id="detailBox"]/div[@class="detail-text-cont simditor-body"]/*/*')[1:-1].xpath('normalize-space(string(.))').extract()).replace("　", ""),
+            "".join(response.xpath('//*[@id="detailBox"]/div[@class="detail-text-cont simditor-body"]/*/*')[1:-1]
+                    .xpath('normalize-space(string(.))').extract()).replace("　", ""),
             14
         )
 

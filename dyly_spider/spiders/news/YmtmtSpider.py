@@ -45,6 +45,7 @@ class YmtmtSpider(NewsSpider):
                         url,
                         callback=self.detail
                 )
+            time.sleep(5)
             # 获取下一页的数据
             pages = 701
             while self.current_page < pages:

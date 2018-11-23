@@ -17,13 +17,20 @@ class IheimaSpider(NewsSpider):
     name = "iheima"
     allowed_domains = ["iheima.com"]
     # 金融与科技
-    start_urls = ["http://www.iheima.com/scope/1?page=10&pagesize=20"
+    start_urls = ["http://www.iheima.com/scope/1"
                   ]
 
     def __init__(self, *a, **kw):
         super(IheimaSpider, self).__init__(*a, **kw)
         self.current_page = 1
         self.browser = None
+
+    def start_requests(self):
+        url = "http://www.ebrun.com/top/1"
+        yield Request(
+                url=url,
+                meta={"selenium": True}
+            )
 
     def parse(self, response):
         html =response.text

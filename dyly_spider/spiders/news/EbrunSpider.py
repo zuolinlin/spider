@@ -36,20 +36,17 @@ class EbrunSpider(NewsSpider):
         # #  设置浏览器是否隐藏
         # # self.chrome_options.add_argument('--headless')
         # # self.chrome_options.add_argument('--disable-gpu')
-        # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
+        # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
 
-        # chrome_options = webdriver.ChromeOptions()
-        # # 不打开浏览器窗口
-        # chrome_options.add_argument('headless')
-        # chrome_options.add_argument('no-sandbox')
-        # self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-        #                                chrome_options=chrome_options)
         chrome_options = webdriver.ChromeOptions()
         # 不打开浏览器窗口
         chrome_options.add_argument('headless')
         chrome_options.add_argument('no-sandbox')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
                                         chrome_options=chrome_options)
+
+        EbrunSpider.detail(self)
+
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
     def start_requests(self):
@@ -122,15 +119,48 @@ class EbrunSpider(NewsSpider):
                 next_url = "http://www.ebrun.com/top/" + str(self.current_page)
                 yield Request(next_url, meta={"selenium": True}, callback=self.parse)
 
-    def detail(self, response):
-        source = response.xpath('normalize-space(//article/div/p[@class="source"]/span[2]/text())').extract_first()  # 来源
-        source = str(source).split(": ")[1]
-        content = response.xpath('normalize-space(//div[@class="post-text"])').getall()
-        content = "".join(content).strip()
-        self.insert_new(
-            source,
-            content
-        )
+    def detail(self):
+        pojo = self.fetchall(
+            "SELECT * FROM `spider_news`  where  spider_source='13' AND content is NULL ORDER BY push_date DESC LIMIT 0 ,10000")
+        for po in pojo:
+            newid = po[0]
+            detial_url = po[5]
+            self.browser.get(detial_url)
+            time.sleep(1)
+            try:
+                source = self.browser.find_element_by_xpath('//article/div/p[@class="source"]/span[2]').text
+                source = str(source).split(": ")[1]
+                content = self.browser.find_element_by_xpath('//div[@class="post-text"]').text
+            except:
+                source = "亿邦动力"
+                try:
+                    content = self.browser.find_element_by_xpath('//div[@id="pic"]').text
+                except:
+                    self.exec_sql("""
+                                      delete from 
+                                        `xsbbiz`.`spider_news`
+                                     
+                                      WHERE `spider_source` = 13 and `new_id` =%s
+                                          """, (
+                                        newid
+
+                    ))
+                    continue
+
+            self.exec_sql("""
+                                                          UPDATE
+                                                            `xsbbiz`.`spider_news`
+                                                          SET
+                                                            `source` =%s,
+                                                            `content` =%s
+                                                          WHERE `spider_source` = 13 and `new_id` =%s
+                                                              """, (
+                source,
+                content,
+                newid
+
+            ))
+
 
     def spider_closed(self):
         self.log("spider closed")

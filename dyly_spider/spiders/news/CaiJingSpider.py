@@ -67,7 +67,7 @@ class CsSpider(NewsSpider):
     def detail(self, response):
         detail = response.xpath("/html/body/div[2]/div[1]/div[2]")
         self.insert_new(
-            RegExUtil.find_first("article/(.*).htm", response.url),
+            RegExUtil.find_first(r"/(\d+?).htm", response.url),
             detail.xpath("normalize-space(small/span[2]/text())").extract_first(),
             detail.xpath("normalize-space(h1/text())").extract_first(),
             response.meta.get("name"),
@@ -76,4 +76,3 @@ class CsSpider(NewsSpider):
             "".join(detail.xpath("div[@class='article-txt']").xpath('normalize-space(string(.))').extract()).replace('　', ''),
             10
         )
-

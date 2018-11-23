@@ -28,3 +28,9 @@ scrapy crawl cs_news -s LOG_FILE=/logs/cs_news.log
 scrapy crawl caijing_news -s LOG_FILE=/logs/caijing_news.log
 # 多知网
 scrapy crawl duozhi_news -s LOG_FILE=/logs/duozhi_news.log
+# 火星财经
+scrapy crawl huoxing24_news -s LOG_FILE=/logs/huoxing24_news.log
+# 鲸媒体
+scrapy crawl jingmeiti_news -s LOG_FILE=/logs/jingmeiti_news.log
+# TechWeb
+scrapy crawl techweb_news -s LOG_FILE=/logs/techweb_news.log

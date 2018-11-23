@@ -33,6 +33,8 @@ class NewsSpider(BaseSpider):
             pojo = self.fetchone(
                 "SELECT 1 FROM `spider_news` WHERE `out_id`='%s' AND `spider_source`=%s" % (out_id, spider_source)
             )
+        else:
+            return
         if pojo is None:
             return self.insert("""
                             INSERT INTO `spider_news` (

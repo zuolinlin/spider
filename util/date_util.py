@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import time
 from util.cy_logger import log
 
@@ -21,3 +22,8 @@ def strptime(string, format):
         return time.strptime(string, format)
     except Exception as e:
         log("时间转换失败===> params: {},{}".format(string, format) + str(e))
+
+
+def date_before_h(hour):
+    if hour is not None:
+        return datetime.datetime.now()-datetime.timedelta(hours=hour)

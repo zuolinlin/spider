@@ -70,8 +70,7 @@ class ChinaVentureSpider(NewsSpider):
                     response.meta.get("name"),
                     new.get("srcName"),
                     new.get("introduction"),
-                    # new.get("content"),
-                    XPathUtil.str_to_selector(new.get("content")),
+                    new.get("content"),  # XPathUtil.str_to_selector(new.get("content")),
                     "https://www.chinaventure.com.cn/cmsmodel/news/detail/{out_id}.shtml".format(out_id=out_id),
                     26
                 )
@@ -82,4 +81,3 @@ class ChinaVentureSpider(NewsSpider):
             return body["data"]
         else:
             self.log_error("request failed：" + repr(body))
-

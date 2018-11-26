@@ -73,8 +73,7 @@ class BfbizSpider(NewsSpider):
         source = response.meta['source']
         push_time = response.meta['times']
         new_type = response.meta['new_type']
-        content = response.xpath('//div[@class="content-detail"]//p//text()').getall()
-        content = "".join(content).strip()
+        content = response.xpath('//div[@class="content-detail"]').extract_first()
         spider_source = 25
         self.insert_new(
                 out_id,
@@ -84,5 +83,6 @@ class BfbizSpider(NewsSpider):
                 source,
                 digest,
                 content,
+                response.url,
                 spider_source
                     )

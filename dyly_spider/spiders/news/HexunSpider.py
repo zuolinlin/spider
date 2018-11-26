@@ -41,14 +41,14 @@ class HexunSpider(NewsSpider):
         html = response.text
         if html is not None:
             # 15146
-            pages = 15146
+            pages = 15158
             # 根据返回的totalNumber 计算出来的总页书有误 实际的数量 15146
             while self.current_page < pages:
                 self.current_page = self.current_page + 1
                 next_url = "http://open.tool.hexun.com/MongodbNewsService/newsListPageByJson.jsp?id=100018982&s=30&cp=" + str(
                 self.current_page) + "&priority=0&callback=hx_json31542624833618"
                 yield Request(next_url, dont_filter=True, callback=self.parse)
-            time.sleep(3)
+            time.sleep(1)
             jsonData = str(html)[22:-4]
             datas = json.loads(jsonData)
             result = datas['result']
@@ -104,8 +104,7 @@ class HexunSpider(NewsSpider):
                 '//div[@id="mainbox"]/div[2]/div[1]/font/text()').get().strip()
             push_data = str(push_data).replace(r'年', '-').replace(r'月', '-').replace(r'日', ' ')
             source = "和讯网"
-            content = response.xpath('//div[@class="detail_cnt"]//p//text()').getall()
-            content = "".join(content).strip()
+            content = response.xpath('//div[@class="detail_cnt"]').extract_first()
         self.insert_new(
             out_id,
             push_data,
@@ -114,5 +113,6 @@ class HexunSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )

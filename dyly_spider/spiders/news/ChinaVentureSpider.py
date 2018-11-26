@@ -62,15 +62,17 @@ class ChinaVentureSpider(NewsSpider):
                 )
             for item in items:
                 new = item.get("news")
+                out_id = new.get("id")
                 self.insert_new(
-                    new.get("id"),
+                    out_id,
                     date_util.get_date(new.get("publishAt")),
                     new.get("title"),
                     response.meta.get("name"),
                     new.get("srcName"),
                     new.get("introduction"),
-                    "".join(XPathUtil.str_to_selector(new.get("content"))
-                                       .xpath('normalize-space(string(.))').extract()).replace("　", ""),
+                    # new.get("content"),
+                    XPathUtil.str_to_selector(new.get("content")),
+                    "https://www.chinaventure.com.cn/cmsmodel/news/detail/{out_id}.shtml".format(out_id=out_id),
                     26
                 )
 

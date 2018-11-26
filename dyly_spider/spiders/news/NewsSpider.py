@@ -2,7 +2,12 @@
 import time
 import uuid
 
+from bs4 import BeautifulSoup
+from scrapy import Selector
+
 from dyly_spider.spiders.BaseSpider import BaseSpider
+
+exclude_tags = ['img', 'video', 'audio', 'object', 'embed']
 
 
 class NewsSpider(BaseSpider):
@@ -15,7 +20,7 @@ class NewsSpider(BaseSpider):
     def parse(self, response):
         pass
 
-    def insert_new(self, out_id, push_date, title, new_type, source, digest, content, spider_source):
+    def insert_new(self, out_id, push_date, title, new_type, source, digest, content, source_url, spider_source):
         """
         添加数据
         :param out_id: 外部编号
@@ -24,11 +29,11 @@ class NewsSpider(BaseSpider):
         :param new_type: 新闻类型
         :param source: 来源
         :param digest: 摘要
-        :param content: 内容
+        :param content: 内容(html字符串/Selector)
+        :param source_url: 来源地址
         :param spider_source: 爬取来源
         :return: 最后一行编号
         """
-        pojo = None
         if out_id is not None and spider_source is not None:
             pojo = self.fetchone(
                 "SELECT 1 FROM `spider_news` WHERE `out_id`='%s' AND `spider_source`=%s" % (out_id, spider_source)
@@ -36,6 +41,7 @@ class NewsSpider(BaseSpider):
         else:
             return
         if pojo is None:
+            content = remove_image_voide_audio(content)
             return self.insert("""
                             INSERT INTO `spider_news` (
                               `new_id`,
@@ -46,10 +52,11 @@ class NewsSpider(BaseSpider):
                               `source`,
                               `digest`,
                               `content`,
+                              `source_url`,
                               `spider_source`,
                               `modify_date`
                             ) 
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                             """, (
                                 str(uuid.uuid4()).replace("-", ""),
                                 out_id,
@@ -59,8 +66,18 @@ class NewsSpider(BaseSpider):
                                 source,
                                 digest,
                                 content,
+                                source_url,
                                 spider_source,
                                 time.localtime()
                             ))
 
 
+def remove_image_voide_audio(content):
+    if content is None:
+        return None
+    if type(content) == Selector:
+        content = content.get()
+    if len(content) > 0:
+        soup = BeautifulSoup(content, "lxml")
+        [s.extract() for s in soup(exclude_tags)]
+        return str(soup.body)[6:-7]

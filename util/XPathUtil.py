@@ -9,5 +9,5 @@ def str_to_selector(html_str):
     :return:
     """
     if html_str is None or len(html_str) == 0:
-        return None
+        return Selector()
     return Selector(text=html_str)

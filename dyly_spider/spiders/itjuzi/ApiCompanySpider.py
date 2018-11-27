@@ -16,7 +16,7 @@ class ApiCompanySpider(BaseSpider):
 
     custom_settings = {
         "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 1
+        "DOWNLOAD_DELAY": 3
     }
 
     name = 'itjuzi_api_company'

@@ -12,6 +12,7 @@ from pydispatch import dispatcher
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
+import logging
 
 """
 投资界---人物和投资
@@ -19,11 +20,11 @@ from dyly_spider.spiders.news.NewsSpider import NewsSpider
 
 
 class PedailySpider(NewsSpider):
-    # custom_settings = {
-    #     "COOKIES_ENABLED": True,
-    # }
+    custom_settings = {
+          "DOWNLOAD_DELAY": 2,
+    }
 
-    name = "pedaily"
+    name = "pedaily_news"
     allowed_domains = ["pedaily.cn"]
     # 最新
     base_url = "https://www.lieyunwang.com"
@@ -33,6 +34,12 @@ class PedailySpider(NewsSpider):
         {"code": "https://pe.pedaily.cn/new-third-board/", "name": "新三板"},
         {"code": "https://people.pedaily.cn/interview/", "name": "对话投资人"},
         {"code": "https://people.pedaily.cn/investor100/", "name": "投资界100"},
+
+        {"code": "https://news.pedaily.cn/i-tmt/", "name": "TMT"},
+        {"code": "https://news.pedaily.cn/i-culture-media/", "name": "文化传播娱乐"},
+        {"code": "https://news.pedaily.cn/i-consume/", "name": "消费"},
+        {"code": "https://research.pedaily.cn/1/", "name": "研究"},
+
     ]
 
     list_url = "https://{}.pedaily.cn/{}/{}"
@@ -56,7 +63,11 @@ class PedailySpider(NewsSpider):
                     detial_url = data.xpath('./li/h3/a/@href').extract_first()
                     title = data.xpath('./li/h3/a/text()').extract_first()
                     url = response.url
-                    new_type = str(url).split('/')[3]
+                    new_types = str(url).split('/')[2]
+                    if new_types == "research.pedaily.cn":
+                        new_type = "research"
+                    else:
+                        new_type = str(url).split('/')[3]
                     yield Request(
                         detial_url,
                         meta={"title": title,
@@ -65,7 +76,7 @@ class PedailySpider(NewsSpider):
                         callback=self.detail
                     )
             # 请求下一页
-            time.sleep(3)
+            time.sleep(1)
             # 获取下一页
             next_url = response.xpath('//div[@class="page-list page"]/a[last()]/@href').extract_first()
             if not next_url:

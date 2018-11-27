@@ -40,3 +40,5 @@ scrapy crawl xtecher_news -s LOG_FILE=/logs/xtecher_news.log
 scrapy crawl tobshe_news -s LOG_FILE=/logs/tobshe_news.log
 # 投资中国
 scrapy crawl chinaventure_news -s LOG_FILE=/logs/chinaventure_news.log
+# 投资界
+scrapy crawl pedaily_news -s LOG_FILE=/logs/pedaily_news.log

@@ -1,5 +1,6 @@
 import copy
 import json
+import logging
 
 from scrapy import Request
 
@@ -17,6 +18,7 @@ class BaiduZhaopinSpider(BaseSpider):
 
     # 自定义设置
     custom_settings = {
+        "LOG_LEVEL": logging.WARN,
         "DOWNLOAD_DELAY": 1,
         'ITEM_PIPELINES': {
             'dyly_spider.pipelines.BaiduZhaopinSpiderPipeline': 100,

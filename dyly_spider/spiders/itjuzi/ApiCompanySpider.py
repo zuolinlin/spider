@@ -13,6 +13,12 @@ class ApiCompanySpider(BaseSpider):
     """
     IT桔子公司接口数据抓取
     """
+
+    custom_settings = {
+        "AUTOTHROTTLE_ENABLED": True,
+        "DOWNLOAD_DELAY": 1
+    }
+
     name = 'itjuzi_api_company'
 
     # domain = "http://v1.openapi.itjuzi.com"

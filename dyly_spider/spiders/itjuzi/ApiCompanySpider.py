@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import json
+import time
 
 from scrapy import Request, FormRequest
 
@@ -72,9 +73,8 @@ class ApiCompanySpider(BaseSpider):
         if data is not None:
             # 分页
             if self.current_page == 1:
-                # total = data["total"]
-                # pages = int(total / 20) if total % 20 == 0 else int(total / 20) + 1
-                pages = 2
+                total = data["total"]
+                pages = int(total / 20) if total % 20 == 0 else int(total / 20) + 1
                 while self.current_page < pages:
                     self.current_page = self.current_page + 1
                     yield Request(

@@ -1,3 +1,4 @@
+import copy
 import json
 
 from scrapy import Request
@@ -46,10 +47,10 @@ class BaiduZhaopinSpider(BaseSpider):
                 name = row[1]
                 if full_name is not None:
                     yield Request(self.company_url.format(0, full_name), dont_filter=True, cookies=self.cookies,
-                                  headers=self.headers, meta={"pn": 0, "company": full_name})
+                                  headers=self.headers, meta={"pn": 0, "company": copy.deepcopy(full_name)})
                 else:
                     yield Request(self.company_url.format(0, name), dont_filter=True, cookies=self.cookies,
-                                  headers=self.headers, meta={"pn": 0, "company": name})
+                                  headers=self.headers, meta={"pn": 0, "company": copy.deepcopy(name)})
             current_page += 1
 
     def parse(self, response):
@@ -64,7 +65,7 @@ class BaiduZhaopinSpider(BaseSpider):
             for job in disp_data:
                 item = BaiduZhaopinItem()
                 item['company_name'] = job['company']
-                item['job_name'] = job['name']
+                item['job_name'] = job['title']
                 item['location'] = job['city']
                 item['education'] = job['education']
                 item['years'] = job['experience']
@@ -75,7 +76,7 @@ class BaiduZhaopinSpider(BaseSpider):
             # 加载下一页
             pn += 10
             yield Request(self.company_url.format(pn, company), callback=self.parse, dont_filter=True,
-                          meta={"pn": pn, "company": company})
+                          meta={"pn": pn, "company": copy.deepcopy(company)})
 
     # 获取公司列表
     def query_company_page(self, page_no=1):

@@ -40,6 +40,7 @@ pip install pymysql
 pip install selenium
 pip install qiniu
 pip install DBUtils
+pip install bs4
 pip install pypiwin32（mac、linux 不需要安装）
 也可以使用下面命令批量安装
 pip install -r requirements.txt

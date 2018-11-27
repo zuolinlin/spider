@@ -35,11 +35,11 @@ class LieyunwangSpider(NewsSpider):
         self.browser = None
 
     def parse(self, response):
-            data_list = response.xpath('//div[@class="article-container"]')
+            data_list = response.xpath('//div[@class="article-container"]/div[@class="article-bar clearfix"]')
             if data_list is not None:
                 for data in data_list:
-                    detial_url = data.xpath('./div/div[@class="article-info pore"]/a/@href').extract_first()
-                    title = data.xpath('./div/div[@class="article-info pore"]/a/text()').extract_first()
+                    detial_url = data.xpath('.//div[@class="article-info pore"]/a/@href').extract_first()
+                    title = data.xpath('.//div[@class="article-info pore"]/a/text()').extract_first()
                     detial_url = LieyunwangSpider.base_url + detial_url
                     yield Request(
                         detial_url,
@@ -47,7 +47,6 @@ class LieyunwangSpider(NewsSpider):
                         callback=self.detail
                     )
             # 请求下一页
-            time.sleep(3)
             # 获取下一页
             next_page = response.xpath('//div[@class="pagination-wrapper"]/ul/li[@class="next"]/a/@href').extract_first()
             if not next_page:

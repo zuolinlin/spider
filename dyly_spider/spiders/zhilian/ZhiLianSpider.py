@@ -1,3 +1,4 @@
+import logging
 import urllib
 from scrapy import Request
 
@@ -14,7 +15,8 @@ class ZhiLianSpider(BaseSpider):
 
     # 自定义设置
     custom_settings = {
-        "DOWNLOAD_DELAY": 1,
+        "LOG_LEVEL": logging.WARN,
+        # "DOWNLOAD_DELAY": 1,
         'ITEM_PIPELINES': {
             'dyly_spider.pipelines.ZhiLianSpiderPipeline': 100,
         },

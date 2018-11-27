@@ -56,17 +56,18 @@ class PedailySpider(NewsSpider):
                     detial_url = data.xpath('./li/h3/a/@href').extract_first()
                     title = data.xpath('./li/h3/a/text()').extract_first()
                     url = response.url
-                    new_type = str(url).split('/')[5]
+                    new_type = str(url).split('/')[3]
                     yield Request(
                         detial_url,
                         meta={"title": title,
                               "new_type": new_type},
+                        dont_filter=True,
                         callback=self.detail
                     )
             # 请求下一页
             time.sleep(3)
             # 获取下一页
-            next_url = response.xpath('//div[@class="page-list page"]/a[@class="next"]/@href').extract_first()
+            next_url = response.xpath('//div[@class="page-list page"]/a[last()]/@href').extract_first()
             if not next_url:
                 return
             else:
@@ -74,18 +75,25 @@ class PedailySpider(NewsSpider):
 
     def detail(self, response):
         title = response.meta["title"]
+        new_type = response.meta["new_type"]
         detial_url = response.url
-        out_id = str(detial_url).split("/")[6][0:-6]
-        push_time = response.xpath('//div[@class="news-show"]/div[@class="info"]/div[@class="box-l"]/span[@class="date"]').extract_first()
-        spider_source = 33
+        out_id = str(detial_url).split("/")[4][0:-6]
+        push_time = response.xpath('//div[@class="news-show"]/div[@class="info"]/div[@class="box-l"]/span[@class="date"]/text()').extract_first()
+        try:
+            digest = response.xpath('//div[@class="subject"]/text()').extract_first()
+        except:
+            digest = None
+        content = response.xpath('//div[@class="news-content"]').extract_first()
+        source = "投资界"
+        spider_source = 35
         self.insert_new(
                 out_id,
                 push_time,
                 title,
-                # new_type,
-                # source,
-                # digest,
-                # content,
+                new_type,
+                source,
+                digest,
+                content,
                 response.url,
                 spider_source
                     )

@@ -14,7 +14,7 @@ from selenium import webdriver
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
 
 """
-不凡商业
+猎云网
 """
 
 

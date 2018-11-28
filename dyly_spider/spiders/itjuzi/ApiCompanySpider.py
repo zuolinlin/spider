@@ -3,6 +3,7 @@ import datetime
 import json
 import time
 
+import requests
 from scrapy import Request, FormRequest
 
 from dyly_spider.spiders.BaseSpider import BaseSpider
@@ -16,7 +17,7 @@ class ApiCompanySpider(BaseSpider):
 
     custom_settings = {
         "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 3
+        "DOWNLOAD_DELAY": 9
     }
 
     name = 'itjuzi_api_company'
@@ -48,16 +49,23 @@ class ApiCompanySpider(BaseSpider):
         )
 
     def exec_refresh_token(self):
-        self.get_token_form.update({"granttype": "refresh_token", "refresh_token": self.refresh_token})
-        yield FormRequest(
-            url=self.get_token_url,
-            formdata=self.get_token_form,
-            method="GET",
-            callback=self.parse_refresh_token
-        )
-
-    def parse_refresh_token(self, response):
-        self.log_error("parse_refresh_token===>" + repr(self.get_data(response)))
+        minute = (datetime.datetime.now() - self.current_date).total_seconds() / 60
+        if minute < 50:
+            self.get_token_form.update({"granttype": "refresh_token", "refresh_token": self.refresh_token})
+            refresh_url = self.get_token_url + "?appid={appid}&appkey={appkey}&granttype={granttype}&refresh_token={" \
+                                               "refresh_token}".format(
+                                                                appid=self.get_token_form.get("appid"),
+                                                                appkey=self.get_token_form.get("appkey"),
+                                                                granttype=self.get_token_form.get("granttype"),
+                                                                refresh_token=self.get_token_form.get("refresh_token")
+                                                            )
+            res = requests.get(refresh_url)
+            data = json.loads(res.text)
+            if data["code"] == 1000:
+                self.current_date = datetime.datetime.now()
+                self.log("refresh_token_success===>" + repr(data))
+            else:
+                self.log_error("refresh_token_error===>" + repr(data))
 
     def parse_page(self, response):
         data = self.get_data(response).get("data", {})
@@ -75,12 +83,14 @@ class ApiCompanySpider(BaseSpider):
         )
 
     def company_list(self, response):
+        self.exec_refresh_token()
         data = self.get_data(response)
         if data is not None:
             # 分页
             if self.current_page == 1:
                 total = data["total"]
                 pages = int(total / 20) if total % 20 == 0 else int(total / 20) + 1
+                # pages = 2
                 while self.current_page < pages:
                     self.current_page = self.current_page + 1
                     yield Request(
@@ -91,18 +101,20 @@ class ApiCompanySpider(BaseSpider):
                     )
 
             for item in data["data"]:
-                yield Request(
-                    url=self.company_info_url.format(com_id=item.get("com_id")),
-                    # url=self.company_info_url.format(com_id=33607853),
-                    headers=self.headers,
-                    dont_filter=True,
-                    callback=self.company_info
-                )
+                com_id = item.get("com_id")
+                company = self.fetchone("SELECT 1 FROM `itjuzi_company` WHERE com_id=%s" % com_id)
+                if company is None:
+                    yield Request(
+                        url=self.company_info_url.format(com_id=com_id),
+                        # url=self.company_info_url.format(com_id=33607853),
+                        headers=self.headers,
+                        dont_filter=True,
+                        priority=1,
+                        callback=self.company_info
+                    )
 
     def company_info(self, response):
-        minute = (datetime.datetime.now() - self.current_date).total_seconds()/60
-        if minute > 50:
-            self.exec_refresh_token()
+        self.exec_refresh_token()
         self.save(self.get_data(response).get("data", {}))
 
     def get_data(self, response):

@@ -50,7 +50,7 @@ class ApiCompanySpider(BaseSpider):
 
     def exec_refresh_token(self):
         minute = (datetime.datetime.now() - self.current_date).total_seconds() / 60
-        if minute < 50:
+        if minute > 50:
             self.get_token_form.update({"granttype": "refresh_token", "refresh_token": self.refresh_token})
             refresh_url = self.get_token_url + "?appid={appid}&appkey={appkey}&granttype={granttype}&refresh_token={" \
                                                "refresh_token}".format(

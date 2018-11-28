@@ -39,7 +39,9 @@ class ApiCompanySpider(BaseSpider):
     pages = 0
     current_date = datetime.datetime.now()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, current_page=1, *args, **kwargs):
+        if current_page is not None and type(current_page) == int:
+            self.current_page = current_page
         super(ApiCompanySpider, self).__init__(*args, **kwargs)
 
     def start_requests(self):

@@ -36,6 +36,7 @@ class ApiCompanySpider(BaseSpider):
     headers = {}
     refresh_token = None
     current_page = 1
+    pages = 0
     current_date = datetime.datetime.now()
 
     def __init__(self, *args, **kwargs):
@@ -89,17 +90,8 @@ class ApiCompanySpider(BaseSpider):
             # 分页
             if self.current_page == 1:
                 total = data["total"]
-                pages = int(total / 20) if total % 20 == 0 else int(total / 20) + 1
+                self.pages = int(total / 20) if total % 20 == 0 else int(total / 20) + 1
                 # pages = 2
-                while self.current_page < pages:
-                    self.current_page = self.current_page + 1
-                    yield Request(
-                        url=self.company_list_url.format(page=self.current_page),
-                        headers=self.headers,
-                        dont_filter=True,
-                        callback=self.company_list
-                    )
-
             for item in data["data"]:
                 com_id = item.get("com_id")
                 company = self.fetchone("SELECT 1 FROM `itjuzi_company` WHERE com_id=%s" % com_id)
@@ -112,6 +104,14 @@ class ApiCompanySpider(BaseSpider):
                         priority=1,
                         callback=self.company_info
                     )
+            if self.current_page < self.pages:
+                self.current_page = self.current_page + 1
+                yield Request(
+                    url=self.company_list_url.format(page=self.current_page),
+                    headers=self.headers,
+                    dont_filter=True,
+                    callback=self.company_list
+                )
 
     def company_info(self, response):
         self.exec_refresh_token()

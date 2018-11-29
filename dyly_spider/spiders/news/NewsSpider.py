@@ -4,6 +4,7 @@ import uuid
 
 from bs4 import BeautifulSoup
 from scrapy import Selector
+from scrapy.selector import SelectorList
 
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
@@ -77,6 +78,8 @@ def remove_image_voide_audio(content):
         return None
     if type(content) == Selector:
         content = content.get()
+    if type(content) == SelectorList:
+        content = "".join(content.getall())
     if len(content) > 0:
         soup = BeautifulSoup(content, "lxml")
         [s.extract() for s in soup(exclude_tags)]

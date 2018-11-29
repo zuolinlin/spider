@@ -68,6 +68,7 @@ class DuoZhiSpider(NewsSpider):
             response.meta.get("name"),
             RegExUtil.find_first("来源：(.+?)\\t", detail.xpath("div[1]/text()")[1].get().strip()),
             response.meta.get("digest"),
-            "".join(detail.xpath("div[@class='subject-content']").xpath('normalize-space(string(.))').extract()).replace("　", ""),
+            detail.xpath("div[@class='subject-content']"),
+            response.url,
             12
         )

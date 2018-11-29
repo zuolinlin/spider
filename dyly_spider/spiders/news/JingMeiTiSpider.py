@@ -77,7 +77,7 @@ class JingMeiTiSpider(NewsSpider):
             response.meta.get("name"),
             source,
             response.meta.get("digest"),
-            "".join(response.xpath('//*[@id="page-content"]/div/div/div[1]/div[2]/div[2]/*[position()>1]')
-                    .xpath('normalize-space(string(.))').extract()).replace("　", ""),
+            response.xpath('//*[@id="page-content"]/div/div/div[1]/div[2]/div[2]/*[position()>1]'),
+            response.url,
             16
         )

@@ -54,7 +54,7 @@ class TobSheSpider(NewsSpider):
             "拓·灼见",
             "拓扑社",
             response.meta.get("digest"),
-            "".join(response.xpath('//div[@class="post-content"]')
-                    .xpath('normalize-space(string(.))').extract()).replace("　", ""),
+            response.xpath('//div[@class="post-content"]'),
+            response.url,
             24
         )

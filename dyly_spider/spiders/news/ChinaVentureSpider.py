@@ -4,7 +4,7 @@ import json
 from scrapy import Request
 
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
-from util import date_util, XPathUtil
+from util import date_util
 
 
 class ChinaVentureSpider(NewsSpider):

@@ -95,8 +95,8 @@ class KrSpider(NewsSpider):
             response.meta.get("name"),
             source,
             detail.xpath('normalize-space(div[1]/div/section[1]/text())').extract_first(),
-            "".join(detail.xpath('div[1]/div/div[2]/section[1]/*[position()>1]').xpath(
-                'normalize-space(string(.))').extract()),
+            detail.xpath('div[1]/div/div[2]/section[1]/*[position()>1]'),
+            response.url,
             2
         )
 

@@ -4,6 +4,7 @@ import uuid
 
 from bs4 import BeautifulSoup
 from scrapy import Selector
+from scrapy.selector import SelectorList
 
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
@@ -75,7 +76,7 @@ class NewsSpider(BaseSpider):
 def remove_image_voide_audio(content):
     if content is None:
         return None
-    if type(content) == Selector:
+    if type(content) == Selector or type(content) == SelectorList:
         content = content.get()
     if len(content) > 0:
         soup = BeautifulSoup(content, "lxml")

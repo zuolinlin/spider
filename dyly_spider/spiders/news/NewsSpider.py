@@ -76,8 +76,10 @@ class NewsSpider(BaseSpider):
 def remove_image_voide_audio(content):
     if content is None:
         return None
-    if type(content) == Selector or type(content) == SelectorList:
+    if type(content) == Selector:
         content = content.get()
+    if type(content) == SelectorList:
+        content = "".join(content.getall())
     if len(content) > 0:
         soup = BeautifulSoup(content, "lxml")
         [s.extract() for s in soup(exclude_tags)]

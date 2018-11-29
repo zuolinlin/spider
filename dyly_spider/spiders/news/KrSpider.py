@@ -70,7 +70,6 @@ class KrSpider(NewsSpider):
                         dont_filter=True,
                         callback=self.parse
                     )
-            time.sleep(30)
             for item in data.get("items", []):
                 out_id = item.get("id")
                 push_date = date_util.strptime(item.get("published_at"), '%Y-%m-%dT%H:%M:%S+08:00')
@@ -79,6 +78,7 @@ class KrSpider(NewsSpider):
                     self.detail_url.format(new_id=out_id),
                     meta=response.meta,
                     dont_filter=True,
+                    priority=1,
                     callback=self.detail
                 )
 

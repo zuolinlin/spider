@@ -42,6 +42,11 @@ class JinseSpider(NewsSpider):
         {"code": "https://api.jinse.com/v6/information/list?catelogue_key=baike&limit=23&information_id=0&flag=down&version=9.9.9", "name": "百科"},
     ]
 
+    def __init__(self, *a, **kw):
+        super(JinseSpider, self).__init__(*a, **kw)
+        self.current_page = 1
+        self.browser = None
+
     def start_requests(self):
         for news_url in self.news_type_url_list:
             yield Request(

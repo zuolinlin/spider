@@ -60,7 +60,7 @@ class XtecherSpider(NewsSpider):
             "资讯",
             response.meta.get("source"),
             None,
-            "".join(response.xpath('//div[@class="content_box feature_content"]/div/*[position()<last()]')
-                    .xpath('normalize-space(string(.))').extract()).replace("　", ""),
+            response.xpath('//div[@class="content_box feature_content"]/div/*[position()<last()]'),
+            response.url,
             22
         )

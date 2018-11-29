@@ -1,65 +1,32 @@
 # -*- coding: utf-8 -*-
-import datetime
-import json
 import time
 
 from scrapy import Request, FormRequest
 
-from dyly_spider.spiders.BaseSpider import BaseSpider
-
-
 # 公司接口
-class ApiCompanySpider(BaseSpider):
+from dyly_spider.spiders.itjuzi.ApiCompanyListSpider import ApiCompanyListSpider
+
+
+class ApiCompanyInfoSpider(ApiCompanyListSpider):
     """
-    IT桔子公司接口数据抓取
+    IT桔子公司详情接口数据抓取
     """
 
-    custom_settings = {
-        "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 3
-    }
+    name = 'itjuzi_api_company_info'
 
-    name = 'itjuzi_api_company'
-
-    # domain = "http://v1.openapi.itjuzi.com"
-    domain = "https://openapi.itjuzi.com"
-    get_token_url = domain + "/oauth2.0/get_access_token"
-    company_list_url = domain + "/company/get_company_list?page={page}"
-    company_info_url = domain + "/company/get_newly_added_com_info?com_id={com_id}"
-
-    get_token_form = {
-        "appid": "123456841",
-        "appkey": "Woi41uy65gf75JHds134JHafa209fcMM",
-        "granttype": "client_credentials"
-    }
-    headers = {}
-    refresh_token = None
-    current_page = 1
-    current_date = datetime.datetime.now()
-
-    def __init__(self, *args, **kwargs):
-        super(ApiCompanySpider, self).__init__(*args, **kwargs)
+    def __init__(self, current_page=1, *args, **kwargs):
+        super(ApiCompanyInfoSpider, self).__init__(*args, **kwargs)
+        if current_page is not None and type(current_page) == int:
+            self.current_page = current_page
+        self.company_info_url = self.domain + "/company/get_newly_added_com_info?com_id={com_id}"
 
     def start_requests(self):
         yield FormRequest(
             url=self.get_token_url,
             formdata=self.get_token_form,
-            callback=self.parse_page
         )
 
-    def exec_refresh_token(self):
-        self.get_token_form.update({"granttype": "refresh_token", "refresh_token": self.refresh_token})
-        yield FormRequest(
-            url=self.get_token_url,
-            formdata=self.get_token_form,
-            method="GET",
-            callback=self.parse_refresh_token
-        )
-
-    def parse_refresh_token(self, response):
-        self.log_error("parse_refresh_token===>" + repr(self.get_data(response)))
-
-    def parse_page(self, response):
+    def parse(self, response):
         data = self.get_data(response).get("data", {})
         self.headers.update({
             "AUTHORIZATION": "Bearer {access_token}".format(access_token=data.get("access_token"))
@@ -67,51 +34,32 @@ class ApiCompanySpider(BaseSpider):
         self.refresh_token = data.get("refresh_token")
         self.log("headers========> " + str(self.headers))
         self.log("refresh_token========> " + self.refresh_token)
-        yield Request(
-            url=self.company_list_url.format(page=self.current_page),
-            headers=self.headers,
-            dont_filter=True,
-            callback=self.company_list
-        )
-
-    def company_list(self, response):
-        data = self.get_data(response)
-        if data is not None:
-            # 分页
-            if self.current_page == 1:
-                total = data["total"]
-                pages = int(total / 20) if total % 20 == 0 else int(total / 20) + 1
-                while self.current_page < pages:
-                    self.current_page = self.current_page + 1
-                    yield Request(
-                        url=self.company_list_url.format(page=self.current_page),
-                        headers=self.headers,
-                        dont_filter=True,
-                        callback=self.company_list
-                    )
-
-            for item in data["data"]:
+        result = self.select_rows_paper("SELECT com_id FROM `itjuzi_company` WHERE `need_sync`=%s",
+                                        param=True, page_size=self.limit)
+        if result.get("total") > 0:
+            for row in result.get("rows"):
+                com_id = row[0]
                 yield Request(
-                    url=self.company_info_url.format(com_id=item.get("com_id")),
-                    # url=self.company_info_url.format(com_id=33607853),
+                    url=self.company_info_url.format(com_id=com_id),
                     headers=self.headers,
                     dont_filter=True,
                     callback=self.company_info
                 )
 
     def company_info(self, response):
-        minute = (datetime.datetime.now() - self.current_date).total_seconds()/60
-        if minute > 50:
-            self.exec_refresh_token()
+        self.exec_refresh_token()
         self.save(self.get_data(response).get("data", {}))
-
-    def get_data(self, response):
-        data = json.loads(response.body)
-        if data["code"] == 1000:
-            return data
-        else:
-            self.log_error("request failed：" + repr(data))
-            return {}
+        result = self.select_rows_paper("SELECT com_id FROM `itjuzi_company` WHERE `need_sync`=%s",
+                                        param=True, page_size=self.limit)
+        if result.get("total") > 0:
+            for row in result.get("rows"):
+                com_id = row[0]
+                yield Request(
+                    url=self.company_info_url.format(com_id=com_id),
+                    headers=self.headers,
+                    dont_filter=True,
+                    callback=self.company_info
+                )
 
     def save(self, data):
         if data is None or type(data) != dict:
@@ -621,48 +569,47 @@ class ApiCompanySpider(BaseSpider):
         :return:
         """
         return """
-                INSERT INTO `itjuzi_company` (
-                                  `com_id`,
-                                  `com_name`,
-                                  `com_sec_name`,
-                                  `com_registered_name`,
-                                  `com_slogan`,
-                                  `com_logo`,
-                                  `com_logo_archive`,
-                                  `com_video`,
-                                  `horse_club`,
-                                  `com_des`,
-                                  `com_url`,
-                                  `com_born_year`,
-                                  `com_location`,
-                                  `com_born_month`,
-                                  `com_prov`,
-                                  `com_city`,
-                                  `com_status_name`,
-                                  `com_stage_name`,
-                                  `com_fund_needs_name`,
-                                  `com_scale_name`,
-                                  `com_fund_status_name`,
-                                  `com_weibo_url`,
-                                  `com_weixin_url`,
-                                  `com_cont_tel`,
-                                  `com_cont_email`,
-                                  `com_cont_addr`,
-                                  `cat_id`,
-                                  `cat_name`,
-                                  `sub_cat_id`,
-                                  `sub_cat_name`,
-                                  `com_relative_invst`,
-                                  `invse_total_money`,
-                                  `com_type`,
-                                  `create_time`,
-                                  `update_time`,
-                                  `modify_date`
-                                )
-                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
-                                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            UPDATE 
+              `itjuzi_company` 
+            SET
+              `com_name` = %s,
+              `com_sec_name` = %s,
+              `com_registered_name` = %s,
+              `com_slogan` = %s,
+              `com_logo` = %s,
+              `com_logo_archive` = %s,
+              `com_video` = %s,
+              `horse_club` = %s,
+              `com_des` = %s,
+              `com_url` = %s,
+              `com_born_year` = %s,
+              `com_location` = %s,
+              `com_born_month` = %s,
+              `com_prov` = %s,
+              `com_city` = %s,
+              `com_status_name` = %s,
+              `com_stage_name` = %s,
+              `com_fund_needs_name` = %s,
+              `com_scale_name` = %s,
+              `com_fund_status_name` = %s,
+              `com_weibo_url` = %s,
+              `com_weixin_url` = %s,
+              `com_cont_tel` = %s,
+              `com_cont_email` = %s,
+              `com_cont_addr` = %s,
+              `cat_id` = %s,
+              `cat_name` = %s,
+              `sub_cat_id` = %s,
+              `sub_cat_name` = %s,
+              `com_relative_invst` = %s,
+              `invse_total_money` = %s,
+              `com_type` = %s,
+              `create_time` = %s,
+              `update_time` = %s,
+              `modify_date` = %s,
+              `need_sync` = %s 
+            WHERE `com_id` = %s
                """, (
-            company.get("com_id"),
             company.get("com_name"),
             company.get("com_sec_name"),
             company.get("com_registered_name"),
@@ -697,7 +644,9 @@ class ApiCompanySpider(BaseSpider):
             company.get("com_type"),
             company.get("create_time"),
             company.get("update_time"),
-            time.localtime()
+            time.localtime(),
+            False,
+            company.get("com_id")
         )
 
     def set_sql_params(self, params):

@@ -43,14 +43,16 @@ class MorningWhistleSpider(NewsSpider):
             for row in data.get("rows", []):
                 row_params = row.get("params", {})
                 content = XPathUtil.str_to_selector(row_params.get("content"))
+                out_id = row.get("id")
                 self.insert_new(
-                    row.get("id"),
+                    out_id,
                     date_util.get_date(row.get("pubDate")),
                     row.get("title"),
                     "资讯",
                     row_params.get("op", "").strip(),
                     row_params.get("summary"),
-                    "".join(content.xpath('normalize-space(string(.))').extract()),
+                    content,
+                    "http://www.morningwhistle.com/info/{out_id}.html".format(out_id=out_id),
                     4
                 )
             page_total = data.get("pageTotal")

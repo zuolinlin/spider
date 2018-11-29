@@ -11,6 +11,9 @@ from util import XPathUtil
 
 
 class TouTiaoSpider(NewsSpider):
+    """
+    今日头条-财经
+    """
     custom_settings = {
         "DOWNLOADER_MIDDLEWARES": {
             'dyly_spider.middlewares.SeleniumExtMiddleware': 600
@@ -80,8 +83,8 @@ class TouTiaoSpider(NewsSpider):
                 "财经",
                 response.meta.get("source"),
                 None,
-                "".join(response.xpath("/html/body/div/div[2]/div[2]/div[1]/div[2]")
-                        .xpath('normalize-space(string(.))').extract()),
+                response.xpath("/html/body/div/div[2]/div[2]/div[1]/div[2]"),
+                response.url,
                 6
             )
 

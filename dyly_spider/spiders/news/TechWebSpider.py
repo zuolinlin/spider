@@ -61,7 +61,7 @@ class TechWebSpider(NewsSpider):
             "财经",
             source,
             None,
-            "".join(response.xpath('//*[@id="content"]').xpath('normalize-space(string(.))')
-                    .extract()).replace("　", ""),
+            response.xpath('//*[@id="content"]'),
+            response.url,
             18
         )

@@ -49,8 +49,8 @@ class CsSpider(NewsSpider):
             "公司新闻",
             detail.xpath("normalize-space(div[2]/div[1]/p[2]/em[2]/text())").extract_first()[3:],
             None,
-            "".join(detail.xpath("div[2]/div[2]/*[not(@class='page') and not(@class='article-list')]")
-                    .xpath('normalize-space(string(.))').extract()).replace('　', ''),
+            detail.xpath("div[2]/div[2]/*[not(@class='page') and not(@class='article-list')]"),
+            response.url,
             8
         )
 

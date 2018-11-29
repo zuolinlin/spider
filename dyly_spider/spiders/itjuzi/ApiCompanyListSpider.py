@@ -80,6 +80,7 @@ class ApiCompanyListSpider(BaseSpider):
                         url=self.company_list_url.format(page=self.current_page, limit=self.limit),
                         headers=self.headers,
                         dont_filter=True,
+                        priority=self.pages - self.current_page,
                         callback=self.company_list
                     )
             for item in data["data"]:

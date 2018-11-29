@@ -12,7 +12,7 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 # 公司接口
 class ApiCompanyListSpider(BaseSpider):
     """
-    IT桔子公司接口数据抓取
+    IT桔子公司列表接口数据抓取
     """
 
     custom_settings = {

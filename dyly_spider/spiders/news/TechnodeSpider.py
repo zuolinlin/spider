@@ -8,6 +8,8 @@ from dyly_spider.spiders.news.NewsSpider import NewsSpider
 """
 初创公司  观点  区块链
 """
+
+
 class TechnodeSpider(NewsSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
@@ -47,7 +49,7 @@ class TechnodeSpider(NewsSpider):
                 callback=self.detail
             )
         # 请求下一页
-        next_url =response.xpath('//div[@class="page-nav"]/a[last()]/@href').get()
+        next_url = response.xpath('//div[@class="page-nav"]/a[last()]/@href').get()
         if not next_url:
             return
         else:

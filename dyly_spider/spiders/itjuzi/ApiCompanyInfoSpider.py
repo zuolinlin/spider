@@ -12,7 +12,14 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
     IT桔子公司详情接口数据抓取
     """
 
+    custom_settings = {
+        "AUTOTHROTTLE_ENABLED": True,
+        "DOWNLOAD_DELAY": 8
+    }
+
     name = 'itjuzi_api_company_info'
+
+    limit = 1
 
     def __init__(self, current_page=1, *args, **kwargs):
         super(ApiCompanyInfoSpider, self).__init__(*args, **kwargs)
@@ -34,32 +41,28 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         self.refresh_token = data.get("refresh_token")
         self.log("headers========> " + str(self.headers))
         self.log("refresh_token========> " + self.refresh_token)
-        result = self.select_rows_paper("SELECT com_id FROM `itjuzi_company` WHERE `need_sync`=%s",
-                                        param=True, page_size=self.limit)
-        if result.get("total") > 0:
-            for row in result.get("rows"):
-                com_id = row[0]
-                yield Request(
-                    url=self.company_info_url.format(com_id=com_id),
-                    headers=self.headers,
-                    dont_filter=True,
-                    callback=self.company_info
-                )
+        company = self.fetchone("SELECT com_id FROM `itjuzi_company` WHERE need_sync=%s "
+                                "ORDER BY modify_date DESC LIMIT 1" % 1)
+        if company is not None:
+            yield Request(
+                url=self.company_info_url.format(com_id=company[0]),
+                headers=self.headers,
+                dont_filter=True,
+                callback=self.company_info
+            )
 
     def company_info(self, response):
         self.exec_refresh_token()
         self.save(self.get_data(response).get("data", {}))
-        result = self.select_rows_paper("SELECT com_id FROM `itjuzi_company` WHERE `need_sync`=%s",
-                                        param=True, page_size=self.limit)
-        if result.get("total") > 0:
-            for row in result.get("rows"):
-                com_id = row[0]
-                yield Request(
-                    url=self.company_info_url.format(com_id=com_id),
-                    headers=self.headers,
-                    dont_filter=True,
-                    callback=self.company_info
-                )
+        company = self.fetchone("SELECT com_id FROM `itjuzi_company` WHERE need_sync=%s "
+                                "ORDER BY modify_date DESC LIMIT 1" % 1)
+        if company is not None:
+            yield Request(
+                url=self.company_info_url.format(com_id=company[0]),
+                headers=self.headers,
+                dont_filter=True,
+                callback=self.company_info
+            )
 
     def save(self, data):
         if data is None or type(data) != dict:

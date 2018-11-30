@@ -95,8 +95,8 @@ class TechnodeKjkxSpider(NewsSpider):
         #  摘要
         #digest = response.meta['content']
         # 内容
-        content = response.xpath('//article//p//text()').getall()
-        content = "".join(content).strip()
+        content = response.xpath('//article/p').extract()
+        content = "".join(content)
         digest = content.split('。')[0][7:]
         # 爬取来源
         spider_source = 3
@@ -108,6 +108,7 @@ class TechnodeKjkxSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )
         pass

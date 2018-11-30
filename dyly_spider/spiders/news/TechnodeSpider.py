@@ -17,20 +17,25 @@ class TechnodeSpider(NewsSpider):
 
     name = "technode_news"
     allowed_domains = ["cn.technode.com"]
-    news_type_list = [
-        {"code": 1, "name": "初创公司报道"},
-        # {"code": 2, "name": "观点"},
-        # {"code": 3, "name": "区块链"},
-        # {"code": 4, "name": "NodeBang"},
-        # {"code": 5, "name": "科技快讯"},
+    news_type_url_list = [
+        {
+            "code": "https://cn.technode.com/post/category/startups/",
+            "name": "初创公司报道"},
+        {
+            "code": "https://cn.technode.com/post/category/technode-talks/",
+            "name": "观点"},
+        {
+            "code": "https://cn.technode.com/post/category/blockchain/",
+            "name": "区块链"},
+
     ]
 
-    start_urls = [#"https://cn.technode.com/post/category/startups/"       # 初创公司报道
-                 # "https://cn.technode.com/post/category/technode-talks/",  # 观点
-                  "https://cn.technode.com/post/category/blockchain/",      # 区块链
-                 #  "https://cn.technode.com/nodebang/",                      # nodebang
-                 #  "https://cn.technode.com/newsnow/"                       # 科技快讯
-                  ]
+    def start_requests(self):
+        for news_url in self.news_type_url_list:
+            yield Request(
+                news_url["code"],
+                dont_filter=True
+            )
 
     def __init__(self, *a, **kw):
         super(TechnodeSpider, self).__init__(*a, **kw)
@@ -43,9 +48,19 @@ class TechnodeSpider(NewsSpider):
             url = data.xpath('.//div[@class="item-details"]/h3/a/@href').get().strip()
             # 摘要
             content = data.xpath('.//div[@class="item-details"]/p/text()').get().strip()
+            new_url = response.url
+            urls = str(new_url).split("/")
+            new_types = urls[5]
+            if new_types == "startups":
+                new_type = "初创公司报道"
+            elif new_types == "technode-talks":
+                new_type = "观点"
+            elif new_types == "blockchain":
+                new_type = "区块链"
             yield Request(
                 url,
-                meta={"content": content},
+                meta={"content": content,
+                      "new_type": new_type},
                 callback=self.detail
             )
         # 请求下一页
@@ -66,14 +81,14 @@ class TechnodeSpider(NewsSpider):
         # 时间
         push_time = response.xpath('//time[@itemprop="dateCreated"]/text()').get().strip()
         # 新闻类型
-        new_type = "区块链"
+        new_type = response.meta['new_type']
         # 来源
         source = "动点科技"
         #  摘要
         digest = response.meta['content']
         # 内容
-        content = response.xpath('//article//p//text()').getall()
-        content = "".join(content).strip()
+        content = response.xpath('//article/p').extract()
+        content = "".join(content)
         # 爬取来源
         spider_source = 3
         self.insert_new(
@@ -84,5 +99,6 @@ class TechnodeSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )

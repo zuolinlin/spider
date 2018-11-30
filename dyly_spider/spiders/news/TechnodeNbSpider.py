@@ -95,8 +95,8 @@ class TechnodeNbSpider(NewsSpider):
         #  摘要
         digest = response.meta['content']
         # 内容
-        content = response.xpath('//article//p//text()').getall()
-        content = "".join(content).strip()
+        content = response.xpath('//article/p').extract()
+        content = "".join(content)
         # 爬取来源
         spider_source = 3
         self.insert_new(
@@ -107,6 +107,7 @@ class TechnodeNbSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )
 

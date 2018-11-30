@@ -109,8 +109,7 @@ class IheimaSpider(NewsSpider):
                                                                `xsbbiz`.`spider_news`
                                                              SET
                                                                `digest` =%s,                                          
-                                                               `title` =%s,
-                                                               `new_type` =%s,
+                                                               `title` =%s,                                     
                                                                `source` =%s,
                                                                `content` =%s
                                                              WHERE `spider_source` = 15 and `new_id` =%s

@@ -13,7 +13,7 @@ exclude_tags = ['img', 'video', 'audio', 'object', 'embed']
 
 class NewsSpider(BaseSpider):
 
-    name = "news_spider"
+    name = None
 
     def __init__(self, *a, **kw):
         super(NewsSpider, self).__init__(*a, **kw)

@@ -7,7 +7,7 @@ from util.db import mysql
 
 class BaseSpider(CrawlSpider):
 
-    name = "base"
+    name = None
 
     def __init__(self, *a, **kw):
         super(BaseSpider, self).__init__(*a, **kw)

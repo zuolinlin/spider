@@ -55,9 +55,9 @@ class IheimaSpider(NewsSpider):
             # 资本动态
             self.driver.get("http://www.iheima.com/scope/89")
             time.sleep(1)
-            IheimaSpider.news_list(self)
+            #IheimaSpider.news_list(self)
 
-            # IheimaSpider.detail(self)
+            IheimaSpider.detail(self)
            #  dispatcher.connect(self.spider_closed, signals.spider_closed)
 
     def news_list(self):

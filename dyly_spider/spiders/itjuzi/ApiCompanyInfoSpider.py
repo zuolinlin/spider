@@ -2,8 +2,6 @@
 import time
 
 from scrapy import Request, FormRequest
-
-# 公司接口
 from dyly_spider.spiders.itjuzi.ApiCompanyListSpider import ApiCompanyListSpider
 
 

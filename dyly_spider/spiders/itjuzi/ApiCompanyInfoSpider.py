@@ -12,7 +12,8 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
 
     custom_settings = {
         "AUTOTHROTTLE_ENABLED": True,
-        "DOWNLOAD_DELAY": 8
+        "DOWNLOAD_DELAY": 8,
+        "CONCURRENT_REQUESTS": 1,
     }
 
     name = 'itjuzi_api_company_info'

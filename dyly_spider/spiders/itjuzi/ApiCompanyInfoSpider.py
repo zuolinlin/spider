@@ -337,34 +337,37 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
                 invse_id = invest.get("invse_id")
                 items = invest.get("ling_invst", [])
                 for item in items:
-                    params.append((
-                        invse_id,
-                        item.get("id"),
-                        item.get("logo"),
-                        item.get("name"),
-                        item.get("type"),
-                        0
-                    ))
+                    if type(item) == dict:
+                        params.append((
+                            invse_id,
+                            item.get("id"),
+                            item.get("logo"),
+                            item.get("name"),
+                            item.get("type"),
+                            0
+                        ))
                 items = invest.get("sec_invst", [])
                 for item in items:
-                    params.append((
-                        invse_id,
-                        item.get("id"),
-                        item.get("logo"),
-                        item.get("name"),
-                        item.get("type"),
-                        1
-                    ))
+                    if type(item) == dict:
+                        params.append((
+                            invse_id,
+                            item.get("id"),
+                            item.get("logo"),
+                            item.get("name"),
+                            item.get("type"),
+                            1
+                        ))
                 items = invest.get("invsp_or_fund", [])
                 for item in items:
-                    params.append((
-                        invse_id,
-                        item.get("id"),
-                        item.get("logo"),
-                        item.get("name"),
-                        item.get("type"),
-                        2
-                    ))
+                    if type(item) == dict:
+                        params.append((
+                            invse_id,
+                            item.get("id"),
+                            item.get("logo"),
+                            item.get("name"),
+                            item.get("type"),
+                            2
+                        ))
             return """
                     INSERT INTO `itjuzi_company_invest_invst` (
                                       `invse_id`,

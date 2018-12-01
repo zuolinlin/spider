@@ -45,5 +45,7 @@ scrapy crawl chinaventure_news -s LOG_FILE=/logs/chinaventure_news.log
 scrapy crawl itjuzi_api_company_list -s LOG_FILE=/logs/itjuzi_api_company_list.log -a current_page=1
 # 同步详情数据
 scrapy crawl itjuzi_api_company_info -s LOG_FILE=/logs/itjuzi_api_company_info.log
+# 同步详情数据 (1点-5点执行)
+scrapy crawl itjuzi_api_company_info -s DOWNLOAD_DELAY=1 -s CLOSESPIDER_TIMEOUT=18000 -s LOG_FILE=/logs/itjuzi_api_company_info_second.log
 # 投资界
 scrapy crawl pedaily_news -s LOG_FILE=/logs/pedaily_news.log

@@ -203,12 +203,13 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(milestone) > 0:
             params = []
             for me in milestone:
-                params.append((
-                    com_id,
-                    me.get("com_mil_year"),
-                    me.get("com_mil_month"),
-                    me.get("com_mil_detail")
-                ))
+                if type(me) == dict:
+                    params.append((
+                        com_id,
+                        me.get("com_mil_year"),
+                        me.get("com_mil_month"),
+                        me.get("com_mil_detail")
+                    ))
             return """
                     INSERT INTO `itjuzi_company_milestone` (
                       `com_id`,
@@ -230,23 +231,24 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(similar_company) > 0:
             params = []
             for similar in similar_company:
-                params.append((
-                    com_id,
-                    similar.get("com_name"),
-                    similar.get("com_logo"),
-                    similar.get("com_logo_archive"),
-                    similar.get("com_prov"),
-                    similar.get("com_born_year"),
-                    similar.get("com_born_month"),
-                    similar.get("invse_year"),
-                    similar.get("invse_month"),
-                    similar.get("invese_round_name"),
-                    similar.get("invse_detail_money"),
-                    similar.get("similar"),
-                    similar.get("invse_currency_name"),
-                    similar.get("cat_name"),
-                    similar.get("cat_name_order")
-                ))
+                if type(similar) == dict:
+                    params.append((
+                        com_id,
+                        similar.get("com_name"),
+                        similar.get("com_logo"),
+                        similar.get("com_logo_archive"),
+                        similar.get("com_prov"),
+                        similar.get("com_born_year"),
+                        similar.get("com_born_month"),
+                        similar.get("invse_year"),
+                        similar.get("invse_month"),
+                        similar.get("invese_round_name"),
+                        similar.get("invse_detail_money"),
+                        similar.get("similar"),
+                        similar.get("invse_currency_name"),
+                        similar.get("cat_name"),
+                        similar.get("cat_name_order")
+                    ))
             return """
                     INSERT INTO `xsbbiz`.`itjuzi_company_similar_company` (
                       `com_id`,
@@ -278,15 +280,16 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(products) > 0:
             params = []
             for product in products:
-                params.append((
-                    com_id,
-                    product.get("com_pro_id"),
-                    product.get("com_pro_name"),
-                    product.get("com_pro_type_id"),
-                    product.get("com_pro_type_name"),
-                    product.get("com_pro_ur"),
-                    product.get("com_pro_detail")
-                ))
+                if type(product) == dict:
+                    params.append((
+                        com_id,
+                        product.get("com_pro_id"),
+                        product.get("com_pro_name"),
+                        product.get("com_pro_type_id"),
+                        product.get("com_pro_type_name"),
+                        product.get("com_pro_ur"),
+                        product.get("com_pro_detail")
+                    ))
             return """
                     INSERT INTO `itjuzi_company_product` (
                                   `com_id`,
@@ -314,11 +317,12 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
                 invse_id = invest.get("invse_id")
                 items = invest.get("fa", [])
                 for item in items:
-                    params.append((
-                        invse_id,
-                        item.get("fa_id"),
-                        item.get("fa_name")
-                    ))
+                    if type(item) == dict:
+                        params.append((
+                            invse_id,
+                            item.get("fa_id"),
+                            item.get("fa_name")
+                        ))
             return """
                     INSERT INTO `itjuzi_company_invest_fa` (`invse_id`, `fa_id`, `fa_name`) 
                     VALUES (%s, %s, %s)
@@ -390,25 +394,26 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(invests) > 0:
             params = []
             for invest in invests:
-                params.append((
-                    com_id,
-                    invest.get("invse_id"),
-                    invest.get("invse_year"),
-                    invest.get("invse_month"),
-                    invest.get("invse_day"),
-                    invest.get("invse_round_id"),
-                    invest.get("invse_round_name"),
-                    invest.get("invse_similar_money_id"),
-                    invest.get("invse_similar_money_name"),
-                    invest.get("invse_detail_money"),
-                    invest.get("invse_currency_id"),
-                    invest.get("invse_currency_name"),
-                    invest.get("invse_stock_ownership"),
-                    invest.get("invse_guess_particulars"),
-                    invest.get("invse_assess_money_id"),
-                    invest.get("invse_assess_money_name"),
-                    invest.get("fa_id"),
-                ))
+                if type(invest) == dict:
+                    params.append((
+                        com_id,
+                        invest.get("invse_id"),
+                        invest.get("invse_year"),
+                        invest.get("invse_month"),
+                        invest.get("invse_day"),
+                        invest.get("invse_round_id"),
+                        invest.get("invse_round_name"),
+                        invest.get("invse_similar_money_id"),
+                        invest.get("invse_similar_money_name"),
+                        invest.get("invse_detail_money"),
+                        invest.get("invse_currency_id"),
+                        invest.get("invse_currency_name"),
+                        invest.get("invse_stock_ownership"),
+                        invest.get("invse_guess_particulars"),
+                        invest.get("invse_assess_money_id"),
+                        invest.get("invse_assess_money_name"),
+                        invest.get("fa_id"),
+                    ))
             return """
                         INSERT INTO `itjuzi_company_invest` (
                                       `com_id`,
@@ -445,10 +450,11 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
                 per_id = team.get("per_id")
                 items = team.get("everjob", [])
                 for item in items:
-                    params.append((
-                        per_id,
-                        item.get("per_ever_job_name")
-                    ))
+                    if type(item) == dict:
+                        params.append((
+                            per_id,
+                            item.get("per_ever_job_name")
+                        ))
             return """
                     INSERT INTO `itjuzi_company_team_everjob` (`per_id`, `per_ever_job_name`) 
                     VALUES (%s, %s)
@@ -467,10 +473,11 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
                 per_id = team.get("per_id")
                 items = team.get("education", [])
                 for item in items:
-                    params.append((
-                        per_id,
-                        item.get("per_education_name")
-                    ))
+                    if type(item) == dict:
+                        params.append((
+                            per_id,
+                            item.get("per_education_name")
+                        ))
             return """
                     INSERT INTO `itjuzi_company_team_education` (`per_id`, `per_education_name`) 
                     VALUES (%s, %s)
@@ -487,16 +494,17 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(teams) > 0:
             params = []
             for team in teams:
-                params.append((
-                    com_id,
-                    team.get("per_id"),
-                    team.get("per_name"),
-                    team.get("per_logo"),
-                    team.get("des"),
-                    team.get("per_weibo"),
-                    team.get("per_linkedin"),
-                    team.get("introduce")
-                ))
+                if type(team) == dict:
+                    params.append((
+                        com_id,
+                        team.get("per_id"),
+                        team.get("per_name"),
+                        team.get("per_logo"),
+                        team.get("des"),
+                        team.get("per_weibo"),
+                        team.get("per_linkedin"),
+                        team.get("introduce")
+                    ))
             return """
             INSERT INTO `itjuzi_company_team` (
                                       `com_id`,
@@ -522,11 +530,12 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(tags) > 0:
             params = []
             for tag in tags:
-                params.append((
-                    com_id,
-                    tag.get("tag_id"),
-                    tag.get("tag_name")
-                ))
+                if type(tag) == dict:
+                    params.append((
+                        com_id,
+                        tag.get("tag_id"),
+                        tag.get("tag_name")
+                    ))
             return """
                     INSERT INTO `itjuzi_company_tags` (`com_id`, `tag_id`, `tag_name`) 
                     VALUES (%s, %s, %s)
@@ -543,16 +552,17 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
         if len(foreign_investments) > 0:
             params = []
             for foreign_investment in foreign_investments:
-                params.append((
-                    com_id,
-                    foreign_investment.get("invse_id"),
-                    foreign_investment.get("f_com_id"),
-                    foreign_investment.get("com_name"),
-                    foreign_investment.get("invse_date"),
-                    foreign_investment.get("invse_money"),
-                    foreign_investment.get("invse_currency_name"),
-                    foreign_investment.get("invse_round_name")
-                ))
+                if type(foreign_investment) == dict:
+                    params.append((
+                        com_id,
+                        foreign_investment.get("invse_id"),
+                        foreign_investment.get("f_com_id"),
+                        foreign_investment.get("com_name"),
+                        foreign_investment.get("invse_date"),
+                        foreign_investment.get("invse_money"),
+                        foreign_investment.get("invse_currency_name"),
+                        foreign_investment.get("invse_round_name")
+                    ))
             return """
                     INSERT INTO `xsbbiz`.`itjuzi_company_foreign_investment` (
                               `com_id`,

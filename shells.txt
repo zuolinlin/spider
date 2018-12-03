@@ -53,3 +53,5 @@ scrapy crawl pedaily_news -s LOG_FILE=/logs/pedaily_news.log
 scrapy crawl huxiu_news -s LOG_FILE=/logs/huxiu_news.log
 # 芥末堆-新闻相关
 scrapy crawl jiemodui_news -s LOG_FILE=/logs/jiemodui_news.log
+# 雷锋网-新闻相关
+scrapy crawl leiphone_news -s LOG_FILE=/logs/leiphone_news.log

@@ -49,3 +49,5 @@ scrapy crawl itjuzi_api_company_info -s LOG_FILE=/logs/itjuzi_api_company_info.l
 scrapy crawl itjuzi_api_company_info -s DOWNLOAD_DELAY=1 -s CLOSESPIDER_TIMEOUT=18000 -s LOG_FILE=/logs/itjuzi_api_company_info_second.log
 # 投资界
 scrapy crawl pedaily_news -s LOG_FILE=/logs/pedaily_news.log
+# 虎嗅-新闻相关
+scrapy crawl huxiu_news -s LOG_FILE=/logs/huxiu_news.log

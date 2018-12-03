@@ -27,3 +27,7 @@ def strptime(string, format):
 def date_before_h(hour):
     if hour is not None:
         return datetime.datetime.now()-datetime.timedelta(hours=hour)
+
+
+def get_before_date_str(days):
+    return str(datetime.date.today() - datetime.timedelta(days=days))

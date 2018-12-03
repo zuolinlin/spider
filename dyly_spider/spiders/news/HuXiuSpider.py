@@ -86,7 +86,8 @@ class HuXiuSpider(NewsSpider):
         detail = response.xpath('//div[@class="article-wrap"]')
         self.insert_new(
             out_id,
-            detail.xpath('normalize-space(div[1]/div/span[1]/text() | div[1]/span[3]/text())').extract_first(),
+            detail.xpath('normalize-space(div[1]/div/span["article-time"]/text() | div[1]/span["article-time"]/text() '
+                         '| div[1]/span[@class="article-time"]/text())').extract_first(),
             detail.xpath('normalize-space(h1/text())').extract_first(),
             "资讯",
             detail.xpath('normalize-space(div[1]/span/a/text())').extract_first(),

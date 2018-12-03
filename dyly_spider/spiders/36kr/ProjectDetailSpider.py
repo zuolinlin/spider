@@ -18,7 +18,7 @@ class ProjectDetailSpider(BaseSpider):
         # "DOWNLOAD_DELAY": 6
     }
 
-    name = "36kr_project"
+    name = "36kr_project_detail"
     allowed_domains = ["36kr.com"]
 
     detail_url = "https://rong.36kr.com/n/api/company/{project_id}"

@@ -51,3 +51,5 @@ scrapy crawl itjuzi_api_company_info -s DOWNLOAD_DELAY=1 -s CLOSESPIDER_TIMEOUT=
 scrapy crawl pedaily_news -s LOG_FILE=/logs/pedaily_news.log
 # 虎嗅-新闻相关
 scrapy crawl huxiu_news -s LOG_FILE=/logs/huxiu_news.log
+# 芥末堆-新闻相关
+scrapy crawl jiemodui_news -s LOG_FILE=/logs/jiemodui_news.log

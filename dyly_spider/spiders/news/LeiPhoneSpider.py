@@ -20,17 +20,16 @@ class LeiPhoneSpider(NewsSpider):
 
     news_type_list = [
         {"code": "ai", "name": "人工智能"},
-        {"code": "", "name": "智能驾驶"},
-        {"code": "", "name": "AI+"},
-        {"code": "", "name": "Fintech&区块链"},
-        {"code": "", "name": "未来医疗"},
-        {"code": "", "name": "网络安全"},
-        {"code": "", "name": "AR/VR"},
-        {"code": "", "name": "机器人"},
-        {"code": "", "name": "开发者"},
-        {"code": "", "name": "智能硬件"},
-        {"code": "", "name": "物联网"},
-        {"code": "", "name": "GAIR"},
+        {"code": "transportation", "name": "智能驾驶"},
+        {"code": "aijuejinzhi", "name": "AI+"},
+        {"code": "fintech", "name": "Fintech&区块链"},
+        {"code": "aihealth", "name": "未来医疗"},
+        {"code": "letshome", "name": "网络安全"},
+        {"code": "arvr", "name": "AR/VR"},
+        {"code": "robot", "name": "机器人"},
+        {"code": "yanxishe", "name": "开发者"},
+        {"code": "weiwu", "name": "智能硬件"},
+        {"code": "iot", "name": "物联网"},
     ]
 
     list_url = "https://www.leiphone.com/category/{news_type}/page/{page}"

@@ -23,7 +23,7 @@ class YmtmtSpider(NewsSpider):
     #     "COOKIES_ENABLED": True,
     # }
 
-    name = "ymtmt"
+    name = "ymtmt_new"
     allowed_domains = ["ymtmt.com"]
     # 最新
     start_urls = ["http://www.ymtmt.com/news/index/index/page/1.html"
@@ -63,8 +63,8 @@ class YmtmtSpider(NewsSpider):
         push_time = str(push_time).split("  |  ")[1].split("                          ")[0]
 
         source = "一鸣网"  # 新闻来源
-        content = response.xpath('//div[@class="sp-xq wz-ny bnt1"]/div[@class="left zb-n"]//p//text()').getall()  # 新闻内容
-        content = "".join(content).strip()
+        content = response.xpath('//div[@class="sp-xq wz-ny bnt1"]/div[@class="left zb-n"]//p//text()').extract()  # 新闻内容
+        content = "".join(content)
         content = content.split("-END-")[0]
         spider_source = 21
         self.insert_new(
@@ -75,5 +75,6 @@ class YmtmtSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )

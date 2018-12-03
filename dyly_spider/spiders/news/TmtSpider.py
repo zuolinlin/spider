@@ -23,7 +23,7 @@ class TmtSpider(NewsSpider):
     #     "COOKIES_ENABLED": True,
     # }
 
-    name = "tmt"
+    name = "tmt_new"
     allowed_domains = ["tmtpost.com"]
     # 最新
     start_urls = ["http://www.tmtpost.com/ajax/common/get?url=%2Fv1%2Finvestment%2Fshort_news&data=%26limit%3D6235%26offset%3D0"
@@ -45,10 +45,7 @@ class TmtSpider(NewsSpider):
                 title = item['short_news_title']
                 new_type = "融资快讯"
                 source = "钛媒体"
-                content_html= item['short_news_main']
-                content_html_select =str_to_selector(content_html)
-                content = content_html_select.xpath('//p/text()').getall()
-                content = "".join(content).strip()
+                content = item['short_news_main']
                 spider_source = 19
                 digest = None
                 self.insert_new(
@@ -59,5 +56,6 @@ class TmtSpider(NewsSpider):
                     source,
                     digest,
                     content,
+                    "",
                     spider_source
                 )

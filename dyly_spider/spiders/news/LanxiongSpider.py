@@ -23,7 +23,7 @@ class LanxiongSpiderSpider(NewsSpider):
     #     "COOKIES_ENABLED": True,
     # }
 
-    name = "lanxiong"
+    name = "lanxiong_new"
     allowed_domains = ["lanxiongsports.com"]
     # 最新
     start_urls = ["http://www.lanxiongsports.com/mservice/?c=news&a=index&format=json&cid=1&page=1&_=1542944227272"
@@ -70,8 +70,8 @@ class LanxiongSpiderSpider(NewsSpider):
         new_type = "大公司"
         source = "懒熊体育"
         spider_source = 17
-        content = response.xpath('//div[@class="article or"]/div//p//text()').getall()
-        content = "".join(content).strip()
+        content = response.xpath('//div[@class="article or"]/div').extract_first()
+        content = "".join(content)
         if not content:
             pass
         else:
@@ -84,5 +84,6 @@ class LanxiongSpiderSpider(NewsSpider):
                 source,
                 digest,
                 content,
+                response.url,
                 spider_source
             )

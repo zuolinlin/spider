@@ -28,7 +28,7 @@ class JieMoDuiSpider(NewsSpider):
     ]
 
     list_url = "https://www.jiemodui.com/Home/EditCate/getRelNews?cateId={news_type}&page={page}"
-    detail_url = "https://www.jiemodui.com/{item_type}/{new_id}.html"
+    detail_url = "https://www.jiemodui.com/{item_type}/{out_id}.html"
 
     def __init__(self, *a, **kw):
         super(JieMoDuiSpider, self).__init__(*a, **kw)
@@ -62,7 +62,7 @@ class JieMoDuiSpider(NewsSpider):
                     "digest": item.get("brief"),
                 })
                 yield Request(
-                    self.detail_url.format(item_type=item.get("item_type"), new_id=out_id),
+                    self.detail_url.format(item_type=item.get("item_type"), out_id=out_id),
                     meta=response.meta,
                     dont_filter=True,
                     priority=1,

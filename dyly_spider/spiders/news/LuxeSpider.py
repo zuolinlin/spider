@@ -9,6 +9,11 @@ from util.XPathUtil import str_to_selector
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
 
 
+""""
+华丽志
+"""
+
+
 class LuxeSpider(NewsSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
@@ -19,6 +24,23 @@ class LuxeSpider(NewsSpider):
     # 金融与科技
     start_urls = ["http://luxe.co/category/tech"
                   ]
+
+    # news_type_url_list = [
+    #     {
+    #         "code": "http://luxe.co/category/tech",
+    #         "name": "科技"},
+    #     {
+    #         "code": "http://luxe.co/category/finance",
+    #         "name": "金融"},
+    #
+    # ]
+    #
+    # def start_requests(self):
+    #     for news_url in self.news_type_url_list:
+    #         yield Request(
+    #             news_url["code"],
+    #             dont_filter=True
+    #         )
 
     def __init__(self, *a, **kw):
         super(LuxeSpider, self).__init__(*a, **kw)
@@ -43,10 +65,11 @@ class LuxeSpider(NewsSpider):
                     callback=self.detail
                 )
             # 获取下一页的数据
-            pages = 47
+            pages = 48
             while self.current_page < pages:
                 self.current_page += 1
-                next_url ="http://luxe.co/category/finance/page/"+ str(self.current_page)
+                next_url ="http://luxe.co/category/tech/page/"+ str(self.current_page)
+
                 yield Request(next_url, callback=self.parse)
         else:
             return
@@ -56,8 +79,8 @@ class LuxeSpider(NewsSpider):
         push_time = response.meta['push_date']
         title = response.meta['title']
         digest = response.meta['digest']
-        content = response.xpath('//div[@class="post-body content"]//p//text()').getall()
-        content = "".join(content).strip()
+        content = response.xpath('//div[@class="post-body content"]').extract()
+        content = "".join(content)
         new_type = "科技"
         source = "华丽志"
         spider_source = 9
@@ -70,5 +93,6 @@ class LuxeSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )

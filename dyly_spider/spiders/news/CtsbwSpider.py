@@ -7,17 +7,22 @@ from dyly_spider.spiders.BaseSpider import BaseSpider
 from scrapy import Request
 from util.XPathUtil import str_to_selector
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
+"""
+创投时报====国内
+"""
+
 
 class CtsbwSpider(NewsSpider):
     custom_settings = {
         "COOKIES_ENABLED": True,
     }
 
-    name = "ctsbw"
+    name = "ctsbw_news"
     allowed_domains = ["ctsbw.com"]
     # 金融与科技
     start_urls = ["http://www.ctsbw.com/cn"
                   ]
+    base_url ="http://www.ctsbw.com"
 
     def __init__(self, *a, **kw):
         super(CtsbwSpider, self).__init__(*a, **kw)
@@ -33,11 +38,16 @@ class CtsbwSpider(NewsSpider):
                 out_id = url[29:-5]
                 yield Request(url, meta={"out_id": out_id}, callback=self.detail)
             # 只能请求到190 页的数据，后面的分页数据不对
-            pages = 190
-            while self.current_page < pages:
-                  self.current_page += 1
-                  next_url = "http://www.ctsbw.com/cn/" + str(self.current_page)+".html"
-                  yield Request(next_url, callback=self.parse)
+            # 请求下一页 获取一下页的按钮的数据
+            next_url = response.xpath('//div[@id="pages"]/a[last()]/@href').extract_first()
+            # strs = str(next_url).split("/")
+            # pageNo = strs[len(strs)-1][0:-5]
+            #
+            # pages = 190
+            # if int(pageNo) < pages:
+            #
+            next_url = CtsbwSpider.base_url + next_url
+            yield Request(next_url, callback=self.parse)
 
     def detail(self, response):
         out_id = response.meta['out_id']
@@ -49,8 +59,8 @@ class CtsbwSpider(NewsSpider):
            source = response.xpath('//p[@class="fa s14"]/span[4]/text()').get().strip()  # 来源
            source = str(source).split('：')[1]
            digest = response.xpath('//div[@class="cj_content"]/div[3]/p/text()').get().strip()  # 摘要
-           content =response.xpath('//div[@class="para_ycont"]/div[@class=" col-xs-12"][1]//p//text()').getall()
-           content = "".join(content).strip()
+           content =response.xpath('//div[@class="para_ycont"]/div[@class=" col-xs-12"][1]').extract()
+           content = "".join(content)
            new_type = "国内"
            spider_source = 11
         # 详情页模版二
@@ -61,8 +71,8 @@ class CtsbwSpider(NewsSpider):
             source = response.xpath('//div[@class="cj_content"]/div[1]/div/p/span[2]/text()').get().strip()  # 来源
             source = str(source).split('：')[1]
             digest = response.xpath('//div[@class="cj_content"]/div[2]/div[2]/p/text()').get().strip()  # 摘要
-            content = response.xpath('//div[@class="para_ycont"]/div[@class=" col-xs-12"][1]//p//text()').getall()
-            content = "".join(content).strip()
+            content = response.xpath('//div[@class="para_ycont"]/div[@class=" col-xs-12"][1]').extract()
+            content = "".join(content)
             new_type = "国内"
             spider_source = 11
 
@@ -74,5 +84,6 @@ class CtsbwSpider(NewsSpider):
             source,
             digest,
             content,
+            response.url,
             spider_source
         )

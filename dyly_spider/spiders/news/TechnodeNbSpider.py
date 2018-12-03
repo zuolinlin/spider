@@ -50,7 +50,10 @@ class TechnodeNbSpider(NewsSpider):
         else:
             datas = json.loads(body)
             data = datas.get("td_data")
-            html_str = str_to_selector(data)
+            try:
+               html_str = str_to_selector(data)
+            except:
+                html_str = None
             if html_str is not None:
                 # 解析数据
                 new_list = html_str.xpath('//div[@class="td_mod_wrap td_mod9 "]')
@@ -64,19 +67,19 @@ class TechnodeNbSpider(NewsSpider):
                         meta={"content": content},
                         callback=self.detail
                     )
-                self.current_page += 1
-                yield scrapy.FormRequest(
-                    url="https://cn.technode.com/wp-admin/admin-ajax.php",
-                    formdata={"action": "td_ajax_block",
-                              "td_atts":
-                                  '{"limit":"9","ajax_pagination":"load_more","installed_post_types":"nodebang","custom_title":"NodeBang"}',
-                              "td_block_id": "td_uid_1_5bf2586ae2f9d",
-                              "td_column_number": "3",
-                              "td_current_page": str(self.current_page),
-                              "block_type": "6"},
+            self.current_page += 1
+            yield scrapy.FormRequest(
+                url="https://cn.technode.com/wp-admin/admin-ajax.php",
+                formdata={"action": "td_ajax_block",
+                          "td_atts":
+                              '{"limit":"9","ajax_pagination":"load_more","installed_post_types":"nodebang","custom_title":"NodeBang"}',
+                          "td_block_id": "td_uid_1_5bf2586ae2f9d",
+                          "td_column_number": "3",
+                          "td_current_page": str(self.current_page),
+                          "block_type": "6"},
 
-                    callback=self.parse
-                )
+                callback=self.parse
+            )
 
     # 详情
     def detail(self, response):

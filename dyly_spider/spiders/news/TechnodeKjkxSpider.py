@@ -27,7 +27,7 @@ class TechnodeKjkxSpider(NewsSpider):
 
     def start_requests(self):
 
-        url= "https://cn.technode.com/wp-admin/admin-ajax.php"
+        url = "https://cn.technode.com/wp-admin/admin-ajax.php"
         # FormRequest 是Scrapy发送POST请求的方法
         yield scrapy.FormRequest(
             url=url,
@@ -50,7 +50,10 @@ class TechnodeKjkxSpider(NewsSpider):
         else:
             datas = json.loads(body)
             data = datas.get("td_data")
-            html_str = str_to_selector(data)
+            try:
+                html_str = str_to_selector(data)
+            except:
+                html_str = None
             if html_str is not None:
                 # 解析数据
                 new_list = html_str.xpath('//div[@class="wpb_row row-fluid"]/div[@class="span4"]')
@@ -64,19 +67,19 @@ class TechnodeKjkxSpider(NewsSpider):
                         # meta={"content": content},
                         callback=self.detail
                     )
-                self.current_page += 1
-                yield scrapy.FormRequest(
-                    url="https://cn.technode.com/wp-admin/admin-ajax.php",
-                    formdata={"action": "td_ajax_block",
-                              "td_atts":
-                                  '{"limit":"9","ajax_pagination":"load_more","installed_post_types":"newsnow","custom_title":"科技快讯"}',
-                              "td_block_id":"td_uid_1_5bf280d9209d1",
-                              "td_column_number": "3",
-                              "td_current_page": str(self.current_page),
-                              "block_type": "8"},
+            self.current_page += 1
+            yield scrapy.FormRequest(
+                url="https://cn.technode.com/wp-admin/admin-ajax.php",
+                formdata={"action": "td_ajax_block",
+                          "td_atts":
+                              '{"limit":"9","ajax_pagination":"load_more","installed_post_types":"newsnow","custom_title":"科技快讯"}',
+                          "td_block_id":"td_uid_1_5bf280d9209d1",
+                          "td_column_number": "3",
+                          "td_current_page": str(self.current_page),
+                          "block_type": "8"},
 
-                    callback=self.parse
-                )
+                callback=self.parse
+            )
 
     #
     def detail(self, response):

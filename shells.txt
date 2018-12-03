@@ -57,3 +57,5 @@ scrapy crawl jiemodui_news -s LOG_FILE=/logs/jiemodui_news.log
 scrapy crawl leiphone_news -s LOG_FILE=/logs/leiphone_news.log
 # 环球旅讯-新闻相关
 scrapy crawl traveldaily_news -s LOG_FILE=/logs/traveldaily_news.log
+# 新芽-新闻相关
+scrapy crawl newseed_news -s LOG_FILE=/logs/newseed_news.log

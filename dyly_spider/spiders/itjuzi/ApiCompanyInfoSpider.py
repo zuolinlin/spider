@@ -58,8 +58,8 @@ class ApiCompanyInfoSpider(ApiCompanyListSpider):
             if type(data) == dict:
                 self.save(data.get("data"))
             elif type(data) == str and "deleted".__eq__(data):
-                self.exec_sql("DELETE FROM `itjuzi_company` WHERE `com_id` = %s" % RegExUtil.find_first("com_id=(\d+)",
-                                                                                                        response.url))
+                self.exec_sql("DELETE FROM `itjuzi_company` WHERE `com_id` = %s", RegExUtil.find_first("com_id=(\d+)",
+                                                                                                       response.url))
             company = self.fetchone("SELECT com_id FROM `itjuzi_company` WHERE need_sync=%s "
                                     "ORDER BY modify_date DESC LIMIT 1" % 1)
             if company is not None:

@@ -23,7 +23,7 @@ class BaseSpider(CrawlSpider):
         return self.db.execute(sql, params)
 
     def exec_sql(self, sql, params):
-        self.db.execute(sql, params)
+        return self.db.execute(sql, params)
 
     def fetchone(self, sql):
         return self.db.fetchone(sql)

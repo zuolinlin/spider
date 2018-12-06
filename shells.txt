@@ -59,3 +59,7 @@ scrapy crawl leiphone_news -s LOG_FILE=/logs/leiphone_news.log
 scrapy crawl traveldaily_news -s LOG_FILE=/logs/traveldaily_news.log
 # 新芽-新闻相关
 scrapy crawl newseed_news -s LOG_FILE=/logs/newseed_news.log
+# 铅笔道-新闻相关
+scrapy crawl pencilnews_news -s LOG_FILE=/logs/pencilnews_news.log
+# 创头条-新闻相关
+scrapy crawl ctoutiao_news -s LOG_FILE=/logs/ctoutiao_news.log

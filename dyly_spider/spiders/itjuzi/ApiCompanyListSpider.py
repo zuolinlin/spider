@@ -68,7 +68,7 @@ class ApiCompanyListSpider(BaseSpider):
     def company_list(self, response):
         self.exec_refresh_token()
         data = self.get_data(response)
-        if data is not None:
+        if data is not None and type(data) == dict:
             # 分页
             if self.current_page == 1:
                 total = data["total"]
@@ -130,6 +130,8 @@ class ApiCompanyListSpider(BaseSpider):
         data = json.loads(response.body)
         if data["code"] == 1000:
             return data
+        elif data["code"] == 1109:
+            return "deleted"
         else:
             self.log_error("request failed：" + repr(data))
             return {}

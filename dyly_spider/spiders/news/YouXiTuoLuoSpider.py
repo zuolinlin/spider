@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-import re
 
 from scrapy import Request
+
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
-from util import XPathUtil, RegExUtil
+from util import RegExUtil
 
 
 class YouXiTuoLuoSpider(NewsSpider):

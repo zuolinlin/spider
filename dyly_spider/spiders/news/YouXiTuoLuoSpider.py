@@ -48,7 +48,7 @@ class YouXiTuoLuoSpider(NewsSpider):
             page = response.meta.get("page")+1
             yield Request(
                 self.list_url.format(page=page),
-                meta={"page": 1},
+                meta={"page": page},
                 dont_filter=True
             )
 

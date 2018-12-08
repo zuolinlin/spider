@@ -1,6 +1,7 @@
 from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 from scrapy import Request
-
+import re
+from util.RegExUtil import remove
 
 class HdbSpider(ActiveSpider):
     #  爬虫的名字 <爬虫启动时使用  scrapy crawl xiniu>
@@ -66,7 +67,8 @@ class HdbSpider(ActiveSpider):
         place = response.meta['place']
         classify = response.meta['classify']
         link = response.meta['detail_url']
-        title = response.meta['title']
+        title = response.xpath('/html/head/title/text()').extract_first()
+        title = remove(u'[\U00010000-\U0010ffff]', title)
         description = response.xpath('/html/head/meta[@name="description"]/@content').extract_first()
         sub = "。马上报名参加"
         times = str(description).split('活动时间：')[1].split(sub)[0]

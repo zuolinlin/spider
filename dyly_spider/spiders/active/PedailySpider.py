@@ -22,6 +22,9 @@ class PedailySpider(ActiveSpider):
 
     ]
 
+    def __init__(self, *a, **kw):
+        super(PedailySpider, self).__init__(*a, **kw)
+
     def start_requests(self):
         for active_type in self.active_types:
             yield Request(
@@ -58,5 +61,6 @@ class PedailySpider(ActiveSpider):
             yield Request(
                 next_url,
                 meta=response.meta,
-                dont_filter=True
+                dont_filter=True,
+                callback=self.parse
             )

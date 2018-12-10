@@ -51,11 +51,10 @@ class LjzforumSpider(ActiveSpider):
 
     def parse(self, response):
         data_list = response.xpath('//div[@class="activity_item"]')
-        classify = response.meta['categoryName']
         if data_list is not None:
             for data in data_list:
-                title = data.xpath('//div[@class="activity_cont"]/div[@class="activity_title"]/text()').extract_first()
-                detail = data.xpath('//div[@class="activity_item"]/@onclick').extract_first()
+                title = data.xpath('./div[@class="activity_cont"]/div[@class="activity_title"]/text()').extract_first()
+                detail = data.xpath('./@onclick').extract_first()
                 detail_no = str(detail)[15:-1]
                 detail_url = self.base_url.format(detail_no=detail_no)
                 times = data.xpath('//div[@class="activity_cont"]/div[@class="activity_info"][1]/span/text()').get().strip()
@@ -70,6 +69,7 @@ class LjzforumSpider(ActiveSpider):
                 place = data.xpath('//div[@class="activity_cont"]/div[@class="activity_info"][2]/span/text()').extract_first()
                 tags_data = data.xpath('./div[@class="activity_cont"]/div[@class="activity_tags"]/span/text()').extract()
                 source = "陆想汇"
+                classify = response.meta['categoryName']
                 tags = ""
                 if tags_data is not None and len(tags_data) != 0:
                     for i, tag in enumerate(tags_data):
@@ -86,16 +86,16 @@ class LjzforumSpider(ActiveSpider):
                     source
                 )
 
-        yield scrapy.FormRequest(
-            url=self.start_urls,
-            formdata={
-                "limitStart": str(int(response.meta["limitStart"])+20),
-                "limitEnd": "20",
-                "categoryId": response.meta['categoryId']},
-            meta={
-                "limitStart": str(int(response.meta["limitStart"])+20),
-                "categoryName": response.meta['categoryName'],
-                "categoryId": response.meta['categoryId']
-            },
-            callback=self.parse
-        )
+            yield scrapy.FormRequest(
+                url=self.start_urls,
+                formdata={
+                    "limitStart": str(int(response.meta["limitStart"])+20),
+                    "limitEnd": "20",
+                    "categoryId": response.meta['categoryId']},
+                meta={
+                    "limitStart": str(int(response.meta["limitStart"])+20),
+                    "categoryName": response.meta['categoryName'],
+                    "categoryId": response.meta['categoryId']
+                },
+                callback=self.parse
+            )

@@ -10,10 +10,10 @@ class YouXiTuoLuoSpider(NewsSpider):
     """
     游戏陀螺
     """
-    # custom_settings = {
-    #     "AUTOTHROTTLE_ENABLED": True,
-    #     "DOWNLOAD_DELAY": 6
-    # }
+    custom_settings = {
+        "AUTOTHROTTLE_ENABLED": True,
+        "DOWNLOAD_DELAY": 1
+    }
 
     name = "youxituoluo_news"
 
@@ -53,16 +53,6 @@ class YouXiTuoLuoSpider(NewsSpider):
             )
 
     def detail(self, response):
-        # self.log((
-        #     RegExUtil.find_first("/(\d+).html", response.url),
-        #     response.meta.get("push_date"),
-        #     response.meta.get("title"),
-        #     "游戏资讯",
-        #     "游戏陀螺",
-        #     response.meta.get("digest"),
-        #     response.xpath("//div[@class='info_p']"),
-        #     response.url,
-        # ))
         self.insert_new(
             RegExUtil.find_first("/(\d+).html", response.url),
             response.meta.get("push_date"),

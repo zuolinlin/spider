@@ -65,3 +65,5 @@ scrapy crawl pencilnews_news -s LOG_FILE=/logs/pencilnews_news.log
 scrapy crawl ctoutiao_news -s LOG_FILE=/logs/ctoutiao_news.log
 # 游戏陀螺
 scrapy crawl youxituoluo_news -s LOG_FILE=/logs/youxituoluo_news.log
+# 机器之心
+scrapy crawl jiqizhixin_news -s LOG_FILE=/logs/jiqizhixin_news.log

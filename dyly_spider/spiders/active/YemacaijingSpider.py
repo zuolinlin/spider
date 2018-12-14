@@ -38,22 +38,51 @@ class YemacaijingSpider(ActiveSpider):
         #                                 chrome_options=chrome_options)
         self.driver.get(self.start_urls)
         time.sleep(1)
-        YemacaijingSpider.parse(self)
+        YemacaijingSpider.detail(self)
+        print("=====已结束=====")
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
     def parse(self):
         self.driver.find_element_by_xpath('//*[@id="more"]/a').click()
-        time.sleep(1)
+        time.sleep(2)
         data_list = self.driver.find_elements_by_xpath('//div[@class="layui-col-xs12 layui-col-sm6 layui-col-md4"]')
         for data in data_list:
             title = data.find_element_by_xpath('./div/div/h2/a').text
             href = data.find_element_by_xpath('./div/div/h2/a').get_attribute('href')
-            link = self.base_url + href
-            self.driver.get(link)
-            time.sleep(1)
-            times = self.driver.find_element_by_xpath('/html/body/div[3]/div[1]/div[2]/dd/text()[2]').text
-            print(times)
+            source = '野马财经'
+            self.insert_new(
+                title,
+                None,
+                None,
+                None,
+                None,
+                href,
+                source
+            )
 
+    def detail(self):
+        industrys = self.fetchall("SELECT * FROM `xsbbiz`.`financial_activities` where `time` is null ")
+        for industry in industrys:
+            id = industry[0]
+            href = industry[6]
+            self.driver.get(href)
+            time.sleep(2)
+            text = self.driver.find_element_by_xpath('//div[@class="fmt-xinxi"]/dd').text
+            times = str(text).split('活动时间：')[1].split(' - ')[0]
+            times = str(times).replace(r'年', '-').replace(r'月', '-').replace(r'日', ' ')
+            place = str(text).split('活动地点：')[1].split('活动费用')[0]
+            self.exec_sql("""
+                          UPDATE 
+                            `xsbbiz`.`financial_activities`
+                          SEt
+                            `time` =%s,
+                            `place` =%s
+                          WHERE `id` = %s 
+                              """, (
+                times,
+                place,
+                id
+            ))
 
     def spider_closed(self):
             self.log("spider closed")

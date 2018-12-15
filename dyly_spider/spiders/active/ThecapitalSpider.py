@@ -40,25 +40,25 @@ class ThecapitalSpider(ActiveSpider):
                 )
 
                 # 往期的会议
-        data_list = response.xpath('//div[@class="son"]')
-        if data_list is not None:
-            for da in data_list:
-                link = da.xpath('./dt/a/@href').extract_first()
-                link = self.base_url + link
-                title = da.xpath('./dt/a/text()').extract_first()
-                place = da.xpath('./dd/p/text()[1]').extract_first()
-                times = da.xpath('./dd/p[2]/text()').extract_first()
-                times = str(times).replace(r'年', '-').replace(r'月', '-').replace(r'日', ' ')
-                classify = "会议"
-                self.insert_new(
-                    title,
-                    times,
-                    place,
-                    None,
-                    classify,
-                    link,
-                    source
-                )
+        # data_list = response.xpath('//div[@class="son"]')
+        # if data_list is not None:
+        #     for da in data_list:
+        #         link = da.xpath('./dt/a/@href').extract_first()
+        #         link = self.base_url + link
+        #         title = da.xpath('./dt/a/text()').extract_first()
+        #         place = da.xpath('./dd/p/text()[1]').extract_first()
+        #         times = da.xpath('./dd/p[2]/text()').extract_first()
+        #         times = str(times).replace(r'年', '-').replace(r'月', '-').replace(r'日', ' ')
+        #         classify = "会议"
+        #         self.insert_new(
+        #             title,
+        #             times,
+        #             place,
+        #             None,
+        #             classify,
+        #             link,
+        #             source
+        #         )
 
 
 

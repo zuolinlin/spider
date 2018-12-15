@@ -91,6 +91,10 @@ scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log
 # 投资界-清科集团
 scrapy crawl pedaily_active -s LOG_FILE=/logs/pedaily_active.log
 
+# 融资中国
+scrapy crawl thecapital_active -s LOG_FILE=/logs/thecapital_active.log
+
+
 # 36 氪
 
 scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log

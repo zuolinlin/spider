@@ -2,11 +2,16 @@ import time
 from scrapy import Request
 import urllib.parse
 import uuid
-
+from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 from dyly_spider.spiders.BaseSpider import BaseSpider
 
+"""
+活动行 === 金融 创业 it互联网 医疗 科技
 
-class HdxSpider(BaseSpider):
+"""
+
+
+class HdxSpider(ActiveSpider):
     #  爬虫的名字 <爬虫启动时使用  scrapy crawl xiniu>
     name = "hdx_active"
     # 爬取的范围，防治爬虫爬到别的网站
@@ -14,56 +19,68 @@ class HdxSpider(BaseSpider):
     #  开始爬取的地址  按照行业分类来爬取
     start_urls = ['http://www.huodongxing.com']
     base_url = "http://www.huodongxing.com"
-    # comon_url = "http://www.huodongxing.com/events?orderby=o&channel=行业&tag={}&city=全部&isChannel=true&page={}"
-    news_type_url_list = [
-        {"code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=IT互联网&city=全部&isChannel=true&page=1",
-         "name": "IT互联网"},
-        {"code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=创业&city=全部&isChannel=true&page=1",
-         "name": "创业"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=科技&city=全部&isChannel=true&page=1",
-            "name": "科技"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=金融&city=全部8&isChannel=true&page=1",
-            "name": "金融"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=游戏&city=全部&isChannel=true&page=1",
-            "name": "游戏"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=游戏&city=全部&isChannel=true&page=1",
-            "name": "游戏"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=电商&city=全部&isChannel=true&page=1",
-            "name": "电商"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=教育&city=全部&isChannel=true&page=1",
-            "name": "教育"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=营销&city=全部&isChannel=true&page=1",
-            "name": "营销"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=设计&city=全部&isChannel=true&page=1",
-            "name": "设计"},
-
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=地产&city=全部&isChannel=true&page=1",
-            "name": "地产"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=医疗&city=全部&isChannel=true&page=2",
-            "name": "医疗"},
-        {
-            "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=服务业&city=全部&isChannel=true&page=1",
-            "name": "服务业"},
+    start_urls = "http://www.huodongxing.com/events?orderby=o&channel=行业&tag={classify}&city=全部&isChannel=true&page={pageNo}"
+    news_type_url_list =[
+        {"name": "IT互联网"},
+        {"name" : "创业"},
+        {"name": "科技"},
+        {"name": "金融"},
+        {"name": "医疗"}
     ]
+    # news_type_url_list = [
+    #     {"code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=IT互联网&city=全部&isChannel=true&page=1",
+    #      "name": "IT互联网"},
+    #     {"code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=创业&city=全部&isChannel=true&page=1",
+    #      "name": "创业"},
+    #     {
+    #         "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=科技&city=全部&isChannel=true&page=1",
+    #         "name": "科技"},
+    #     {
+    #         "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=金融&city=全部8&isChannel=true&page=1",
+    #         "name": "金融"},
+    #     {
+    #         "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=医疗&city=全部&isChannel=true&page=2",
+    #         "name": "医疗"},
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=游戏&city=全部&isChannel=true&page=1",
+        #     "name": "游戏"},
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=游戏&city=全部&isChannel=true&page=1",
+        #     "name": "游戏"},
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=电商&city=全部&isChannel=true&page=1",
+        #     "name": "电商"},
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=教育&city=全部&isChannel=true&page=1",
+        #     "name": "教育"},
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=营销&city=全部&isChannel=true&page=1",
+        #     "name": "营销"},
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=设计&city=全部&isChannel=true&page=1",
+        #     "name": "设计"},
+        #
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=地产&city=全部&isChannel=true&page=1",
+        #     "name": "地产"},
+
+        # {
+        #     "code": "http://www.huodongxing.com/events?orderby=o&channel=行业&tag=服务业&city=全部&isChannel=true&page=1",
+        #     "name": "服务业"},
+   # ]
     photo_tag_url ="http://cdn.huodongxing.com/Content/v3.0/img/hdx/hdx-main-feature/admin-head/dujia.png"
 
     def __init__(self, *a, **kw):
         super(HdxSpider, self).__init__(*a, **kw)
 
     def start_requests(self):
-        for news_url in self.news_type_url_list:
+        for active_classify in self.news_type_url_list:
             yield Request(
-                news_url["code"],
+                self.start_urls.format(classify=active_classify.get("name") ,pageNo=1),
+                meta={
+                    "classify": active_classify.get("name"),
+                    "pageNo": "1"
+                },
                 dont_filter=True
             )
 
@@ -112,43 +129,22 @@ class HdxSpider(BaseSpider):
                       },
                       callback=self.detail
                   )
-                  #
-                  # # 插入sql
-                  # pojo = self.fetchone(
-                  #     "SELECT 1 FROM `financial_activities_bak` WHERE `link`='%s' AND `source`='%s' " % (link, source)
-                  # )
-                  # if pojo is None:
-                  #     self.insert("""
-                  #                                       INSERT INTO `financial_activities_bak` (
-                  #                                         `id`,
-                  #                                         `title`,
-                  #                                         `time`,
-                  #                                         `place`,
-                  #                                         `tag`,
-                  #                                         `classify`,
-                  #                                         `link`,
-                  #                                         `source`,
-                  #                                         `createTime`
-                  #
-                  #                                       )
-                  #                                       VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                  #                                       """, (
-                  #         str(uuid.uuid4()).replace("-", ""),
-                  #         title,
-                  #         times,
-                  #         place,
-                  #         tags,
-                  #         classify,
-                  #         link,
-                  #         source,
-                  #         time.localtime()
-                  #     ))
-        num = str(response.url).split("page=")[1]
-        next_num = int(num) +1
-        next_url = str(response.url).split("page=")[0]+"page="+str(next_num)
-        next_url = urllib.parse.unquote(next_url)
-        #yield Request(next_url, callback=self.parse)
-        yield Request(next_url,dont_filter=True, callback=self.parse)
+
+        num = response.meta['pageNo']
+        classify = response.meta['classify']
+        next_num = int(num) + 1
+        if next_num <= 15:
+            next_url = self.start_urls.format(classify=classify,pageNo=str(next_num))
+            next_url = urllib.parse.unquote(next_url)
+            yield Request(next_url,
+                          dont_filter=True,
+                          meta={
+                              "classify": response.meta['classify'],
+                              "pageNo": str(next_num)
+                          },
+                          callback=self.parse)
+        else:
+            return
 
     def detail(self, response):
           new_time = response.meta['new_time']
@@ -172,34 +168,16 @@ class HdxSpider(BaseSpider):
 
           # 插入sql
           pojo = self.fetchone(
-              "SELECT 1 FROM `financial_activities_bak` WHERE `link`='%s' AND `source`='%s' " % (link, source))
+              "SELECT 1 FROM `financial_activities` WHERE `link`='%s' AND `source`='%s' " % (link, source))
           if pojo is None:
-            self.insert("""
-                                        INSERT INTO `financial_activities_bak` (
-                                          `id`,
-                                          `title`,
-                                          `time`,
-                                          `place`,
-                                          `tag`,
-                                          `classify`,
-                                          `link`,
-                                          `source`,
-                                          `createTime`
-
-                                        )
-                                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                                        """, (
-                                        str(uuid.uuid4()).replace("-", ""),
-                                        title,
-                                        times,
-                                        place,
-                                        tags,
-                                        classify,
-                                        link,
-                                        source,
-                                        time.localtime()
-                                    ))
-
-
+              self.insert_new(
+                  title,
+                  times,
+                  place,
+                  tags,
+                  classify,
+                  link,
+                  source
+              )
 
 

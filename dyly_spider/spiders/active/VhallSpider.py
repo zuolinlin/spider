@@ -51,16 +51,16 @@ class VhallSpider(ActiveSpider):
                     link,
                     source
                 )
-            curr_page = response.meta['curr_page']
-            next_page = int(curr_page) + 1
-            yield scrapy.FormRequest(
-                url=self.start_urls,
-                formdata={
-                    "user_id": "157024",
-                    "curr_page": str(next_page),
-                    "pagesize": "8"},
-                meta={"curr_page": next_page},
-                callback=self.parse
-            )
+            # curr_page = response.meta['curr_page']
+            # next_page = int(curr_page) + 1
+            # yield scrapy.FormRequest(
+            #     url=self.start_urls,
+            #     formdata={
+            #         "user_id": "157024",
+            #         "curr_page": str(next_page),
+            #         "pagesize": "8"},
+            #     meta={"curr_page": next_page},
+            #     callback=self.parse
+            # )
         else:
             return

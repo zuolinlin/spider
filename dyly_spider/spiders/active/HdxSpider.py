@@ -133,7 +133,7 @@ class HdxSpider(ActiveSpider):
         num = response.meta['pageNo']
         classify = response.meta['classify']
         next_num = int(num) + 1
-        if next_num <= 15:
+        if next_num <= 5:
             next_url = self.start_urls.format(classify=classify,pageNo=str(next_num))
             next_url = urllib.parse.unquote(next_url)
             yield Request(next_url,

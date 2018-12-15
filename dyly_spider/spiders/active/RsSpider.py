@@ -52,18 +52,18 @@ class RsSpider(ActiveSpider):
                     link,
                     source
                 )
-            page =response.meta['page']
-            next_page = int(page) + 1
-            if next_page <= 1818:
-                yield scrapy.FormRequest(
-                    url=self.start_urls,
-                    formdata={
-                        "perComType": "0",
-                        "page": str(next_page),
-                        "rows": "12"},
-                    meta={"page": str(next_page)},
-                    callback=self.parse
-                )
+            # page =response.meta['page']
+            # next_page = int(page) + 1
+            # if next_page <= 1818:
+            #     yield scrapy.FormRequest(
+            #         url=self.start_urls,
+            #         formdata={
+            #             "perComType": "0",
+            #             "page": str(next_page),
+            #             "rows": "12"},
+            #         meta={"page": str(next_page)},
+            #         callback=self.parse
+            #     )
 
         else:
             return

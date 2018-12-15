@@ -58,7 +58,7 @@ class HdbSpider(ActiveSpider):
         if next_url is not None:
             strs = str(next_url).split('-')
             num = strs[len(strs) - 1][0:-1]
-            if int(num) <= 50:
+            if int(num) <= 5:
                 yield Request(
                     next_url,
                     dont_filter=True,

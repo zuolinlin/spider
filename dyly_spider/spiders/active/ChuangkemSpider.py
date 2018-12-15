@@ -39,13 +39,13 @@ class ChuangkemSpider(ActiveSpider):
                 source
             )
         # 获取一下页的数据
-        next_url = response.xpath('//div[@class="pagination text-center"]/ul/li[last()]/a/@href').extract_first()
-        last_url = response.xpath('//div[@class="pagination text-center"]/ul/li[last() -1]/a/@href').extract_first()
-        if next_url == last_url:
-            return
-        else:
-            next_url = self.base_url + next_url
-            yield Request(
-                next_url,
-                callback=self.parse
-            )
+        # next_url = response.xpath('//div[@class="pagination text-center"]/ul/li[last()]/a/@href').extract_first()
+        # last_url = response.xpath('//div[@class="pagination text-center"]/ul/li[last() -1]/a/@href').extract_first()
+        # if next_url == last_url:
+        #     return
+        # else:
+        #     next_url = self.base_url + next_url
+        #     yield Request(
+        #         next_url,
+        #         callback=self.parse
+        #     )

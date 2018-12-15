@@ -52,12 +52,12 @@ class IheimaSpider(ActiveSpider):
                         link,
                         source
                     )
-                page = response.meta["page"]
-                next_page = int(page) + 1
-                yield Request(
-                    self.start_urls.format(pageNo=next_page),
-                    meta={"page": str(next_page)}
-
-                )
+                # page = response.meta["page"]
+                # next_page = int(page) + 1
+                # yield Request(
+                #     self.start_urls.format(pageNo=next_page),
+                #     meta={"page": str(next_page)}
+                #
+                # )
             else:
                 return

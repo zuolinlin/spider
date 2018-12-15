@@ -101,5 +101,34 @@ scrapy crawl chinaventure_active -s LOG_FILE=/logs/chinaventure_active.log
 scrapy crawl investorscn_active -s LOG_FILE=/logs/investorscn_active.log
 
 # 36 氪
-
 scrapy crawl kr_active -s LOG_FILE=/logs/kr_active.log
+
+# 亿欧网
+scrapy crawl iyiou_active -s LOG_FILE=/logs/iyiou_active.log
+
+#创客猫
+scrapy crawl chuangkem_active -s LOG_FILE=/logs/chuangkem_active.log
+
+#虎嗅网
+scrapy crawl huxiu_active -s LOG_FILE=/logs/huxiu_active.log
+
+#i 黑马
+scrapy crawl iheima_active -s LOG_FILE=/logs/iheima_active.log
+
+#野马财经
+scrapy crawl yemacaijing_active -s LOG_FILE=/logs/yemacaijing_active.log
+
+#野马财经
+scrapy crawl chinaipo_active -s LOG_FILE=/logs/chinaipo_active.log
+
+#21财经
+scrapy crawl jingji_active -s LOG_FILE=/logs/jingji_active.log
+
+#微吼直播
+scrapy crawl vhall_active -s LOG_FILE=/logs/vhall_active.log
+
+#第一财经大直播
+scrapy crawl yicai_active -s LOG_FILE=/logs/yicai_active.log
+
+#全景网
+scrapy crawl rs_active -s LOG_FILE=/logs/rs_active.log

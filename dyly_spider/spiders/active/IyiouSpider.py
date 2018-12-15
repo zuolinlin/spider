@@ -33,7 +33,7 @@ class IyiouSpider(ActiveSpider):
                     meta={
                         "name": active_type.get('name'),
                         "value": active_type.get("value"),
-                        "page": 1
+                        "page": "1"
                     },
                     dont_filter=True
                 )
@@ -62,17 +62,18 @@ class IyiouSpider(ActiveSpider):
                     )
         else:
             return
-        page = response.meta['page']
-        next_page = int(page)+1
-        yield Request(
-            self.start_urls.format(page=next_page, industry=response.meta['value']),
-            meta={
-                "name": response.meta['name'],
-                "value": response.meta["value"],
-                "page": next_page
-            },
-            callback=self.parse
-        )
+        # 只取当前的最新的数据
+        # page = response.meta['page']
+        # next_page = int(page)+1
+        # yield Request(
+        #     self.start_urls.format(page=next_page, industry=response.meta['value']),
+        #     meta={
+        #         "name": response.meta['name'],
+        #         "value": response.meta["value"],
+        #         "page": next_page
+        #     },
+        #     callback=self.parse
+        # )
 
 
 

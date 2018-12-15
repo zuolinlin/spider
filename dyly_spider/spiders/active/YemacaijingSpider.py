@@ -24,20 +24,21 @@ class YemacaijingSpider(ActiveSpider):
     def __init__(self, *a, **kw):
         super(YemacaijingSpider, self).__init__(*a, **kw)
         self.current_page = 1
-        self.chrome_options = Options()
-        #  设置浏览器是否隐藏
-        # self.chrome_options.add_argument('--headless')
-        # self.chrome_options.add_argument('--disable-gpu')
-        # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
-        self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
-        # chrome_options = webdriver.ChromeOptions()
-        # # 不打开浏览器窗口
-        # chrome_options.add_argument('headless')
-        # chrome_options.add_argument('no-sandbox')
-        # self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-        #                                 chrome_options=chrome_options)
+        # self.chrome_options = Options()
+        # #  设置浏览器是否隐藏
+        # # self.chrome_options.add_argument('--headless')
+        # # self.chrome_options.add_argument('--disable-gpu')
+        # # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
+        # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+        chrome_options = webdriver.ChromeOptions()
+        # 不打开浏览器窗口
+        chrome_options.add_argument('headless')
+        chrome_options.add_argument('no-sandbox')
+        self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+                                        chrome_options=chrome_options)
         self.driver.get(self.start_urls)
         time.sleep(1)
+        YemacaijingSpider.parse(self)
         YemacaijingSpider.detail(self)
         print("=====已结束=====")
         dispatcher.connect(self.spider_closed, signals.spider_closed)
@@ -87,4 +88,4 @@ class YemacaijingSpider(ActiveSpider):
     def spider_closed(self):
             self.log("spider closed")
             # 当爬虫退出的时关闭浏览器
-            self.browser.quit()
+            self.driver.quit()

@@ -45,12 +45,12 @@ class YicaiSpider(ActiveSpider):
                     link,
                     source
                 )
-            pageNo = response.meta['pageNo']
-            next_page = int(pageNo) + 1
-            yield scrapy.FormRequest(
-                url=self.start_urls.format(pageNo=next_page),
-                meta={"pageNo": next_page},
-                callback=self.parse
-            )
+            # pageNo = response.meta['pageNo']
+            # next_page = int(pageNo) + 1
+            # yield scrapy.FormRequest(
+            #     url=self.start_urls.format(pageNo=next_page),
+            #     meta={"pageNo": next_page},
+            #     callback=self.parse
+            # )
         else:
             return

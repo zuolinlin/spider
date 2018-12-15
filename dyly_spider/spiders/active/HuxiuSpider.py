@@ -51,16 +51,17 @@ class HuxiuSpider(ActiveSpider):
                     link,
                     source
                 )
-                page = response.meta["page"]
-                next_page = int(page) + 1
-                yield FormRequest(
-                    self.start_urls,
-                    formdata={"huxiu_hash_code": "b896a56653e8668bd192fc05f3cb80b7",
-                              "is_ajax": '1',
-                              "page": str(next_page)
-                              },
-                    meta={"page": str(next_page)},
-                    callback=self.parse
-
-                )
+                # 取当前页的数据即可
+                # page = response.meta["page"]
+                # next_page = int(page) + 1
+                # yield FormRequest(
+                #     self.start_urls,
+                #     formdata={"huxiu_hash_code": "b896a56653e8668bd192fc05f3cb80b7",
+                #               "is_ajax": '1',
+                #               "page": str(next_page)
+                #               },
+                #     meta={"page": str(next_page)},
+                #     callback=self.parse
+                #
+                # )
 

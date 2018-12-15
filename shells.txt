@@ -85,6 +85,9 @@ scrapy crawl hdx_active -s LOG_FILE=/logs/hdx_active.log
 # 活动吧
 scrapy crawl hdb_active -s LOG_FILE=/logs/hdb_active.log
 
+# 陆想汇
+scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log
+
 # 36 氪
 
-scrapy crawl kr_active -s LOG_FILE=/logs/kr_active.log
+scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log

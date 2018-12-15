@@ -97,6 +97,9 @@ scrapy crawl thecapital_active -s LOG_FILE=/logs/thecapital_active.log
 # 投中网
 scrapy crawl chinaventure_active -s LOG_FILE=/logs/chinaventure_active.log
 
+# 投资家
+scrapy crawl investorscn_active -s LOG_FILE=/logs/investorscn_active.log
+
 # 36 氪
 
 scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log

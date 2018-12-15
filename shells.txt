@@ -67,3 +67,15 @@ scrapy crawl ctoutiao_news -s LOG_FILE=/logs/ctoutiao_news.log
 scrapy crawl youxituoluo_news -s LOG_FILE=/logs/youxituoluo_news.log
 # 机器之心
 scrapy crawl jiqizhixin_news -s LOG_FILE=/logs/jiqizhixin_news.log
+
+
+
+
+
+
+
+######################活动爬虫###########################################
+
+# 活动家
+scrapy crawl hdj_active -s LOG_FILE=/logs/hdj_active.log
+

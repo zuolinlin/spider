@@ -80,9 +80,10 @@ scrapy crawl jiqizhixin_news -s LOG_FILE=/logs/jiqizhixin_news.log
 scrapy crawl hdj_active -s LOG_FILE=/logs/hdj_active.log
 
 # 活动行
-scrapy crawl hdx_active -s LOG_FILE=/logs/hdj_active.log
+scrapy crawl hdx_active -s LOG_FILE=/logs/hdx_active.log
 
-
+# 活动吧
+scrapy crawl hdb_active -s LOG_FILE=/logs/hdb_active.log
 
 # 36 氪
 

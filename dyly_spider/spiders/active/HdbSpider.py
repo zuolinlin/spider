@@ -2,6 +2,10 @@ from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 from scrapy import Request
 import re
 from util.RegExUtil import remove
+"""
+互动吧 ===== 金融  科技 互联网  医疗 路演
+"""
+
 
 class HdbSpider(ActiveSpider):
     #  爬虫的名字 <爬虫启动时使用  scrapy crawl xiniu>
@@ -50,14 +54,20 @@ class HdbSpider(ActiveSpider):
                 )
         # 获取下一页
         next_url = response.xpath('//div[@class="join_feny"]/a[last()]/@href').extract_first()
-        if next_url is not None:
-            yield Request(
-                next_url,
-                dont_filter=True,
-                meta=response.meta,
-                callback=self.parse
 
-            )
+        if next_url is not None:
+            strs = str(next_url).split('-')
+            num = strs[len(strs) - 1][0:-1]
+            if int(num) <= 50:
+                yield Request(
+                    next_url,
+                    dont_filter=True,
+                    meta=response.meta,
+                    callback=self.parse
+
+                )
+            else:
+                return
         else:
             return
 

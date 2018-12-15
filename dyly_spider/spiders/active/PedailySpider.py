@@ -4,7 +4,7 @@ from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 from scrapy import Request
 
 """
-投资界-清科集团   == 
+投资界-清科集团   == 地方论坛 、Venture50、股权投资论坛
 """
 
 
@@ -56,11 +56,12 @@ class PedailySpider(ActiveSpider):
                     link,
                     source
                 )
-        next_url = response.xpath('//div[@class="page-list page"]/a[@class="next"]/@href').extract_first()
-        if next_url is not None:
-            yield Request(
-                next_url,
-                meta=response.meta,
-                dont_filter=True,
-                callback=self.parse
-            )
+        # 暂时不需要抓取下一页，只需要抓取当前页的活动数据即可
+        # next_url = response.xpath('//div[@class="page-list page"]/a[@class="next"]/@href').extract_first()
+        # if next_url is not None:
+        #     yield Request(
+        #         next_url,
+        #         meta=response.meta,
+        #         dont_filter=True,
+        #         callback=self.parse
+        #     )

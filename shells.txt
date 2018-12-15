@@ -88,6 +88,9 @@ scrapy crawl hdb_active -s LOG_FILE=/logs/hdb_active.log
 # 陆想汇
 scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log
 
+# 投资界-清科集团
+scrapy crawl pedaily_active -s LOG_FILE=/logs/pedaily_active.log
+
 # 36 氪
 
 scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log

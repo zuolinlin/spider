@@ -2,6 +2,9 @@ import scrapy
 
 from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 from scrapy import Request
+"""
+陆想汇====金融活动
+"""
 
 
 class LjzforumSpider(ActiveSpider):

@@ -4,13 +4,13 @@ import urllib.parse
 import uuid
 
 from dyly_spider.spiders.BaseSpider import BaseSpider
-
+from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 """
 活动家  ===   it、医疗科学、金融财经
 """
 
 
-class HdjSpider(BaseSpider):
+class HdjSpider(ActiveSpider):
     #  爬虫的名字 <爬虫启动时使用  scrapy crawl xiniu>
     name = "hdj_active"
     # 爬取的范围，防治爬虫爬到别的网站
@@ -61,36 +61,27 @@ class HdjSpider(BaseSpider):
                     link, source)
                 )
                 if pojo is None:
-                    self.insert("""
-                                                          INSERT INTO `financial_activities` (
-                                                            `id`,
-                                                            `title`,
-                                                            `time`,
-                                                            `place`,
-                                                            `tag`,
-                                                            `classify`,
-                                                            `link`,
-                                                            `source`,
-                                                            `createTime`
-    
-                                                          ) 
-                                                          VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                                                          """, (
-                        str(uuid.uuid4()).replace("-", ""),
+                    self.insert_new(
                         title,
                         times,
                         place,
                         tags,
                         classify,
                         link,
-                        source,
-                        time.localtime()
-                    ))
+                        source
+                    )
             next_url = response.xpath('//div[@class="pagination"]/ul/li[last()]/a/@href').extract_first()
             if next_url is not None:
-                next_url = self.base_url+next_url
-                # yield Request(next_url, callback=self.parse)
-                yield Request(next_url, dont_filter=True, meta=response.meta, callback=self.parse)
+                pageNo = str(next_url).split("-")[1][0:1]
+                # 只抓取前5页的数据
+                if int(pageNo) <= 5:
+                    next_url = self.base_url+next_url
+                    # yield Request(next_url, callback=self.parse)
+                    yield Request(next_url, dont_filter=True, meta=response.meta, callback=self.parse)
+                else:
+                    return
 
             else:
                 return
+        else:
+            return

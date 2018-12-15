@@ -79,3 +79,6 @@ scrapy crawl jiqizhixin_news -s LOG_FILE=/logs/jiqizhixin_news.log
 # 活动家
 scrapy crawl hdj_active -s LOG_FILE=/logs/hdj_active.log
 
+# 36 氪
+
+scrapy crawl kr_active -s LOG_FILE=/logs/kr_active.log

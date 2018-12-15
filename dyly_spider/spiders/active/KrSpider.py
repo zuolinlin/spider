@@ -49,14 +49,14 @@ class KrSpider(ActiveSpider):
                     link,
                     source
                 )
-
-        totalPages = data_list['data']['totalPages']
-        page = data_list['data']['page']
-        next_page= int(page)+1
-        if next_page <= totalPages:
-            yield Request(
-                self.start_urls.format(pageNo=next_page),
-                dont_filter=True
-            )
+        # 取当前页的数据即可
+        # totalPages = data_list['data']['totalPages']
+        # page = data_list['data']['page']
+        # next_page= int(page)+1
+        # if next_page <= totalPages:
+        #     yield Request(
+        #         self.start_urls.format(pageNo=next_page),
+        #         dont_filter=True
+        #     )
         else:
             return

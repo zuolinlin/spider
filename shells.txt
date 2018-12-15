@@ -102,4 +102,4 @@ scrapy crawl investorscn_active -s LOG_FILE=/logs/investorscn_active.log
 
 # 36 氪
 
-scrapy crawl ljzforum_active -s LOG_FILE=/logs/ljzforum_active.log
+scrapy crawl kr_active -s LOG_FILE=/logs/kr_active.log

@@ -23,7 +23,7 @@ class ChinaventureSpider(ActiveSpider):
         data_list = response.text
         data_list = json.loads(data_list)
         datas = data_list['data']
-        if datas is not None or len(datas) != 0:
+        if datas is not None and len(datas) != 0:
             for data in datas:
                 try:
                     place = data['provinceName']
@@ -46,13 +46,16 @@ class ChinaventureSpider(ActiveSpider):
                     link,
                     source
                 )
-            url = response.url
-            next_url_no = url[52:62]
-            next_no = str(next_url_no).split('-')[0]
-            next_no = int(next_no) + 10
-            yield Request(
-                self.next_url.format(start=next_no),
-                dont_filter=True,
-                callback=self.parse
-            )
+            # 历史数据不需要再取，取当前页的数据即可
+            # url = response.url
+            # next_url_no = url[52:62]
+            # next_no = str(next_url_no).split('-')[0]
+            # next_no = int(next_no) + 10
+            # yield Request(
+            #     self.next_url.format(start=next_no),
+            #     dont_filter=True,
+            #     callback=self.parse
+            # )
 
+        else:
+            return

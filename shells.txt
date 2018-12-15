@@ -94,6 +94,8 @@ scrapy crawl pedaily_active -s LOG_FILE=/logs/pedaily_active.log
 # 融资中国
 scrapy crawl thecapital_active -s LOG_FILE=/logs/thecapital_active.log
 
+# 投中网
+scrapy crawl chinaventure_active -s LOG_FILE=/logs/chinaventure_active.log
 
 # 36 氪
 

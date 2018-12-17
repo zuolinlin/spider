@@ -132,3 +132,6 @@ scrapy crawl yicai_active -s LOG_FILE=/logs/yicai_active.log
 
 #全景网
 scrapy crawl rs_active -s LOG_FILE=/logs/rs_active.log
+
+# OFweek维科网
+scrapy crawl ofweek_active -s LOG_FILE=/logs/ofweek_active.log

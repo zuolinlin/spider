@@ -102,7 +102,7 @@ class HdxSpider(ActiveSpider):
                   #     else:
                   #         times = "2019年" + new_tinme
                   #     times = str(times).replace(r'年', '-').replace(r'月', '-').replace(r'日', ' ')
-                  place = data.xpath('//div[@class="item-dress flex"]/p[@class="item-dress-pp"]/text()').extract_first()
+                  place = data.xpath('.//div[@class="item-dress flex"]/p[@class="item-dress-pp"]/text()').extract_first()
                   tags_data = data.xpath('./a/div[@class="item-mesh-bottom flex"]/div[@class="item-bottom-left flex"]/div[@class="tag-list flex"]//p//span/text()').extract()
                   tags=""
                   if tags_data is not None and len(tags_data) != 0:

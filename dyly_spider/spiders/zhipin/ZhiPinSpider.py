@@ -1,16 +1,14 @@
-import json
 import logging
 import urllib
 
+from pydispatch import dispatcher
 from scrapy import Request, signals
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 from dyly_spider.items import ZhipinItem
 from dyly_spider.spiders.BaseSpider import BaseSpider
 from util import cy_logger as logger
-from util.XPathUtil import str_to_selector
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from pydispatch import dispatcher
 
 
 # Boss直聘

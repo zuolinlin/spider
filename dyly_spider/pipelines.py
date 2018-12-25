@@ -4,6 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import time
+
 from util import cy_logger as logger
 from util.db import mysql
 
@@ -54,11 +56,48 @@ class ZhiPinSpiderPipeline(object):
 
     def process_item(self, item, spider):
         # logger.log("===> " + str(item))
-        insert(
-            "INSERT INTO `xsbbiz`.`zhipin_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`,  `platform`) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (item['company_name'], item['job_name'], item['location'], item['education'], item['years'], item['salary'],
-             item['platform']))
+        if item['out_id'] is not None:
+            job = spider.fetchone(
+                "SELECT 1 FROM `xsbbiz`.`zhipin_recruitment` WHERE `out_id`='%s'" % (
+                    item['out_id'])
+            )
+        else:
+            return
+        if job is None:
+            spider.insert(
+                "INSERT INTO `xsbbiz`.`zhipin_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `out_id`, `update_time`) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (item['company_name'], item['job_name'], item['location'], item['education'], item['years'],
+                 item['salary'], item['release_time'], item['platform'], item['out_id'], time.localtime()))
+        else:
+            spider.insert(
+                """
+                UPDATE
+                      `xsbbiz`.`zhipin_recruitment`
+                    SET
+                      `company_name` = %s,
+                      `job_name` = %s,
+                      `location` = %s,
+                      `education` = %s,
+                      `years` = %s,
+                      `salary` = %s,
+                      `release_time` = %s,
+                      `platform` = %s,
+                      `update_time` = %s
+                    WHERE `out_id` = %s
+                """, (
+                    item['company_name'],
+                    item['job_name'],
+                    item['location'],
+                    item['education'],
+                    item['years'],
+                    item['salary'],
+                    item['release_time'],
+                    item['platform'],
+                    time.localtime(),
+                    item['out_id']
+                )
+            )
 
 
 class ZhiLianSpiderPipeline(object):

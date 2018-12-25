@@ -185,6 +185,7 @@ class ZhipinItem(scrapy.Item):
     field = scrapy.Field()  # 领域
     release_time = scrapy.Field()  # 发布时间
     platform = scrapy.Field()  # 发布平台
+    out_id = scrapy.Field()  # 外部id
 
 
 class ZhiLianItem(scrapy.Item):

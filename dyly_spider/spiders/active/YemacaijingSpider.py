@@ -24,19 +24,19 @@ class YemacaijingSpider(ActiveSpider):
     def __init__(self, *a, **kw):
         super(YemacaijingSpider, self).__init__(*a, **kw)
         self.current_page = 1
-        # self.chrome_options = Options()
-        # #  设置浏览器是否隐藏
-        # # self.chrome_options.add_argument('--headless')
-        # # self.chrome_options.add_argument('--disable-gpu')
-        # # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
-        # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
-        chrome_options = webdriver.ChromeOptions()
-        # 不打开浏览器窗口
-        chrome_options.add_argument('headless')
-        chrome_options.add_argument('no-sandbox')
-        self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-                                        chrome_options=chrome_options)
-        self.driver.get(self.start_urls)
+        self.chrome_options = Options()
+        #  设置浏览器是否隐藏
+        # self.chrome_options.add_argument('--headless')
+        # self.chrome_options.add_argument('--disable-gpu')
+        # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
+        self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+        # chrome_options = webdriver.ChromeOptions()
+        # # 不打开浏览器窗口
+        # chrome_options.add_argument('headless')
+        # chrome_options.add_argument('no-sandbox')
+        # self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+        #                                 chrome_options=chrome_options)
+        self.driver.get("http://mp.weixin.qq.com/profile?src=3&timestamp=1545290661&ver=1&signature=kgbWRPzB8ltfKV1P9wTZ4dH-ke3gGLL9jn2mc2*q*NR1PjtbCEre8DCEuFceEQmgKJDf-HQdYYlTmYs9aK3AYQ==")
         time.sleep(1)
         YemacaijingSpider.parse(self)
         YemacaijingSpider.detail(self)

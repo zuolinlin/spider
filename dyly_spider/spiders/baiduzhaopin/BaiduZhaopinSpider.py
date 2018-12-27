@@ -52,9 +52,9 @@ class BaiduZhaopinSpider(BaseSpider):
                 if len(job_list) > 0:
                     while len(job_list) > cur_num:
                         cur_num = len(job_list)
-                        # 满100条提交一次
-                        if cur_num % 100 == 0:
-                            for job in job_list[-100:]:
+                        # 满10条提交一次
+                        if cur_num % 10 == 0:
+                            for job in job_list[-10:]:
                                 item = BaiduZhaopinItem()
                                 item['company_name'] = job.find_element_by_xpath(
                                     "./div/div[@class='inlineblock percent33']/div[@class='company']/span[@class='inlineblock companyname']").text
@@ -92,7 +92,7 @@ class BaiduZhaopinSpider(BaseSpider):
                         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
                         job_list = self.browser.find_elements_by_xpath("//div[@id='qz-list-box']/a[@id='cktarget']")
                     # 提交剩余数据
-                    for job in job_list[-100:]:
+                    for job in job_list[-10:]:
                         item = BaiduZhaopinItem()
                         item['company_name'] = job.find_element_by_xpath(
                             "./div/div[@class='inlineblock percent33']/div[@class='company']/span[@class='inlineblock companyname']").text

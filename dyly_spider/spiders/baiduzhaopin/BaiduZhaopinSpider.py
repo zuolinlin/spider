@@ -29,8 +29,8 @@ class BaiduZhaopinSpider(BaseSpider):
         super(BaiduZhaopinSpider, self).__init__(*a, **kw)
         self.chrome_options = Options()
         #  不打开浏览器窗口
-        self.chrome_options.add_argument('--headless')
-        self.chrome_options.add_argument('--disable-gpu')
+        # self.chrome_options.add_argument('--headless')
+        # self.chrome_options.add_argument('--disable-gpu')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
                                         chrome_options=self.chrome_options)
         self.browser.maximize_window()  # 窗口最大化

@@ -1,4 +1,5 @@
 import logging
+import time
 import urllib
 
 from pydispatch import dispatcher
@@ -19,7 +20,7 @@ class ZhiPinSpider(BaseSpider):
 
     # 自定义设置
     custom_settings = {
-        "LOG_LEVEL": logging.WARN,
+        "LOG_LEVEL": logging.INFO,
         "DOWNLOAD_DELAY": 3,
         'ITEM_PIPELINES': {
             'dyly_spider.pipelines.ZhiPinSpiderPipeline': 100,
@@ -34,6 +35,8 @@ class ZhiPinSpider(BaseSpider):
         self.chrome_options.add_argument('--disable-gpu')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver',
                                         chrome_options=self.chrome_options)
+        # 隐性等待，最长等3秒
+        self.browser.implicitly_wait(3)
         # 传递信息,也就是当爬虫关闭时scrapy会发出一个spider_closed的信息,当这个信号发出时就调用closeSpider函数关闭这个浏览器.
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
@@ -84,6 +87,7 @@ class ZhiPinSpider(BaseSpider):
                 detail_url = job.xpath(
                     "./div[@class='job-primary']/div[@class='info-primary']/h3[@class='name']/a/@href").extract_first()
                 detail_url = urllib.parse.urljoin(response.url, detail_url)
+                time.sleep(3)
                 yield Request(detail_url, callback=self.parse_detail, dont_filter=True,
                               meta={"item": item, "selenium": True})
             # 请求下一页
@@ -96,6 +100,7 @@ class ZhiPinSpider(BaseSpider):
         item["release_time"] = response.xpath(
             "//div[@class='job-banner']/div[@class='inner home-inner']/div[@class='job-primary detail-box']/div[@class='info-primary']/div[@class='job-author']/span[@class='time']/text()") \
             .extract_first()
+        print(item)
         yield item
 
     #   获取公司列表

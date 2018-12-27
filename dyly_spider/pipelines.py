@@ -121,8 +121,41 @@ class BaiduZhaopinSpiderPipeline(object):
 
     def process_item(self, item, spider):
         # logger.log("===> " + str(item))
-        insert(
-            "INSERT INTO `xsbbiz`.`baidu_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-            (item['company_name'], item['job_name'], item['location'], item['education'], item['years'], item['salary'],
-             item['release_time'], item['platform']))
+        if item['company_name'] is not None & item['job_name'] is not None & item['platform'] is not None:
+            job = spider.fetchone(
+                "SELECT 1 FROM `xsbbiz`.`baidu_recruitment` WHERE `company_name`='%s' AND `job_name`='%s' AND `platform`='%s'" % (
+                    item['company_name'], item['job_name'], item['platform'])
+            )
+        else:
+            return
+        if job is None:
+            spider.insert(
+                "INSERT INTO `xsbbiz`.`baidu_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `update_time`) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (item['company_name'], item['job_name'], item['location'], item['education'], item['years'],
+                 item['salary'], item['release_time'], item['platform'], time.localtime()))
+        else:
+            spider.insert(
+                """
+                UPDATE
+                      `xsbbiz`.`baidu_recruitment`
+                    SET
+                      `location` = %s,
+                      `education` = %s,
+                      `years` = %s,
+                      `salary` = %s,
+                      `release_time` = %s,
+                      `update_time` = %s
+                    WHERE `company_name` = %s AND `job_name` = %s AND `platform` = %s
+                """, (
+                    item['location'],
+                    item['education'],
+                    item['years'],
+                    item['salary'],
+                    item['release_time'],
+                    time.localtime(),
+                    item['company_name'],
+                    item['job_name'],
+                    item['platform']
+                )
+            )

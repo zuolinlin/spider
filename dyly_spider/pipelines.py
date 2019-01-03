@@ -107,11 +107,45 @@ class ZhiLianSpiderPipeline(object):
 
     def process_item(self, item, spider):
         # logger.log("===> " + str(item))
-        insert(
-            "INSERT INTO `xsbbiz`.`zhilian_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `link`) "
-            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (item['company_name'], item['job_name'], item['location'], item['education'], item['years'], item['salary'],
-             item['release_time'], item['platform'], item['link']))
+        if item['link'] is not None:
+            job = spider.fetchone("SELECT 1 FROM `xsbbiz`.`zhilian_recruitment` WHERE `link`='%s'" % (item['link']))
+        else:
+            return
+        if job is None:  # 不存在
+            spider.insert(
+                "INSERT INTO `xsbbiz`.`zhilian_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `link`, `update_time`) "
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                (item['company_name'], item['job_name'], item['location'], item['education'], item['years'],
+                 item['salary'], item['release_time'], item['platform'], item['link'], time.localtime()))
+        else:
+            spider.insert(
+                """
+                UPDATE
+                      `xsbbiz`.`zhilian_recruitment`
+                    SET
+                      `company_name` = %s,
+                      `job_name` = %s,
+                      `location` = %s,
+                      `education` = %s,
+                      `years` = %s,
+                      `salary` = %s,
+                      `release_time` = %s,
+                      `platform` = %s,
+                      `update_time` = %s
+                    WHERE `link` = %s
+                """, (
+                    item['company_name'],
+                    item['job_name'],
+                    item['location'],
+                    item['education'],
+                    item['years'],
+                    item['salary'],
+                    item['release_time'],
+                    item['platform'],
+                    time.localtime(),
+                    item['link']
+                )
+            )
 
 
 class BaiduZhaopinSpiderPipeline(object):

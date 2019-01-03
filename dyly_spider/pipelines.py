@@ -56,19 +56,19 @@ class ZhiPinSpiderPipeline(object):
 
     def process_item(self, item, spider):
         # logger.log("===> " + str(item))
-        if item['out_id'] is not None:
+        if item['link'] is not None:
             job = spider.fetchone(
-                "SELECT 1 FROM `xsbbiz`.`zhipin_recruitment` WHERE `out_id`='%s'" % (
-                    item['out_id'])
+                "SELECT 1 FROM `xsbbiz`.`zhipin_recruitment` WHERE `link`='%s'" % (
+                    item['link'])
             )
         else:
             return
         if job is None:
             spider.insert(
-                "INSERT INTO `xsbbiz`.`zhipin_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `out_id`, `update_time`) "
+                "INSERT INTO `xsbbiz`.`zhipin_recruitment` (`company_name`, `job_name`, `location`, `education`, `years`, `salary`, `release_time`,  `platform`, `link`, `update_time`) "
                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (item['company_name'], item['job_name'], item['location'], item['education'], item['years'],
-                 item['salary'], item['release_time'], item['platform'], item['out_id'], time.localtime()))
+                 item['salary'], item['release_time'], item['platform'], item['link'], time.localtime()))
         else:
             spider.insert(
                 """
@@ -84,7 +84,7 @@ class ZhiPinSpiderPipeline(object):
                       `release_time` = %s,
                       `platform` = %s,
                       `update_time` = %s
-                    WHERE `out_id` = %s
+                    WHERE `link` = %s
                 """, (
                     item['company_name'],
                     item['job_name'],
@@ -95,7 +95,7 @@ class ZhiPinSpiderPipeline(object):
                     item['release_time'],
                     item['platform'],
                     time.localtime(),
-                    item['out_id']
+                    item['link']
                 )
             )
 

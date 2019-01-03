@@ -31,10 +31,11 @@ class ZhiPinSpider(BaseSpider):
         super(ZhiPinSpider, self).__init__(*a, **kw)
         self.chrome_options = Options()
         #  不打开浏览器窗口
-        self.chrome_options.add_argument('--headless')
-        self.chrome_options.add_argument('--disable-gpu')
+        # self.chrome_options.add_argument('--headless')
+        # self.chrome_options.add_argument('--disable-gpu')
         self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver',
                                         chrome_options=self.chrome_options)
+        self.browser.maximize_window()  # 窗口最大化
         # 隐性等待，最长等3秒
         self.browser.implicitly_wait(3)
         # 传递信息,也就是当爬虫关闭时scrapy会发出一个spider_closed的信息,当这个信号发出时就调用closeSpider函数关闭这个浏览器.

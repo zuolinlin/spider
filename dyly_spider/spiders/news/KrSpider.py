@@ -62,7 +62,7 @@ class KrSpider(NewsSpider):
             if page == 1:
                 total_count = data.get("total_count")
                 pages = int(total_count / 20) if total_count % 20 == 0 else int(total_count / 20) + 1
-                while page < pages:
+                while page < 10:
                     page = page + 1
                     yield Request(
                         self.list_url.format(news_type=response.meta.get("code"), page=page),

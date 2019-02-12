@@ -55,7 +55,7 @@ class XiniuNewsSpider(BaseSpider):
         # 输出登陆之后的cookies
         print(self.driver.get_cookies())
         XiniuNewsSpider.sysnc_new(self)
-        XiniuNewsSpider.do_news(self)
+       # XiniuNewsSpider.do_news(self)
 
     def sysnc_new(self):
         self.driver.get("http://www.xiniudata.com/info/news/lib")
@@ -63,7 +63,7 @@ class XiniuNewsSpider(BaseSpider):
         # 获取咨询表中的数据
         # pojo = self.fetchall("SELECT * FROM `xsbbiz`.`xiniu_news` limit 1 ")
         # 现将新闻列表页的数据入库 ，
-        start = 100
+        start = 20
         while 1==1:
             # 下拉加载
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")

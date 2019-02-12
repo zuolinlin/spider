@@ -42,7 +42,7 @@ class KrSpider(NewsSpider):
         # 不打开浏览器窗口
         chrome_options.add_argument('headless')
         chrome_options.add_argument('no-sandbox')
-        self.browser = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+        self.browser = webdriver.Chrome(#executable_path=r'dyly_spider/file/chromedriver.exe',
                                         chrome_options=chrome_options)
         # 传递信息,也就是当爬虫关闭时scrapy会发出一个spider_closed的信息,当这个信号发出时就调用closeSpider函数关闭这个浏览器.
         dispatcher.connect(self.spider_closed, signals.spider_closed)
@@ -62,7 +62,7 @@ class KrSpider(NewsSpider):
             if page == 1:
                 total_count = data.get("total_count")
                 pages = int(total_count / 20) if total_count % 20 == 0 else int(total_count / 20) + 1
-                while page < pages:
+                while page < 10:
                     page = page + 1
                     yield Request(
                         self.list_url.format(news_type=response.meta.get("code"), page=page),

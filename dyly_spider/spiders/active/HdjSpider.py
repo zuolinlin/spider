@@ -1,9 +1,4 @@
-import time
 from scrapy import Request
-import urllib.parse
-import uuid
-
-from dyly_spider.spiders.BaseSpider import BaseSpider
 from dyly_spider.spiders.active.ActiveSpider import ActiveSpider
 """
 活动家  ===   it、医疗科学、金融财经

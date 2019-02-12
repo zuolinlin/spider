@@ -18,7 +18,7 @@ class ActiveSpider(BaseSpider):
     def parse(self, response):
         pass
 
-    def insert_new(self,  title, times, place, tag, classify, link, source):
+    def insert_new(self,  title, times, place, tag, classify, link, source,sponsor):
         """
         添加数据
         :param title: 标题
@@ -43,6 +43,7 @@ class ActiveSpider(BaseSpider):
                                                                        `id`,
                                                                        `title`,
                                                                        `time`,
+                                                                       `sponsor`,
                                                                        `place`,
                                                                        `tag`,
                                                                        `classify`,
@@ -51,11 +52,12 @@ class ActiveSpider(BaseSpider):
                                                                        `createTime`
 
                                                                      ) 
-                                                                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                                                     VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)
                                                                      """, (
                                                                         str(uuid.uuid4()).replace("-", ""),
                                                                         title,
                                                                         times,
+                                                                        sponsor,
                                                                         place,
                                                                         tag,
                                                                         classify,

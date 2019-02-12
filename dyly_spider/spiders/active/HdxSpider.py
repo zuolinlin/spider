@@ -133,7 +133,7 @@ class HdxSpider(ActiveSpider):
         num = response.meta['pageNo']
         classify = response.meta['classify']
         next_num = int(num) + 1
-        if next_num <= 5:
+        if next_num <= 200:
             next_url = self.start_urls.format(classify=classify,pageNo=str(next_num))
             next_url = urllib.parse.unquote(next_url)
             yield Request(next_url,
@@ -149,6 +149,7 @@ class HdxSpider(ActiveSpider):
     def detail(self, response):
           new_time = response.meta['new_time']
           try:
+              sponsor = response.xpath('//div[@title="活动发起人"]/a/text()').get().strip()
               times = response.xpath('//div[@class="address-info-wrap"]/div/text()').get().strip()
               times = str(times).split("～")[0]
               times = times.split(",")[2].split(" ")[1]
@@ -177,7 +178,8 @@ class HdxSpider(ActiveSpider):
                   tags,
                   classify,
                   link,
-                  source
+                  source,
+                  sponsor
               )
 
 

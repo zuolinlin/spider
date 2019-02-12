@@ -50,21 +50,36 @@ class HdjSpider(ActiveSpider):
                         tags += tag
                         if i != len(tags_data) - 1:
                             tags = tags + "、"
-                # 插入sql
-                pojo = self.fetchone(
-                    "SELECT 1 FROM `financial_activities` WHERE `link`='%s' AND `source`='%s' " % (
-                    link, source)
+                # # 插入sql
+                # pojo = self.fetchone(
+                #     "SELECT 1 FROM `financial_activities` WHERE `link`='%s' AND `source`='%s' " % (
+                #     link, source)
+                # )
+                # if pojo is None:
+                #     self.insert_new(
+                #         title,
+                #         times,
+                #         place,
+                #         tags,
+                #         classify,
+                #         link,
+                #         source
+                #     )
+
+                # 详情页
+                yield Request(
+                    link,
+                    meta={
+                        "title": title,
+                        "place": place,
+                        "tags": tags,
+                        "classify": classify,
+                        "link": link,
+                        "new_time": times,
+                        "source": source
+                    },
+                    callback=self.detail
                 )
-                if pojo is None:
-                    self.insert_new(
-                        title,
-                        times,
-                        place,
-                        tags,
-                        classify,
-                        link,
-                        source
-                    )
             next_url = response.xpath('//div[@class="pagination"]/ul/li[last()]/a/@href').extract_first()
             if next_url is not None:
                 pageNo = str(next_url).split("-")[1][0:1]
@@ -80,3 +95,32 @@ class HdjSpider(ActiveSpider):
                 return
         else:
             return
+
+    def detail(self, response):
+        title = response.meta['title']
+        place = response.meta['place']
+        tags = response.meta['tags']
+        classify = response.meta['classify']
+        link = response.meta['link']
+        source = response.meta['source']
+        times = response.meta['new_time']
+        sponsors = response.xpath('//*[@id="meeting_1"]/div/div[2]/span//a//text()').extract()
+        sponsor = ""
+        if sponsors is not None and len(sponsors) != 0:
+            for i, tag in enumerate(sponsors):
+                sponsor += tag
+                if i != len(sponsors) - 1:
+                    sponsor = sponsor + "、"
+
+        self.insert_new(
+            title,
+            times,
+            place,
+            tags,
+            classify,
+            link,
+            source,
+            sponsor
+        )
+
+

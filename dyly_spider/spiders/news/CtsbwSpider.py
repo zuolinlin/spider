@@ -39,15 +39,15 @@ class CtsbwSpider(NewsSpider):
                 yield Request(url, meta={"out_id": out_id}, callback=self.detail)
             # 只能请求到190 页的数据，后面的分页数据不对
             # 请求下一页 获取一下页的按钮的数据
-            next_url = response.xpath('//div[@id="pages"]/a[last()]/@href').extract_first()
-            # strs = str(next_url).split("/")
-            # pageNo = strs[len(strs)-1][0:-5]
-            #
-            # pages = 190
-            # if int(pageNo) < pages:
-            #
-            next_url = CtsbwSpider.base_url + next_url
-            yield Request(next_url, callback=self.parse)
+            # next_url = response.xpath('//div[@id="pages"]/a[last()]/@href').extract_first()
+            # # strs = str(next_url).split("/")
+            # # pageNo = strs[len(strs)-1][0:-5]
+            # #
+            # # pages = 190
+            # # if int(pageNo) < pages:
+            # #
+            # next_url = CtsbwSpider.base_url + next_url
+            # yield Request(next_url, callback=self.parse)
 
     def detail(self, response):
         out_id = response.meta['out_id']

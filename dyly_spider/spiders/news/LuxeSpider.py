@@ -65,7 +65,7 @@ class LuxeSpider(NewsSpider):
                     callback=self.detail
                 )
             # 获取下一页的数据
-            pages = 48
+            pages = 10
             while self.current_page < pages:
                 self.current_page += 1
                 next_url ="http://luxe.co/category/tech/page/"+ str(self.current_page)

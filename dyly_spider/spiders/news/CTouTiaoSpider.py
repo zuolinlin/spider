@@ -42,15 +42,15 @@ class CTouTiaoSpider(NewsSpider):
 
     def parse(self, response):
         page = int(response.xpath("//p[@class='page-all']/a[@class='red']/text()").extract_first())
-        if page == 1:
-            pages = int(RegExUtil.find_first("p=(\d+)", response.xpath("//p[@class='page-all']/a[last()]/@href")
-                                             .extract_first()))
-            for page in range(2, pages + 1):
-                yield Request(
-                    self.list_url.format(news_type=response.meta.get("code"), page=page),
-                    meta=response.meta,
-                    dont_filter=True
-                )
+        # if page == 1:
+        #     pages = int(RegExUtil.find_first("p=(\d+)", response.xpath("//p[@class='page-all']/a[last()]/@href")
+        #                                      .extract_first()))
+        #     for page in range(2, pages + 1):
+        #         yield Request(
+        #             self.list_url.format(news_type=response.meta.get("code"), page=page),
+        #             meta=response.meta,
+        #             dont_filter=True
+        #         )
 
         items = response.xpath("//ul[contains(@class, 'recommend-list ')]/li")
         for item in items:

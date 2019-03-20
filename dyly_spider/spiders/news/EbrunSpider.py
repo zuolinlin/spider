@@ -75,13 +75,13 @@ class EbrunSpider(NewsSpider):
 
 
 
-            time.sleep(3)
-            # 获取下一页的数据
-            next_url = response.xpath('//li[@class="pagination-next"]/a/@href').extract_first()
-            if str(next_url) == "javascript:void(0)":
-                return
-            else:
-                yield Request(next_url, callback=self.parse)
+            # time.sleep(3)
+            # # 获取下一页的数据
+            # next_url = response.xpath('//li[@class="pagination-next"]/a/@href').extract_first()
+            # if str(next_url) == "javascript:void(0)":
+            #     return
+            # else:
+            #     yield Request(next_url, callback=self.parse)
 
     def detail(self, response):
         title = response.meta['title']

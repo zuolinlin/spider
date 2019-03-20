@@ -48,6 +48,7 @@ class SinaSpider(NewsSpider):
         #                                 chrome_options=chrome_options)
         self.driver.get("http://finance.sina.com.cn/china/")
         time.sleep(1)
+        #SinaSpider.new_list(self)
         SinaSpider.detail(self)
         dispatcher.connect(self.spider_closed, signals.spider_closed)
 
@@ -76,9 +77,9 @@ class SinaSpider(NewsSpider):
                     )
             # 请求下一页
 
-                next_page = self.driver.find_element_by_xpath('//div[@class="feed-card-page"]/span[@class="pagebox_next"]/a')
-                next_page.click()
-                time.sleep(3)
+                # next_page = self.driver.find_element_by_xpath('//div[@class="feed-card-page"]/span[@class="pagebox_next"]/a')
+                # next_page.click()
+                # time.sleep(3)
 
         # SinaSpider.detail(self)
 
@@ -124,7 +125,7 @@ class SinaSpider(NewsSpider):
                     push_time,
                     title,
                     new_type,
-                    source,
+                    "新浪",
                     content,
                     newid
 

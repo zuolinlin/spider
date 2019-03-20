@@ -40,7 +40,7 @@ class HexunSpider(NewsSpider):
         html = response.text
         if html is not None:
             # 15146
-            pages = 15158
+            pages = 10
             # 根据返回的totalNumber 计算出来的总页书有误 实际的数量 15146
             while self.current_page < pages:
                 self.current_page = self.current_page + 1

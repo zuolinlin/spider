@@ -46,14 +46,14 @@ class LieyunwangSpider(NewsSpider):
                         meta={"title": title},
                         callback=self.detail
                     )
-            # 请求下一页
-            # 获取下一页
-            next_page = response.xpath('//div[@class="pagination-wrapper"]/ul/li[@class="next"]/a/@href').extract_first()
-            if not next_page:
-                return
-            else:
-                next_url = LieyunwangSpider.base_url + next_page
-                yield Request(next_url, callback=self.parse)
+            # # 请求下一页
+            # # 获取下一页
+            # next_page = response.xpath('//div[@class="pagination-wrapper"]/ul/li[@class="next"]/a/@href').extract_first()
+            # if not next_page:
+            #     return
+            # else:
+            #     next_url = LieyunwangSpider.base_url + next_page
+            #     yield Request(next_url, callback=self.parse)
 
     def detail(self, response):
         title = response.meta['title']

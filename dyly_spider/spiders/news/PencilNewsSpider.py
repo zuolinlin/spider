@@ -59,15 +59,15 @@ class PencilNewsSpider(NewsSpider):
                 callback=self.detail
             )
         # 分页
-        page = data.get("_pageinfo").get("page")
-        if page == 0:
-            pages = data.get("_pageinfo").get("pages")+1
-            for page in range(1, pages):
-                yield Request(
-                    self.list_url.format(news_type=response.meta.get("code"), page=page),
-                    meta=response.meta,
-                    dont_filter=True
-                )
+        # page = data.get("_pageinfo").get("page")
+        # if page == 0:
+        #     pages = data.get("_pageinfo").get("pages")+1
+        #     for page in range(1, pages):
+        #         yield Request(
+        #             self.list_url.format(news_type=response.meta.get("code"), page=page),
+        #             meta=response.meta,
+        #             dont_filter=True
+        #         )
 
     def detail(self, response):
         self.insert_new(

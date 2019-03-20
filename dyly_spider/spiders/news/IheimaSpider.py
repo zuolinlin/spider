@@ -36,20 +36,20 @@ class IheimaSpider(NewsSpider):
     def __init__(self, *a, **kw):
             super(IheimaSpider, self).__init__(*a, **kw)
             self.current_page = 1
-            # self.chrome_options = Options()
-            # #  设置浏览器是否隐藏
-            # # self.chrome_options.add_argument('--headless')
-            # # self.chrome_options.add_argument('--disable-gpu')
-            # # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
-            # self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
+            self.chrome_options = Options()
+            #  设置浏览器是否隐藏
+            # self.chrome_options.add_argument('--headless')
+            # self.chrome_options.add_argument('--disable-gpu')
+            # self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
+            self.driver = webdriver.Chrome(chrome_options=self.chrome_options)
             #
 
-            chrome_options = webdriver.ChromeOptions()
-            # 不打开浏览器窗口
-            chrome_options.add_argument('headless')
-            chrome_options.add_argument('no-sandbox')
-            self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
-                                            chrome_options=chrome_options)
+            # chrome_options = webdriver.ChromeOptions()
+            # # 不打开浏览器窗口
+            # chrome_options.add_argument('headless')
+            # chrome_options.add_argument('no-sandbox')
+            # self.driver = webdriver.Chrome(executable_path=r'dyly_spider/file/chromedriver.exe',
+            #                                 chrome_options=chrome_options)
             # 产业
             # self.driver.get("http://www.iheima.com/scope/1")
             # 资本动态

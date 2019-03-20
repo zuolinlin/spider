@@ -75,14 +75,14 @@ class PedailySpider(NewsSpider):
                         dont_filter=True,
                         callback=self.detail
                     )
-            # 请求下一页
-            time.sleep(1)
-            # 获取下一页
-            next_url = response.xpath('//div[@class="page-list page"]/a[last()]/@href').extract_first()
-            if not next_url:
-                return
-            else:
-                yield Request(next_url, callback=self.parse)
+            # # 请求下一页
+            # time.sleep(1)
+            # # 获取下一页
+            # next_url = response.xpath('//div[@class="page-list page"]/a[last()]/@href').extract_first()
+            # if not next_url:
+            #     return
+            # else:
+            #     yield Request(next_url, callback=self.parse)
 
     def detail(self, response):
         title = response.meta["title"]

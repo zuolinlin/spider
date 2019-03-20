@@ -38,14 +38,14 @@ class JingMeiTiSpider(NewsSpider):
             )
 
     def parse(self, response):
-        if "page" not in response.url:
-            pages = int(response.xpath('//*[@id="page-content"]/div/div/div[1]/nav/div/*[last()-1]/text()').extract_first())
-            for page in range(2, pages+1):
-                yield Request(
-                    self.start_url.format(news_type=response.meta.get("code"))+"/page/{}".format(page),
-                    meta=response.meta,
-                    dont_filter=True
-                )
+        # if "page" not in response.url:
+        #     pages = int(response.xpath('//*[@id="page-content"]/div/div/div[1]/nav/div/*[last()-1]/text()').extract_first())
+        #     for page in range(2, pages+1):
+        #         yield Request(
+        #             self.start_url.format(news_type=response.meta.get("code"))+"/page/{}".format(page),
+        #             meta=response.meta,
+        #             dont_filter=True
+        #         )
         items = response.xpath('//*[@class="posts-default-box"]')
         for item in items:
             push_date = item.xpath("normalize-space(div[2]/div[2]/ul/li[@class='ico-time']/text())").extract_first()

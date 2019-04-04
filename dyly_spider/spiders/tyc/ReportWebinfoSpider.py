@@ -12,7 +12,7 @@ class ReportWebinfoSpider(BaseSpider):
         super(ReportWebinfoSpider, self).__init__(*a, **kw)
 
     def start_requests(self):
-        webinfos = self.fetchall("SELECT * FROM `xsbbiz`.`report_webinfo` where `status` is null  ")
+        webinfos = self.fetchall("SELECT * FROM `xsbbiz`.`report_webinfo` where `status` is null limit 1000000 ")
         for webinfo in webinfos:
             id = webinfo[0]
             website = webinfo[4]
@@ -56,6 +56,7 @@ class ReportWebinfoSpider(BaseSpider):
 
     def parse(self, response):
         id =response.meta['id']
+        title = response.xpath('/html/head/title/text()').extract_first()
         keywords =response.xpath('/html/head/meta[@name="keywords"]/@content').extract_first()
         description = response.xpath('/html/head/meta[@name="description"]/@content').extract_first()
         self.exec_sql("""
@@ -64,12 +65,14 @@ class ReportWebinfoSpider(BaseSpider):
              SET
                `keywords` =%s,
                `description` =%s,
+               `title` =%s,
                `status` =%s
                
              WHERE `id` = %s 
                  """, (
             keywords,
             description,
+            title,
             1,
             id
         ))

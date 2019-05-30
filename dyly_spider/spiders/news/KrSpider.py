@@ -19,11 +19,12 @@ class KRSpider(NewsSpider):
         self.current_page = 1
 
     def parse(self, response):
+        self.current_page += 1;
         data = response.text
         if data is not None:
             jsondata = json.loads(data)
             data = jsondata["data"]
-            items= data['items']
+            items = data['items']
             next_last_id = items[len(items) - 1]['id']
             print(next_last_id)
             for item in items:
@@ -42,11 +43,11 @@ class KRSpider(NewsSpider):
                     callback=self.detail
                 )
             next_url = "https://36kr.com/pp/api/aggregation-entity?type=web_latest_article&b_id="+str(next_last_id)+"&per_page=30"
-            yield Request(
-                next_url,
-                callback=self.parse
-            )
-
+            if self.current_page <5:
+                yield Request(
+                    next_url,
+                    callback=self.parse
+                )
 
     def detail(self, response):
         #out_id =response.meta.get('id')

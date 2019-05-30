@@ -42,7 +42,7 @@ class NewsSpider(BaseSpider):
         else:
             return
         if pojo is None:
-            content = remove_image_voide_audio(content)
+            #content = remove_image_voide_audio(content)
             return self.insert("""
                             INSERT INTO `spider_news` (
                               `new_id`,

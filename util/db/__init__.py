@@ -16,7 +16,7 @@ POOL = PooledDB(
     port=3306,
     user='admin_dyly',
     password='admin_dyly',
-    database='dyly_vc',
+    database='xsbbiz',
     charset='utf8'
 )
 

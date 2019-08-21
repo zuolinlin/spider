@@ -4,7 +4,7 @@ import json
 
 class KRSpider(NewsSpider):
     start_urls = ["https://36kr.com/information/web_news"]
-    name = "KrSpider_new"
+    name = "36kr_news"
     allowed_domains = ["36kr.com"]
 
     def start_requests(self):

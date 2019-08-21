@@ -12,10 +12,10 @@ POOL = PooledDB(
     blocking=True,  # 链接池中如果没有可用共享连接后，是否阻塞等待，True表示等待，False表示不等待然后报错
     setsession=[],  # 开始会话前执行的命令列表
     ping=0,  # ping Mysql 服务端，检查服务是否可用
-    host='rdsb3v4p9d76w56130cbo.mysql.rds.aliyuncs.com',
+    host='rm-bp1fj7t9824nodtjleo.mysql.rds.aliyuncs.com',
     port=3306,
-    user='admin_dyly',
-    password='admin_dyly',
+    user='admin_xsb',
+    password='admin_xsb123',
     database='xsbbiz',
     charset='utf8'
 )

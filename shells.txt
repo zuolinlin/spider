@@ -138,3 +138,6 @@ scrapy crawl ofweek_active -s LOG_FILE=/logs/ofweek_active.log
 
 # OFweek维科网
 scrapy crawl itjuzi_news -s LOG_FILE=/logs/itjuzi_news.log
+
+# 动点科技
+scrapy crawl technode_news -s LOG_FILE=/logs/technode_news.log

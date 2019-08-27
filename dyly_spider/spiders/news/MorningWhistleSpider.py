@@ -3,7 +3,7 @@ import json
 from scrapy import Request
 from dyly_spider.spiders.news.NewsSpider import NewsSpider
 from util import XPathUtil, date_util
-
+import time
 
 class MorningWhistleSpider(NewsSpider):
     """
@@ -44,25 +44,51 @@ class MorningWhistleSpider(NewsSpider):
                 row_params = row.get("params", {})
                 content = XPathUtil.str_to_selector(row_params.get("content"))
                 out_id = row.get("id")
-                self.insert_new(
-                    out_id,
-                    date_util.get_date(row.get("pubDate")),
-                    row.get("title"),
-                    "资讯",
-                    row_params.get("op", "").strip(),
-                    row_params.get("summary"),
-                    content,
-                    "http://www.morningwhistle.com/info/{out_id}.html".format(out_id=out_id),
-                    4
-                )
-            page_total = data.get("pageTotal")
-            if self.page < page_total:
-                self.page = self.page + 1
+                timeStamp =row.get("pubDate")
+                timeStamp = float(timeStamp / 1000)
+                timeArray = time.localtime(timeStamp)
+                publishTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+                title =row.get("title")
+                digest =row_params.get("summary")
+                source_url = 'http://www.morningwhistle.com/info/'+str(out_id)+'.html'
                 yield Request(
-                    self.start_url.format((self.page - 1) * self.page_size - 1, self.page_size),
+                    source_url,
                     dont_filter=True,
-                    callback=self.parse
+                    meta={"out_id": out_id,
+                          "title": title,
+                          "publishTime": publishTime,
+                          "digest": digest
+                          },
+                    callback=self.detail
                 )
+
+
+            # page_total = data.get("pageTotal")
+            # if self.page < page_total:
+            #     self.page = self.page + 1
+            #     yield Request(
+            #         self.start_url.format((self.page - 1) * self.page_size - 1, self.page_size),
+            #         dont_filter=True,
+            #         callback=self.parse
+            #     )
+
+    def detail(self,response):
+        out_id =response.meta['out_id']
+        title = response.meta['title']
+        publishTime = response.meta['publishTime']
+        digest = response.meta['digest']
+        content =response.xpath("/html/body").extract_first()
+        self.insert_new(
+            out_id,
+            publishTime,
+            title,
+            "资讯",
+            "晨哨君",
+            digest,
+            content,
+            response.url,
+            4
+        )
 
     def get_data(self, req):
         body = json.loads(req.body)

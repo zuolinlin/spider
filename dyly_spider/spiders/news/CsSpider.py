@@ -18,7 +18,7 @@ class CsSpider(NewsSpider):
     allowed_domains = ["cs.com.cn"]
 
     list_url = "http://www.cs.com.cn/ssgs/gsxw/index.shtml"
-    list_urls = ["http://www.cs.com.cn/ssgs/gsxw/index_{page}.shtml".format(page=page) for page in range(1, 10)]
+    list_urls = ["http://www.cs.com.cn/ssgs/gsxw/index_{page}.shtml".format(page=page) for page in range(1, 3)]
     detail_url = "http://www.cs.com.cn/ssgs/gsxw"
 
     def __init__(self, *a, **kw):
@@ -33,23 +33,34 @@ class CsSpider(NewsSpider):
             )
 
     def parse(self, response):
-        for item in response.xpath("/html/body/div[6]/div[1]/ul/li"):
+        data_list =response.xpath("/html/body/div[6]/div[1]/ul//li")
+        for item in data_list:
+            print(item)
+            publishTime='20'+str(item.xpath('./span/text()').extract_first())
+            title = item.xpath('./a/text()').extract_first()
+            url =  'http://www.cs.com.cn/ssgs/gsxw/'+str(item.xpath('./a/@href').extract_first())[2:]
+            out_id =str(url).split('/')[-1][0:-5]
             yield Request(
-                self.detail_url + item.xpath("a/@href").extract_first()[1:],
+                url,
+                meta={"out_id": out_id,
+                      "title": title,
+                      "publishTime": publishTime,
+                      "digest": None
+                      },
                 dont_filter=True,
                 callback=self.detail
             )
 
     def detail(self, response):
-        detail = response.xpath("/html/body/div[8]/div[1]")
+        content = response.xpath("/html/body").extract_first()
         self.insert_new(
-            re.findall("http://www.cs.com.cn/ssgs/gsxw/201811/(.*).html", response.url)[0],
-            detail.xpath("normalize-space(div[2]/div[1]/p[2]/em[1]/text())").extract_first(),
-            detail.xpath("normalize-space(div[2]/h1/text())").extract_first(),
+            response.meta['out_id'],
+            response.meta['publishTime'],
+            response.meta['title'],
             "公司新闻",
-            detail.xpath("normalize-space(div[2]/div[1]/p[2]/em[2]/text())").extract_first()[3:],
+            "中证网",
             None,
-            detail.xpath("div[2]/div[2]/*[not(@class='page') and not(@class='article-list')]"),
+            content,
             response.url,
             8
         )

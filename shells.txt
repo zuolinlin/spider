@@ -150,3 +150,6 @@ scrapy crawl cs_news -s LOG_FILE=/logs/cs_news.log
 
 # 华丽志
 scrapy crawl luxe -s LOG_FILE=/logs/luxe.log
+
+# 创投时报
+scrapy crawl ctsbw_news -s LOG_FILE=/logs/ctsbw_news.log

@@ -11,7 +11,7 @@ import time
 
 class BaijingSpider(NewsSpider):
     """
-    晨哨君
+    白鲸
     """
     custom_settings = {
         "AUTOTHROTTLE_ENABLED": True,

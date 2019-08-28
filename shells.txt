@@ -101,7 +101,7 @@ scrapy crawl chinaventure_active -s LOG_FILE=/logs/chinaventure_active.log
 scrapy crawl investorscn_active -s LOG_FILE=/logs/investorscn_active.log
 
 # 36 氪
-scrapy crawl kr_active -s LOG_FILE=/logs/kr_active.log
+scrapy crawl 36kr_news -s LOG_FILE=/logs/36kr_news.log
 
 # 亿欧网
 scrapy crawl iyiou_active -s LOG_FILE=/logs/iyiou_active.log
@@ -141,3 +141,9 @@ scrapy crawl itjuzi_news -s LOG_FILE=/logs/itjuzi_news.log
 
 # 动点科技
 scrapy crawl technode_news -s LOG_FILE=/logs/technode_news.log
+
+# 白鲸
+scrapy crawl baijing_news -s LOG_FILE=/logs/baijing_news.log
+
+# 中证网
+scrapy crawl cs_news -s LOG_FILE=/logs/cs_news.log

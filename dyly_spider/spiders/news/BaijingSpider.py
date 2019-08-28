@@ -75,15 +75,3 @@ class BaijingSpider(NewsSpider):
             response.url,
             5
         )
-        print("success")
-
-    def get_data(self, req):
-        body = json.loads(req.body)
-        if body["code"] == 1:
-            data = body["data"]
-            if len(data.get("rows", [])) > 0:
-                return data
-            else:
-                self.log_error("request failed：" + repr(body))
-        else:
-            self.log_error("request failed：" + repr(body))

@@ -147,3 +147,6 @@ scrapy crawl baijing_news -s LOG_FILE=/logs/baijing_news.log
 
 # 中证网
 scrapy crawl cs_news -s LOG_FILE=/logs/cs_news.log
+
+# 华丽志
+scrapy crawl luxe -s LOG_FILE=/logs/luxe.log

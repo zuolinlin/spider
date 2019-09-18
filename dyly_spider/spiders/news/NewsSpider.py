@@ -72,7 +72,7 @@ class NewsSpider(BaseSpider):
                                 time.localtime()
                             ))
 
-    def insert_new_1(self, out_id, push_date, title, new_type, source, digest, content, source_url, spider_source,coverimage_url):
+    def insert_new_1(self, out_id, push_date, title, new_type, source, digest, content, source_url, spider_source, coverimage_url):
         """
         添加数据
         :param out_id: 外部编号
@@ -110,7 +110,7 @@ class NewsSpider(BaseSpider):
                               `modify_date`,
                               coverimage_url
                             ) 
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                             """, (
                                 str(uuid.uuid4()).replace("-", ""),
                                 out_id,

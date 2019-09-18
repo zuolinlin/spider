@@ -32,6 +32,7 @@ class KRSpider(NewsSpider):
                 entity_id= item['entity_id']
                 published_at = item['post']['published_at']
                 summary = item['post']['summary']
+                cover = item['post']['cover']
                 herf = "https://36kr.com/p/" + str(entity_id)
                 print(item)
                 yield Request(
@@ -39,6 +40,7 @@ class KRSpider(NewsSpider):
                     meta={"id": id,
                           "entity_id": entity_id,
                           "published_at": published_at,
+                          "cover": cover,
                           "summary": summary},
                     callback=self.detail
                 )
@@ -54,6 +56,7 @@ class KRSpider(NewsSpider):
         summary = response.meta.get('summary')
         entity_id = response.meta.get('entity_id')
         published_at = response.meta.get('published_at')
+        cover = response.meta.get('cover')
         title =response.xpath('//h1[@class="article-title margin-bottom-20 common-width"]/text()').extract_first(),
         content = response.xpath("//div[@class='common-width content articleDetailContent kr-rich-text-wrapper']").extract_first(),
 
@@ -70,7 +73,7 @@ class KRSpider(NewsSpider):
         #     "2"
         # )
 
-        self.insert_new(
+        self.insert_new_1(
             response.meta.get('id'),
             published_at,
             title,
@@ -79,9 +82,8 @@ class KRSpider(NewsSpider):
             summary,
             content,
             response.url,
-            "2"
+            "2",
+            cover
         )
-        print(content)
-        print(entity_id)
         pass
 

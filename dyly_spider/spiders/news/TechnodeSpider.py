@@ -38,11 +38,14 @@ class TechnodeSpider(NewsSpider):
                 # 摘要
                 title = data.xpath('.//h3[@class="t-entry-title h3"]/a/text()').extract_first()
                 tim = data.xpath('.//p[@class="t-entry-meta"]/span[@class="t-entry-category t-entry-date"]/a/text()').extract_first()
-
+                cover = data.xpath(
+                    './/a[@tabindex="-1"]/img/@src').extract_first()
                 yield Request(
                     url,
                     meta={"title": title,
-                          "tim": tim},
+                          "tim": tim,
+                          "cover": cover
+                          },
                     callback=self.detail
                 )
             except:
@@ -58,6 +61,7 @@ class TechnodeSpider(NewsSpider):
         title = response.meta['title']
         # 时间
         push_time = response.meta['tim']
+        cover = response.meta['cover']
         # 新闻类型
         new_type = '动点科技'
         # 来源
@@ -68,7 +72,7 @@ class TechnodeSpider(NewsSpider):
         content = response.xpath('/html/body').extract()
         # 爬取来源
         spider_source = 3
-        self.insert_new(
+        self.insert_new_1(
             out_id,
             push_time,
             title,
@@ -77,5 +81,6 @@ class TechnodeSpider(NewsSpider):
             digest,
             content,
             response.url,
-            spider_source
+            spider_source,
+            cover
         )

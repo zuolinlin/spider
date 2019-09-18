@@ -57,6 +57,8 @@ class EbrunSpider(NewsSpider):
             if data_list is not None:
                 for data in data_list:
                     title = data.xpath('./a/div[@class="liebiao-well"]/p[@class="liebiao-xinwen-title"]/text()').extract_first()  # 标题
+                    cover = data.xpath(
+                        './a/div[@class="liebiao-image"]/img/@src').extract_first()
                     url = data.xpath('./a[@acpos="www.ebrun.com_chan_lcol_fylb"]/@href').extract_first()  # url
                     out_id = data.xpath('@data-id').extract_first()
                     push_time = data.xpath('./div[@class="liebiao-xinwen-side"]/p[@class="time"]/text()').extract_first()  # 时间
@@ -67,7 +69,8 @@ class EbrunSpider(NewsSpider):
                             "title": title,
                             "out_id": out_id,
                             "push_time": push_time,
-                            "digest": digest
+                            "digest": digest,
+                            "cover": cover
                         },
                         callback=self.detail
 
@@ -88,6 +91,7 @@ class EbrunSpider(NewsSpider):
         out_id = response.meta['out_id']
         push_time = response.meta['push_time']
         digest = response.meta['digest']
+        cover = response.meta['cover']
         spider_source = 13
         new_type = "top"
 
@@ -102,7 +106,7 @@ class EbrunSpider(NewsSpider):
             except:
                 content = None
         if content is not None:
-            self.insert_new(
+            self.insert_new_1(
                 out_id,
                 push_time,
                 title,
@@ -111,7 +115,8 @@ class EbrunSpider(NewsSpider):
                 digest,
                 content,
                 response.url,
-                spider_source
+                spider_source,
+                cover
             )
 
 

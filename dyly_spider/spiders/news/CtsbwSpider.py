@@ -35,8 +35,10 @@ class CtsbwSpider(NewsSpider):
             for data in data_list:
                 #  url
                 url = data.xpath('.//div[@class="col-xs-12 every-day-article-title"]//h4/a/@href').extract_first()
+                push_time = data.xpath('.//div[@class="col-xs-4"]/div[@class="row"]/a/img/@src').extract_first()
+                cover = data.xpath('.//div[@class="col-xs-8"]/div[@class="row"]/span/text()').extract_first()
                 out_id = url[29:-5]
-                yield Request(url, meta={"out_id": out_id}, callback=self.detail)
+                yield Request(url, meta={"out_id": out_id,"cover": cover,"push_time": push_time}, callback=self.detail)
             # 只能请求到190 页的数据，后面的分页数据不对
             # 请求下一页 获取一下页的按钮的数据
             # next_url = response.xpath('//div[@id="pages"]/a[last()]/@href').extract_first()
@@ -51,11 +53,12 @@ class CtsbwSpider(NewsSpider):
 
     def detail(self, response):
         out_id = response.meta['out_id']
+        cover = response.meta['cover']
+        push_time = response.meta['push_time']
         #  详情页模版一
         crumbs_one = response.xpath('//div[@class="cj_content"]/div[@class="crumbs"]')
         if crumbs_one is not None and len(crumbs_one) != 0:
            title = response.xpath('//div[@class="cj_content"]/h2/text()').get().strip()  # 标题
-           push_time = response.xpath('//p[@class="fa s14"]/text()[2]').get().strip()  # 时间
            source = response.xpath('//p[@class="fa s14"]/span[4]/text()').get().strip()  # 来源
            source = str(source).split('：')[1]
            digest = response.xpath('//div[@class="cj_content"]/div[3]/p/text()').get().strip()  # 摘要
@@ -67,7 +70,6 @@ class CtsbwSpider(NewsSpider):
         crumbs_two = response.xpath('//div[@class="cj_content"]/div[@class="cj_laiyuan fa s14"]/div[@class="crumbs"]')
         if crumbs_two is not None and len(crumbs_two):
             title = response.xpath('//div[@class="cj_content"]/div[1]/div/h2/text()').get().strip()  # 标题
-            push_time = response.xpath('//div[@class="cj_content"]/div[1]/div/p/text()[2]').get().strip()  # 时间
             source = response.xpath('//div[@class="cj_content"]/div[1]/div/p/span[2]/text()').get().strip()  # 来源
             source = str(source).split('：')[1]
             digest = response.xpath('//div[@class="cj_content"]/div[2]/div[2]/p/text()').get().strip()  # 摘要
@@ -76,7 +78,7 @@ class CtsbwSpider(NewsSpider):
             new_type = "国内"
             spider_source = 11
 
-        self.insert_new(
+        self.insert_new_1(
             out_id,
             push_time,
             title,
@@ -85,5 +87,6 @@ class CtsbwSpider(NewsSpider):
             digest,
             content,
             response.url,
-            spider_source
+            spider_source,
+            cover
         )

@@ -55,13 +55,16 @@ class LuxeSpider(NewsSpider):
                 digest = data.xpath('./p/text()').get().strip()  # 摘要
                 push_date = data.xpath('./div/text()').get().strip()  # 日期
                 url = data.xpath('./h2/a/@href').get().strip()  # URL
+                cover = data.xpath('.//div[@class="col-md-5 col-6 left"]/a/img/@src').extract_first()  # URL
                 out_id = url[20:]
                 yield Request(
                     url,
                     meta={"title": title,
                           "digest": digest,
                           "push_date": push_date,
-                          "out_id": out_id},
+                          "out_id": out_id,
+                          "cover": cover
+                          },
                     callback=self.detail
                 )
             # # 获取下一页的数据
@@ -77,6 +80,7 @@ class LuxeSpider(NewsSpider):
     def detail(self, response):
         out_id = response.meta['out_id']
         push_time = response.meta['push_date']
+        cover = response.meta['cover']
         title = response.meta['title']
         digest = response.meta['digest']
         content = response.xpath('//div[@class="post-body content"]').extract()
@@ -85,7 +89,7 @@ class LuxeSpider(NewsSpider):
         source = "华丽志"
         spider_source = 9
 
-        self.insert_new(
+        self.insert_new_1(
             out_id,
             push_time,
             title,
@@ -94,5 +98,6 @@ class LuxeSpider(NewsSpider):
             digest,
             content,
             response.url,
-            spider_source
+            spider_source,
+            cover
         )

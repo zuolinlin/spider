@@ -76,7 +76,7 @@ class ZhiPinSpiderPipeline(object):
                       `xsbbiz`.`zhipin_recruitment`
                     SET
                       `company_name` = %s,
-                      `job_name` = %s,
+                       `job_name` = %s,
                       `location` = %s,
                       `education` = %s,
                       `years` = %s,

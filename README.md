@@ -1,14 +1,14 @@
-# dyly_spider
+# spider
 **项目结构** 
 ```
-dyly_spider
+spider
 ├─bin 执行脚本
 │  ├─git-pull.bat 更新代码（windows）
 │  ├─git-pull.sh 更新代码（mac、linux）
 │  ├─robo_report.bat 萝卜-研报 执行脚本（windows）
 │  ├─run.bat 执行（windows）
 │  └─run.sh  执行（mac、linux）
-├─dyly_spider 爬虫相关
+├─spider 爬虫相关
 │  │─file 谷歌浏览器驱动文件（需浏览器渲染完才能抓取时使用）
 │  │─spiders 爬虫
 │  │    ├─zdb 投资界

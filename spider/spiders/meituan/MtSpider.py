@@ -225,7 +225,7 @@ class MtSpider(DBMTSpider):
                     # 判断之前会否有正常插入
                     projectDetail = self.select_spider_project_detail_by_project_out_id( project_out_id)
                     if projectDetail is None:
-                        self.insert_spider_project_detail(project_out_id,project[0],str(imgUrls))
+                        self.insert_spider_project_detail(project_out_id,project_id,str(imgUrls))
                 store_project = self.select_spider_store_project_by_store_out_id_project_out_id(store_out_id, project_out_id)
                 if store_project is None:
                     # 插入项目与门店的关联表

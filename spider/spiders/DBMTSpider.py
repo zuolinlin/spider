@@ -24,7 +24,7 @@ class DBMTSpider(BaseSpider):
         return self.fetchone(
             "SELECT * FROM `spider_store` WHERE `out_id`='%s'" % (out_id)
         )
-    def insert_spider_store(self, out_id, settle_code, store_code, store_name, mobile, order_num, longitude, latitude, store_addr,specific_addr,company_name,brand_id,brand_name,logo,tel,star,business_start_time,business_end_time,state,verify_state,is_delete):
+    def insert_spider_store(self, out_id, store_name, leader_name,mobile, longitude, latitude, store_addr,specific_addr,company_name,logo,tel,star,business_start_time,business_end_time):
         """
         添加数据
         :param out_id: 外部编号
@@ -60,50 +60,36 @@ class DBMTSpider(BaseSpider):
             return self.insert("""
                             INSERT INTO `spider_store` (
                               `out_id`,
-                              `settle_code`,
-                              `store_code`,
                               `store_name`,
+                              `leader_name`,
                               `mobile`,
-                              `order_num`,
                               `longitude`,
                               `latitude`,
                               `store_addr`,
                               `specific_addr`,
                               `company_name`,
-                              `brand_id`,
-                              `brand_name`,
                               `logo`,
                               `tel`,
                               `star`,
                               `business_start_time`,
-                              `business_end_time`,
-                              `state`,
-                              `verify_state`,
-                              `is_delete`
+                              `business_end_time`
                             ) 
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                             """, (
                                 out_id,
-                                settle_code,
-                                store_code,
                                 store_name,
+                                leader_name,
                                 mobile,
-                                order_num,
                                 longitude,
                                 latitude,
                                 store_addr,
                                 specific_addr,
                                 company_name,
-                                brand_id,
-                                brand_name,
                                 logo,
                                 tel,
                                 star,
                                 business_start_time,
-                                business_end_time,
-                                state,
-                                verify_state,
-                                is_delete
+                                business_end_time
                             ))
     def select_spider_settle_by_store_out_id(self ,out_id):
 

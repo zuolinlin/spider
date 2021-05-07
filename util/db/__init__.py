@@ -12,11 +12,11 @@ POOL = PooledDB(
     blocking=True,  # 链接池中如果没有可用共享连接后，是否阻塞等待，True表示等待，False表示不等待然后报错
     setsession=[],  # 开始会话前执行的命令列表
     ping=0,  # ping Mysql 服务端，检查服务是否可用
-    host='47.112.124.56',
+    host='127.0.0.1',
     port=3306,
-    user='mrb_test',
-    password='mrbTest999!$%',
-    database='mrb_store',
+    user='admin',
+    password='hadoop',
+    database='hadoop',
     charset='utf8'
 )
 
